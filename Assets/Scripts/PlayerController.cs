@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
     {
         if (controller.isGrounded)
         {
+            Debug.Log("มกวม");
             verticalSpeed = jumpForce;
         }
     }
