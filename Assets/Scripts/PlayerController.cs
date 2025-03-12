@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class TPSCharacterController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -18,34 +18,27 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookInput;
     private float verticalSpeed = 0f;
     private float gravity = -9.81f;
+    private float groundCheckOffset = 0.2f; // 땅 체크 보정값
     private float cameraPitch = 0f;
+    private bool isJumping = false;
 
     private PlayerInputActions inputActions;
 
     private void Awake()
     {
-        // 새로운 Input System 설정
         inputActions = new PlayerInputActions();
 
-        // 입력 이벤트 연결
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
 
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
 
-        inputActions.Player.Jump.performed += ctx => Jump();
+        inputActions.Player.Jump.performed += ctx => TryJump();
     }
 
-    private void OnEnable()
-    {
-        inputActions.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.Disable();
-    }
+    private void OnEnable() => inputActions.Enable();
+    private void OnDisable() => inputActions.Disable();
 
     void Update()
     {
@@ -64,14 +57,24 @@ public class PlayerController : MonoBehaviour
 
         Vector3 desiredMove = (forward * moveInput.y + right * moveInput.x) * moveSpeed;
 
-        if (controller.isGrounded)
+        if (IsGrounded())
         {
-            verticalSpeed = 0f;
+            if (isJumping)
+            {
+                verticalSpeed = jumpForce;
+                isJumping = false; // 점프 상태 해제
+            }
+            else
+            {
+                verticalSpeed = -0.1f; // 땅에서 바로 중력 영향 최소화
+            }
+        }
+        else
+        {
+            verticalSpeed += gravity * Time.deltaTime;
         }
 
-        verticalSpeed += gravity * Time.deltaTime;
         Vector3 moveDirection = desiredMove + Vector3.up * verticalSpeed;
-
         controller.Move(moveDirection * Time.deltaTime);
     }
 
@@ -87,14 +90,19 @@ public class PlayerController : MonoBehaviour
         cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
     }
 
-    void Jump()
+    void TryJump()
     {
-        if (controller.isGrounded)
+        if (IsGrounded())
         {
-            Debug.Log("점프");
-            verticalSpeed = jumpForce;
+            isJumping = true;
         }
     }
+
+    bool IsGrounded()
+    {
+        return controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, controller.bounds.extents.y + groundCheckOffset);
+    }
 }
+
 
 
