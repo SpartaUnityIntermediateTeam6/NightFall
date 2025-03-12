@@ -9,7 +9,7 @@ public class FixedBuilderPlatform : MonoBehaviour
     [SerializeField] private float buildTime;
     [SerializeField] private LayerMask targetLayers;
 
-    private IBuilderStrategy<Building> _builderStrategy;
+    private IBuilderStrategy _builderStrategy;
 
     void Awake()
     {

@@ -2,17 +2,17 @@
 
 namespace BuildingSystem
 {
-    public interface IBuilderStrategy<T> where T : Component
+    public interface IBuilderStrategy
     {
-        bool CanBuild(T buildable);
-        void Build(T buildable, IPredicate condition);
+        bool CanBuild(Building buildable);
+        void Build(Building buildable, IPredicate condition);
     }
 
-    public class FixedPositionBuilder : IBuilderStrategy<Building>
+    public class FixedPositionBuilder : IBuilderStrategy
     {
-        private GameObject _builderGameObject;
-        private BoxCollider _builderColliderCache;
-        private LayerMask _targetLayers;
+        private readonly GameObject _builderGameObject;
+        private readonly BoxCollider _builderColliderCache;
+        private readonly LayerMask _targetLayers;
 
         public FixedPositionBuilder(GameObject origin, LayerMask targetLayers)
         {
