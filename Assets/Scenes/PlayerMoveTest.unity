@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpForce: 600
+  jumpForce: 10
   mouseSensitivity: 2
   cameraTransform: {fileID: 963194228}
   controller: {fileID: 217659399}

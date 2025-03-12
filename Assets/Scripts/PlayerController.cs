@@ -20,7 +20,10 @@ public class TPSCharacterController : MonoBehaviour
     private float gravity = -9.81f;
     private float groundCheckOffset = 0.2f; // 땅 체크 보정값
     private float cameraPitch = 0f;
-    private bool isJumping = false;
+
+    // 점프 버퍼링 관련 변수
+    private float jumpBufferTime = 0.2f;  // 점프 입력 유지 시간
+    private float jumpBufferCounter = 0f; // 현재 점프 입력 유지 시간
 
     private PlayerInputActions inputActions;
 
@@ -34,7 +37,7 @@ public class TPSCharacterController : MonoBehaviour
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
 
-        inputActions.Player.Jump.performed += ctx => TryJump();
+        inputActions.Player.Jump.performed += ctx => BufferJump();
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -44,6 +47,7 @@ public class TPSCharacterController : MonoBehaviour
     {
         Move();
         RotateCamera();
+        HandleJumpBuffer();
     }
 
     void Move()
@@ -59,14 +63,14 @@ public class TPSCharacterController : MonoBehaviour
 
         if (IsGrounded())
         {
-            if (isJumping)
+            if (jumpBufferCounter > 0f)  // 점프 버퍼가 남아 있으면 즉시 점프
             {
                 verticalSpeed = jumpForce;
-                isJumping = false; // 점프 상태 해제
+                jumpBufferCounter = 0f; // 점프 후 버퍼 리셋
             }
             else
             {
-                verticalSpeed = -0.1f; // 땅에서 바로 중력 영향 최소화
+                verticalSpeed = -0.1f; // 바닥 착지 후 중력 유지
             }
         }
         else
@@ -90,11 +94,16 @@ public class TPSCharacterController : MonoBehaviour
         cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
     }
 
-    void TryJump()
+    void BufferJump()
     {
-        if (IsGrounded())
+        jumpBufferCounter = jumpBufferTime; // 점프 입력 유지 시간 설정
+    }
+
+    void HandleJumpBuffer()
+    {
+        if (jumpBufferCounter > 0)
         {
-            isJumping = true;
+            jumpBufferCounter -= Time.deltaTime; // 시간 감소
         }
     }
 
@@ -103,6 +112,7 @@ public class TPSCharacterController : MonoBehaviour
         return controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, controller.bounds.extents.y + groundCheckOffset);
     }
 }
+
 
 
 
