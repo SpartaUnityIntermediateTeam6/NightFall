@@ -32,7 +32,7 @@ namespace BuildingSystem
 
             var buildingSize = Vector3.Scale(buildingCollider.size, buildingCollider.transform.localScale) * 0.5f;
 
-            var isHit = Physics.CheckBox(centerPos, buildingSize, Quaternion.identity, _targetLayers);
+            var isHit = Physics.CheckBox(centerPos, buildingSize, _builderGameObject.transform.rotation, _targetLayers);
 
             return !isHit;
         }
