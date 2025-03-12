@@ -5,69 +5,95 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-    public float gravityMultiplier = 2f;
+    public float mouseSensitivity = 2f;
 
-    private Vector3 moveDirection;
-    private Rigidbody rb;
-    private PlayerInput playerInput;
-    private bool isGrounded;
+    [Header("References")]
+    public Transform cameraTransform;
+    public CharacterController controller;
 
-    void Awake()
+    private Vector2 moveInput;
+    private Vector2 lookInput;
+    private float verticalSpeed = 0f;
+    private float gravity = -9.81f;
+    private float cameraPitch = 0f;
+
+    private PlayerInputActions inputActions;
+
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // 회전 방지
-        playerInput = GetComponent<PlayerInput>();
+        // 새로운 Input System 설정
+        inputActions = new PlayerInputActions();
+
+        // 입력 이벤트 연결
+        inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+
+        inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
+
+        inputActions.Player.Jump.performed += ctx => Jump();
+    }
+
+    private void OnEnable()
+    {
+        inputActions.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Disable();
     }
 
     void Update()
     {
-        ProcessMovement();
-        ApplyExtraGravity();
+        Move();
+        RotateCamera();
     }
 
-    private void ProcessMovement()
+    void Move()
     {
-        Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
-        moveDirection = new Vector3(input.x, 0, input.y).normalized;
-        Debug.Log("Move Input: " + input);
-        Vector3 velocity = moveDirection * moveSpeed;
-        velocity.y = rb.velocity.y; // 점프 값 유지
-        rb.velocity = velocity;
+        Vector3 forward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
 
-    }
+        Vector3 desiredMove = (forward * moveInput.y + right * moveInput.x) * moveSpeed;
 
-    private void ApplyExtraGravity()
-    {
-        if (!isGrounded)
+        if (controller.isGrounded)
         {
-            rb.velocity += Vector3.down * gravityMultiplier * Time.deltaTime;
+            verticalSpeed = 0f;
         }
+
+        verticalSpeed += gravity * Time.deltaTime;
+        Vector3 moveDirection = desiredMove + Vector3.up * verticalSpeed;
+
+        controller.Move(moveDirection * Time.deltaTime);
     }
 
-    public void OnJump(InputAction.CallbackContext context)
+    void RotateCamera()
     {
-        if (context.performed && isGrounded)
-        {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-        }
+        float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
+        float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
+
+        transform.Rotate(Vector3.up * mouseX);
+
+        cameraPitch -= mouseY;
+        cameraPitch = Mathf.Clamp(cameraPitch, -60f, 60f);
+        cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void Jump()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (controller.isGrounded)
         {
-            isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
+            verticalSpeed = jumpForce;
         }
     }
 }
+
 
