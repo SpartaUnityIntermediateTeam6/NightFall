@@ -26,10 +26,13 @@ namespace BuildingSystem
         {
             BoxCollider buildingCollider = buildable.GetComponent<BoxCollider>();
 
-            var centerPos = _builderColliderCache.bounds.center + Vector3.up * (buildingCollider.size.y * buildingCollider.transform.localScale.y * 0.5f);
-            var castSize = buildingCollider.size * buildingCollider.transform.localScale.x * 0.5f;
+            var centerPos = _builderColliderCache.bounds.center + 
+                Vector3.up * _builderColliderCache.bounds.extents.y * 0.5f + 
+                Vector3.up * (buildingCollider.size.y * buildingCollider.transform.localScale.y * 0.5f);
 
-            var isHit = Physics.CheckBox(centerPos, castSize, Quaternion.identity, _targetLayers);
+            var buildingSize = Vector3.Scale(buildingCollider.size, buildingCollider.transform.localScale) * 0.5f;
+
+            var isHit = Physics.CheckBox(centerPos, buildingSize, Quaternion.identity, _targetLayers);
 
             return !isHit;
         }
@@ -42,6 +45,7 @@ namespace BuildingSystem
 
                 go.transform.position =
                     _builderGameObject.transform.position + Vector3.up * go.GetComponent<Collider>().bounds.extents.y;
+                go.transform.rotation = _builderColliderCache.transform.rotation;
             }
         }
     }

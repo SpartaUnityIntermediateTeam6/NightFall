@@ -10,7 +10,6 @@ public class FixedBuilderPlatform : MonoBehaviour
     [SerializeField] private LayerMask targetLayers;
 
     private IBuilderStrategy<Building> _builderStrategy;
-    private bool canBuild = true;
 
     void Awake()
     {
@@ -31,7 +30,6 @@ public class FixedBuilderPlatform : MonoBehaviour
         if (_builderStrategy.CanBuild(buildingPrefab))
         {
             _builderStrategy.Build(buildingPrefab, new FuncPredicate(() => true));
-            canBuild = false;
 
             return true;
         }

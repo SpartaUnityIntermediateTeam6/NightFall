@@ -5,8 +5,4 @@ using BuildingSystem;
 
 public class Building : MonoBehaviour, IBuildable<Building>
 {
-    void Start()
-    {
-
-    }
 }
