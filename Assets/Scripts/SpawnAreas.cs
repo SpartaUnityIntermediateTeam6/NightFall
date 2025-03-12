@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnEnemy : MonoBehaviour
+public class SpawnAreas : MonoBehaviour
 {
     [SerializeField] List<Rect> spawnAreas;
 
@@ -66,9 +66,9 @@ public class SpawnEnemy : MonoBehaviour
             Random.Range(randomArea.xMin, randomArea.xMax), 0,
             Random.Range(randomArea.yMin, randomArea.yMax));
 
-        GameObject spawnEnemy = Instantiate(randomPrefab, new Vector3(randomPosition.x, 0, randomPosition.z), Quaternion.identity);
+        GameObject spawnEnemy = Instantiate(randomPrefab, new Vector3(randomPosition.x, spawnkind, randomPosition.z), Quaternion.identity);
 
-        if(spawnkind == 1) spawnEnemy.transform.parent = transform;
+        spawnEnemy.transform.parent = transform;
     }
 
     
@@ -77,7 +77,7 @@ public class SpawnEnemy : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        gizmoColor = new Color[3] { new Color(1, 0, 0, .3f), new Color(0, 1, 0, .3f), new Color(0, 1, 0, .3f) };
+        gizmoColor = new Color[3] { new Color(0, 1, 0, .3f), new Color(1, 0, 0, .3f), new Color(0, 1, 0, .3f) };
 
         int spawnAreasNum = 0;
 
