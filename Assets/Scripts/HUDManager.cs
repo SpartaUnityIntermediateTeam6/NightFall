@@ -29,8 +29,17 @@ public class HUDManager : MonoBehaviour
 
         if (playerStats != null)
         {
+            Debug.Log("PlayerStats 연결됨.");
             playerStats.OnHPChanged += UpdatePlayerHP;
             playerStats.OnSanityChanged += UpdateSanity;
+
+            // 초기 UI 업데이트 (PlayerStats에서 이벤트가 정상 실행되지 않을 경우 대비)
+            UpdatePlayerHP(playerStats.maxHP, playerStats.maxHP);
+            UpdateSanity(playerStats.maxSanity, playerStats.maxSanity);
+        }
+        else
+        {
+            Debug.LogError("PlayerStats를 찾을 수 없습니다!");
         }
 
         // Beacon HP 초기화
@@ -84,5 +93,6 @@ public class HUDManager : MonoBehaviour
         UpdateBeaconHP();
     }
 }
+
 
 
