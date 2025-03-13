@@ -12,12 +12,12 @@ public class BuildUI : MonoBehaviour
     [SerializeField] private GameObject recipePrefab;
 
     //Sample Code
-    private List<GameObject> _dynamicGameObjects = new();
+    private List<GameObject> _slots = new();
 
     public void UpdateUI(RecipeDataSender data)
     {
-        _dynamicGameObjects.ForEach(go => Destroy(go));
-        _dynamicGameObjects.Clear();
+        _slots.ForEach(go => Destroy(go));
+        _slots.Clear();
 
         content.SetActive(!content.activeInHierarchy);
         
@@ -32,7 +32,7 @@ public class BuildUI : MonoBehaviour
             go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
                 iter.requiredAmount.ToString();
 
-            _dynamicGameObjects.Add(go);
+            _slots.Add(go);
 
             //Sample Code
         }

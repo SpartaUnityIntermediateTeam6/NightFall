@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class PlayerSample : MonoBehaviour
+public class PlayerSample : MonoBehaviour, IVisitable
 {
     private Rigidbody _rigidbody;
     private float _moveSpeed = 5f;
@@ -51,5 +51,15 @@ public class PlayerSample : MonoBehaviour
         {
             target.GetComponent<IInteractable<PlayerSample>>().Interaction(this);
         }
+    }
+
+    public void Accept(IVisitor visitor)
+    {
+        visitor?.Visit(this);
+    }
+
+    public void Cancel(IVisitor visitor)
+    {
+        visitor?.Leave(this);
     }
 }

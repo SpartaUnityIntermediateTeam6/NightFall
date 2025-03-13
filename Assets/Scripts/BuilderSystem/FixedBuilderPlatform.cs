@@ -35,7 +35,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
 
     public void Interaction(PlayerSample vistor)
     {
-        //UI 버튼에 이벤트를 전달해주는 Query
+        //UI 버튼에 이벤트를 전달. 건물 지어졌으면 return하는 코드 추가
         recipeEvent?.Raise(new RecipeDataSender(recipeData, () => TryBuild(vistor)));
     }
 }
