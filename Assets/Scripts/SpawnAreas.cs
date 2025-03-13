@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum SpawnPrefabType
+{
+    Morning,
+    Night,
+    Always
+}
+
 public class SpawnAreas : MonoBehaviour
 {
-    public enum SpawnPrefabType
-    {
-        Morning,
-        Night,
-        Always
-    }
-
     [SerializeField] List<Rect> spawnAreas;  // 스폰 지역
 
     [SerializeField] private List<GameObject> enemyPrefabs;  // 적 프리팹
@@ -172,15 +172,7 @@ public class SpawnAreas : MonoBehaviour
     {
         int layerMask = LayerMask.GetMask("Enemy", "Resource", "Player");  // "Enemy"와 "Resource" 레이어만 확인
         float checkRadius = 1f; // 체크할 반경
-        Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, layerMask);
-
-        // Collider가 하나라도 있으면 그 위치는 이미 사용 중
-        if (hitColliders.Length > 0)
-        {
-            return true;
-        }
-
-        return false;
+        return Physics.CheckSphere(position, checkRadius, layerMask);
     }
 
     void DayPass()
