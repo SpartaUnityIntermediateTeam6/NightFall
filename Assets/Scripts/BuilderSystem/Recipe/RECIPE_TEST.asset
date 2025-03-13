@@ -15,3 +15,7 @@ MonoBehaviour:
   dates:
   - item: {fileID: 11400000, guid: 2926711759049d84cb1264e0a4cc34ae, type: 2}
     requiredAmount: 50
+  - item: {fileID: 11400000, guid: 2926711759049d84cb1264e0a4cc34ae, type: 2}
+    requiredAmount: 30
+  - item: {fileID: 11400000, guid: 2926711759049d84cb1264e0a4cc34ae, type: 2}
+    requiredAmount: 10

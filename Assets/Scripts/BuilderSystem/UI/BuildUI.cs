@@ -11,19 +11,28 @@ public class BuildUI : MonoBehaviour
     [SerializeField] private GameObject slotContent;
     [SerializeField] private GameObject recipePrefab;
 
-    public void UpdateUI(RecipeQuery data)
+    //Sample Code
+    private List<GameObject> _dynamicGameObjects = new();
+
+    public void UpdateUI(RecipeDataSender data)
     {
+        _dynamicGameObjects.ForEach(go => Destroy(go));
+        _dynamicGameObjects.Clear();
+
         content.SetActive(!content.activeInHierarchy);
         
         foreach (var iter in data.recipeData.dates)
         {
             //Sample Code
+            //프리펩 동적생성 or 오브젝트풀
             var go = Instantiate(recipePrefab, slotContent.transform);
 
             go.SetActive(true);
             go.GetComponent<Image>().sprite = iter.item.IconSprite;
             go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
                 iter.requiredAmount.ToString();
+
+            _dynamicGameObjects.Add(go);
 
             //Sample Code
         }

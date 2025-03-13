@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace BuildingSystem
@@ -6,7 +6,7 @@ namespace BuildingSystem
     public interface IBuilderStrategy
     {
         bool CanBuild(Building buildable);
-        void Build(Building buildable, IPredicate condition);
+        void Build(Building buildable, IPredicate condition = null);
     }
 
     public class FixedPositionBuilder : IBuilderStrategy
@@ -38,9 +38,9 @@ namespace BuildingSystem
             return !isHit;
         }
 
-        public void Build(Building buildable, IPredicate condition)
+        public void Build(Building buildable, IPredicate condition = null)
         {
-            if (condition.Evaluate())
+            if (condition == null || condition.Evaluate())
             {
                 var go = GameObject.Instantiate(buildable);
 

@@ -2,4 +2,4 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecipeEventListener : GameEventListener<RecipeQuery> { }
+public class RecipeEventListener : GameEventListener<RecipeDataSender> { }

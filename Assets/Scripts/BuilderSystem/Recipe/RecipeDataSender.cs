@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class RecipeQuery
+public class RecipeDataSender
 {
     public readonly RecipeData recipeData;
     public readonly Action queryEvent = delegate { };
 
-    public RecipeQuery(RecipeData data, Action queryEvent)
+    public RecipeDataSender(RecipeData data, Action queryEvent)
     {
         recipeData = data;
         this.queryEvent += queryEvent;

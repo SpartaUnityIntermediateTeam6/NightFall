@@ -3,4 +3,4 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "EventChannel/RecipeEvent")]
-public class RecipeEvent : GameEvent<RecipeQuery> { }
+public class RecipeEvent : GameEvent<RecipeDataSender> { }

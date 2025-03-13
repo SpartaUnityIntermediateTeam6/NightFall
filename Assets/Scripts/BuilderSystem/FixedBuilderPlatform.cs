@@ -15,21 +15,27 @@ public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
-    public bool Build()
+    //*Sample, inventory or player refernce
+    public void TryBuild(PlayerSample player)
     {
         if (_builderStrategy.CanBuild(buildingPrefab))
         {
-            //인벤토리에서 체크하고 가져올때 FuncPredicate 람다식만 수정
-            _builderStrategy.Build(buildingPrefab, new FuncPredicate(() => true));
-
-            return true;
+            //인벤토리에서 체크하고 가져올때 FuncPredicate 람다식만 수정 EX/ 재료 충족하면 return true
+            
+            _builderStrategy.Build(buildingPrefab, new FuncPredicate(CanBuild));
         }
+    }
 
-        return false;
+    private bool CanBuild()
+    {
+        //recipeData
+
+        return true;
     }
 
     public void Interaction(PlayerSample vistor)
     {
-        recipeEvent?.Raise(new RecipeQuery(recipeData, () => Build()));
+        //UI 버튼에 이벤트를 전달해주는 Query
+        recipeEvent?.Raise(new RecipeDataSender(recipeData, () => TryBuild(vistor)));
     }
 }
