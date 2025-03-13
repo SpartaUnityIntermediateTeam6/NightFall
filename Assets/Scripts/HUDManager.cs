@@ -18,7 +18,7 @@ public class HUDManager : MonoBehaviour
     public Image beaconHPBar;
     public TextMeshProUGUI beaconHPText;
     public int maxBeaconHP = 200;
-    private int currentBeaconHP;
+    private int _currentBeaconHP;
 
     private PlayerStats playerStats;
 
@@ -43,7 +43,7 @@ public class HUDManager : MonoBehaviour
         }
 
         // Beacon HP √ ±‚»≠
-        currentBeaconHP = maxBeaconHP;
+        _currentBeaconHP = maxBeaconHP;
         UpdateBeaconHP();
     }
 
@@ -77,19 +77,19 @@ public class HUDManager : MonoBehaviour
     {
         if (beaconHPBar != null)
         {
-            float hpRatio = (float)currentBeaconHP / maxBeaconHP;
+            float hpRatio = (float)_currentBeaconHP / maxBeaconHP;
             beaconHPBar.fillAmount = hpRatio;
         }
 
         if (beaconHPText != null)
         {
-            beaconHPText.text = $"{currentBeaconHP} / {maxBeaconHP}";
+            beaconHPText.text = $"{_currentBeaconHP} / {maxBeaconHP}";
         }
     }
 
     public void TakeDamageBeacon(int damage)
     {
-        currentBeaconHP = Mathf.Max(0, currentBeaconHP - damage);
+        _currentBeaconHP = Mathf.Max(0, _currentBeaconHP - damage);
         UpdateBeaconHP();
     }
 }
