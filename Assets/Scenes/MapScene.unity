@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 1431373783}
   - component: {fileID: 1431373784}
   m_Layer: 0
-  m_Name: EnemySpawnArea
+  m_Name: SpawnAreas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,11 +361,6 @@ MonoBehaviour:
     height: 95
   - serializedVersion: 2
     x: 42.49
-    y: -48
-    width: 7
-    height: 95
-  - serializedVersion: 2
-    x: -47.4
     y: -48
     width: 7
     height: 95

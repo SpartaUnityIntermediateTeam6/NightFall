@@ -116,8 +116,6 @@ public class SpawnAreas : MonoBehaviour
 
         Vector3 randomPosition;
 
-        int areaNum = 0;
-
         switch (type)
         {
             case SpawnPrefabType.Night:
@@ -132,6 +130,8 @@ public class SpawnAreas : MonoBehaviour
                 spawnPrefabs = alwaysPrefabs;
                 break;
         }
+
+        if (type == SpawnPrefabType.Always) return;
 
         if (spawnPrefabs.Count == 0 || spawnAreas.Count == 0)
         {
@@ -164,9 +164,9 @@ public class SpawnAreas : MonoBehaviour
         spawnPrefab.transform.parent = transform;
     }
 
-    bool IsPositionOccupiedByOverlapSphere(Vector3 position)
+    bool IsPositionOccupiedByOverlapSphere(Vector3 position) // 스폰 시 주변 오브젝트 체크 함수
     {
-        int layerMask = LayerMask.GetMask("Enemy", "Resource");  // "Enemy"와 "Resource" 레이어만 확인
+        int layerMask = LayerMask.GetMask("Enemy", "Resource", "Player");  // "Enemy"와 "Resource" 레이어만 확인
         float checkRadius = 1f; // 체크할 반경
         Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, layerMask);
 
