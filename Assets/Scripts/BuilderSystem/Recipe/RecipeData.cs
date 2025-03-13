@@ -14,5 +14,6 @@ public class RecipeData : ScriptableObject
 [Serializable]
 public class Recipe
 {
-    public ScriptableObject item;
+    public ItemData item;
+    public int requiredAmount;
 }

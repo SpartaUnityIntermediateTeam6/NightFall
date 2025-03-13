@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 028ff8e3891c03443b761bd150748b07, type: 3}
-  m_Name: RECIPE_TEST
+  m_Script: {fileID: 11500000, guid: 10d3096d4cdacb948a365e5475f0fae4, type: 3}
+  m_Name: BuildingRecipe
   m_EditorClassIdentifier: 
-  dates:
-  - item: {fileID: 11400000, guid: 2926711759049d84cb1264e0a4cc34ae, type: 2}
-    requiredAmount: 50

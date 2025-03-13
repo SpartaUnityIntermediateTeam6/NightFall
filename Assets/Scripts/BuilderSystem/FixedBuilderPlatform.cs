@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using BuildingSystem;
 
-public class FixedBuilderPlatform : MonoBehaviour
+public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
 {
     [SerializeField] private Building buildingPrefab;
+    [SerializeField] private RecipeData recipeData;
+    [SerializeField] private RecipeEvent recipeEvent;
     [SerializeField] private float buildTime;
     [SerializeField] private LayerMask targetLayers;
 
     private IBuilderStrategy _builderStrategy;
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
-
-    //Sample Code
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log(Build());
-        }
-    }
 
     public bool Build()
     {
@@ -32,5 +25,12 @@ public class FixedBuilderPlatform : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Interaction(PlayerSample vistor)
+    {
+        recipeEvent?.Raise(recipeData);
+
+        //Build();
     }
 }
