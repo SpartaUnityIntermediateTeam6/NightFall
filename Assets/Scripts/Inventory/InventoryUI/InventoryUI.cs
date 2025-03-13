@@ -43,9 +43,7 @@ public class InventoryUI : MonoBehaviour
 {
     // 슬롯 개수 및 UI 배치 관련 설정
     [SerializeField] private int _horizontalSlotCount;
-    [SerializeField] private int _verticalSlotCount;
-    [SerializeField] private float _slotMargin;
-    [SerializeField] private float _contentAreaPadding;
+    [SerializeField] private int _slotCounts;
     [SerializeField] private float _slotSize;
 
     // 기능 설정 (툴팁, 하이라이트 등 UI 동작)
@@ -67,6 +65,12 @@ public class InventoryUI : MonoBehaviour
     // 마우스 클릭 반전 옵션
     [SerializeField] private bool _mouseReversed;
 
+    // 스크롤 관련
+    [SerializeField] private ScrollRect _scrollRect; 
+    private RectTransform _canvasRootTransform;
+
+    // 마우스 클릭 시 처리 (좌클릭: 드래그 시작 / 우클릭: 아이템 사용)
+    private GameObject _dragIconInstance;
 
 
     private Inventory _inventory;                     // 실제 인벤토리 객체 참조
@@ -109,9 +113,13 @@ public class InventoryUI : MonoBehaviour
         OnPointerDown();                // 마우스 클릭 감지
         OnPointerDrag();                // 마우스 드래그 감지
         OnPointerUp();                  // 마우스 버튼 해제 감지
+        
+        // 드래그 중이면 마우스를 따라 아이콘 이동
+        if (_dragIconInstance != null)
+        {
+            _beginDragIconTransform.position = Input.mousePosition;
+        }
     }
-
-
 
     // UI 컴포넌트 및 기본 필드 초기화
     private void Init()
@@ -131,6 +139,11 @@ public class InventoryUI : MonoBehaviour
             _itemTooltip = GetComponentInChildren<ItemTooltipUI>();
             Debug.Log("인스펙터에서 아이템 툴팁 UI를 직접 지정하지 않아 자식에서 발견하여 초기화하였습니다.");
         }
+
+        // Canvas 루트 캐싱
+        var canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+            _canvasRootTransform = canvas.transform as RectTransform;
     }
 
     // 슬롯 UI를 지정된 개수만큼 동적으로 생성하고 초기화
@@ -148,40 +161,27 @@ public class InventoryUI : MonoBehaviour
         // 슬롯 프리팹은 비활성화된 상태로 유지 (복제용)
         _slotUiPrefab.SetActive(false);
 
-        // 슬롯 시작 좌표 설정
-        Vector2 beginPos = new Vector2(_contentAreaPadding, -_contentAreaPadding);
-        Vector2 curPos = beginPos;
-
         // 슬롯 리스트 초기화
-        _slotUIList = new List<ItemSlotUI>(_verticalSlotCount * _horizontalSlotCount);
+        _slotUIList = new List<ItemSlotUI>(_slotCounts);
 
-        // 슬롯 행렬 생성 (가로 × 세로)
-        for (int j = 0; j < _verticalSlotCount; j++)
+        // 슬롯 행렬 생성
+        for (int i = 0; i < _slotCounts; i++)
         {
-            for (int i = 0; i < _horizontalSlotCount; i++)
-            {
-                int slotIndex = (_horizontalSlotCount * j) + i;
+            int slotIndex = i;
 
-                // 슬롯 생성 및 초기 설정
-                var slotRT = CloneSlot();
-                slotRT.pivot = new Vector2(0f, 1f);               // 피벗을 Left Top으로 설정
-                slotRT.anchoredPosition = curPos;                 // 슬롯 위치 지정
-                slotRT.gameObject.SetActive(true);                // 활성화
-                slotRT.gameObject.name = $"Item Slot [{slotIndex}]"; // 슬롯 이름 설정
+            // 슬롯 생성 및 초기 설정
+            var slotRT = CloneSlot();
+            slotRT.gameObject.SetActive(true);                      // 활성화
+            slotRT.gameObject.name = $"Item Slot [{slotIndex}]";    // 슬롯 이름 설정
 
-                // 슬롯 UI 구성 및 리스트 등록
-                var slotUI = slotRT.GetComponent<ItemSlotUI>();
-                slotUI.SetSlotIndex(slotIndex);
-                _slotUIList.Add(slotUI);
-
-                // 다음 슬롯의 X 좌표 계산
-                curPos.x += (_slotMargin + _slotSize);
-            }
-
-            // 다음 줄로 Y 좌표 이동
-            curPos.x = beginPos.x;
-            curPos.y -= (_slotMargin + _slotSize);
+            // 슬롯 UI 구성 및 리스트 등록
+            var slotUI = slotRT.GetComponent<ItemSlotUI>();
+            slotUI.SetSlotIndex(slotIndex);
+            _slotUIList.Add(slotUI);
         }
+
+        // 직접 위치를 계산하는 대신 슬롯 프리팹에 LayoutElement 컴포넌트 붙이기
+        _slotUiPrefab.AddComponent<LayoutElement>().preferredHeight = _slotSize;
 
         // 슬롯 프리팹이 씬에 존재하는 임시 객체일 경우 제거
         if (_slotUiPrefab.scene.rootCount != 0)
@@ -195,6 +195,11 @@ public class InventoryUI : MonoBehaviour
             rt.SetParent(_contentAreaRT);                           // 부모 지정
             return rt;
         }
+
+        // 슬롯 생성 완료 후 ContentArea 크기 조정
+        AdjustContentArea(_slotUIList.Count);
+        //AdjustContentAreaPosition();
+        StartCoroutine(ScrollToTopNextFrame());
     }
 
     // Trim, Sort 버튼 클릭 이벤트 리스너 등록
@@ -305,7 +310,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 마우스 클릭 시 처리 (좌클릭: 드래그 시작 / 우클릭: 아이템 사용)
     private void OnPointerDown()
     {
         // 좌클릭 → 드래그 시작
@@ -313,21 +317,44 @@ public class InventoryUI : MonoBehaviour
         {
             _beginDragSlot = RaycastAndGetFirstComponent<ItemSlotUI>();
 
-            // 아이템이 있고 접근 가능한 슬롯만 처리
             if (_beginDragSlot != null && _beginDragSlot.HasItem && _beginDragSlot.IsAccessible)
             {
                 Debug.Log($"Drag Begin : Slot [{_beginDragSlot.Index}]");
 
-                // 드래그 시작 위치 및 참조 저장
-                _beginDragIconTransform = _beginDragSlot.IconRect.transform;
+                // 드래그용 아이콘 복사
+                var originalIcon = _beginDragSlot.IconImage;
+                if (originalIcon == null || originalIcon.sprite == null)
+                {
+                    Debug.LogWarning("드래그할 아이콘이 없습니다.");
+                    _beginDragSlot = null;
+                    return;
+                }
+
+                _dragIconInstance = Instantiate(originalIcon.gameObject, transform.root);
+                _dragIconInstance.name = "DragIcon";
+
+                // 크기 조정 - 원본 스프라이트 크기에 맞게
+                var dragIconImage = _dragIconInstance.GetComponent<Image>();
+                if (dragIconImage != null)
+                    dragIconImage.SetNativeSize();
+
+                // Raycast 방해 방지
+                var cg = _dragIconInstance.AddComponent<CanvasGroup>();
+                cg.blocksRaycasts = false;
+
+                // 드래그 정보 저장
+                _beginDragIconTransform = _dragIconInstance.transform;
                 _beginDragIconPoint = _beginDragIconTransform.position;
                 _beginDragCursorPoint = Input.mousePosition;
-
-                // 드래그 슬롯을 가장 위로
                 _beginDragSlotSiblingIndex = _beginDragSlot.transform.GetSiblingIndex();
-                _beginDragSlot.transform.SetAsLastSibling();
 
-                // 하이라이트 이미지를 아이콘보다 아래로 이동
+                // 원본 슬롯의 아이콘 숨김
+                _beginDragSlot.IconImage.enabled = false;
+
+                // 스크롤 막기
+                if (_scrollRect != null)
+                    _scrollRect.enabled = false;
+
                 _beginDragSlot.SetHighlightOnTop(false);
             }
             else
@@ -335,18 +362,18 @@ public class InventoryUI : MonoBehaviour
                 _beginDragSlot = null;
             }
         }
-
-        // 우클릭 → 아이템 사용 시도
+        // 우클릭 → 아이템 사용
         else if (Input.GetMouseButtonDown(_rightClick))
         {
             ItemSlotUI slot = RaycastAndGetFirstComponent<ItemSlotUI>();
-
             if (slot != null && slot.HasItem && slot.IsAccessible)
             {
                 TryUseItem(slot.Index);
             }
         }
     }
+
+
 
     // 마우스를 드래그하는 동안 아이콘 위치를 마우스에 따라 이동
     private void OnPointerDrag()
@@ -366,14 +393,29 @@ public class InventoryUI : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(_leftClick))
         {
-            // 드래그 중이었던 경우
             if (_beginDragSlot != null)
             {
-                // 아이콘 위치 복원
-                _beginDragIconTransform.position = _beginDragIconPoint;
+                // 드래그용 아이콘 제거
+                if (_dragIconInstance != null)
+                {
+                    Destroy(_dragIconInstance);
+                    _dragIconInstance = null;
+                }
+
+                // 원본 슬롯의 아이콘 다시 보이게 설정
+                _beginDragSlot.IconImage.enabled = true;
 
                 // 슬롯 UI 순서 복원
                 _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
+
+                // Raycast 다시 활성화
+                var cg = _beginDragSlot.GetComponent<CanvasGroup>();
+                if (cg != null)
+                    cg.blocksRaycasts = true;
+
+                // 스크롤 다시 활성화
+                if (_scrollRect != null)
+                    _scrollRect.enabled = true;
 
                 // 드래그 종료 처리
                 EndDrag();
@@ -387,6 +429,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
+
 
     // 드래그 종료 시 처리 (아이템 이동, 수량 나누기, 버리기 등)
     private void EndDrag()
@@ -603,5 +646,44 @@ public class InventoryUI : MonoBehaviour
     public void OpenUI()
     {
         gameObject.SetActive(true);
+    }
+    private void AdjustContentArea(int totalSlotCount)
+    {
+        int columnCount = _horizontalSlotCount;
+        int rowCount = Mathf.CeilToInt((float)totalSlotCount / columnCount);
+
+        float cellSize = 64f; // 슬롯 한 칸 크기
+        float spacing = 5f;
+        float padding = 0f; // GridLayoutGroup의 Padding이 0이라면
+
+        float height = (cellSize * rowCount) + (spacing * (rowCount - 1)) + (padding * 2);
+        _contentAreaRT.sizeDelta = new Vector2(_contentAreaRT.sizeDelta.x, height);
+    }
+    private RectTransform FindScrollViewRectTransform()
+    {
+        // 하위 오브젝트 중에서 ScrollRect를 찾고, 해당 RectTransform 반환
+        ScrollRect scrollRect = GetComponentInChildren<ScrollRect>();
+        if (scrollRect != null)
+            return scrollRect.GetComponent<RectTransform>();
+
+        Debug.LogError("하위에서 ScrollRect를 찾을 수 없습니다.");
+        return null;
+    }
+
+    private void AdjustContentAreaPosition()
+    {
+        RectTransform scrollRT = FindScrollViewRectTransform();
+        if (scrollRT == null) return;
+
+        float scrollWidth = scrollRT.rect.width;
+        _contentAreaRT.anchoredPosition = new Vector2(-scrollWidth / 2f, _contentAreaRT.anchoredPosition.y);
+    }
+    private IEnumerator ScrollToTopNextFrame()
+    {
+        yield return null; // 1프레임 대기 → Layout 계산
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_contentAreaRT); // 강제 반영
+        yield return null; // 2프레임 대기 후
+        if (_scrollRect != null)
+            _scrollRect.verticalNormalizedPosition = 1f;
     }
 }
