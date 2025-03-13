@@ -13,7 +13,7 @@ public class TestPlayer : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         hp = Mathf.Max(hp - damage, 0);
-        Debug.Log($"ÇÃ·¹ÀÌ¾î °ø°İ. ³²Àº Ã¼·Â: {hp}");
+        Debug.Log($"í”Œë ˆì´ì–´ ê³µê²©. ë‚¨ì€ ì²´ë ¥: {hp}");
         if (hp <= 0) Dead();
     }
 
