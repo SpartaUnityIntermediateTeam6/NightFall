@@ -36,7 +36,10 @@ public class SpawnAreas : MonoBehaviour
 
     private float _nowTime;
 
-    Color[] gizmoColor;
+    Color[] _gizmoColor;
+
+    List<float> _resourceBottomPosition = new List<float>(); // 자원 오브젝트 밑 부분
+    List<float> _enemyBottomPosition = new List<float>(); // 적 오브젝트 밑 부분
 
     private Coroutine _coroutine;
     private Coroutine _alwaysCoroutine;
@@ -44,6 +47,37 @@ public class SpawnAreas : MonoBehaviour
     private void Start()
     {
         realMorningPeriod = spawnDelay * spawnCount + morningPeriod;
+
+        for (int i = 0; i < resourcePrefabs.Count; i++)
+        {
+            Collider collider = resourcePrefabs[i].GetComponent<Collider>();
+
+            if (collider != null)
+            {
+                // Collider의 하단 부분의 위치 계산
+                Vector3 bottomPosition = collider.bounds.min;
+                _resourceBottomPosition.Add(bottomPosition.y);
+            }
+            else
+            {
+                Debug.LogWarning($"{resourcePrefabs[i].name} does not have a Collider!");
+            }
+        }
+
+        for (int i = 0; i < enemyPrefabs.Count; i++)
+        {
+            Collider collider = enemyPrefabs[i].GetComponent<Collider>();
+
+            if (collider != null)
+            {
+                Vector3 bottomPosition = collider.bounds.min;
+                _enemyBottomPosition.Add(bottomPosition.y);
+            }
+            else
+            {
+                Debug.LogWarning($"{enemyPrefabs[i].name} does not have a Collider!");
+            }
+        }
     }
 
     private void Update()
@@ -59,7 +93,7 @@ public class SpawnAreas : MonoBehaviour
             _spawnPeriod = true;
         }
 
-        if (Time.time >= _alwaysSpawnTime && _coroutine == null)
+        if (Time.time >= _alwaysSpawnTime && _alwaysCoroutine == null)
         {
             _alwaysCoroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Always));
             _alwaysSpawnTime = Time.time + alwaysPeriod;
@@ -78,18 +112,21 @@ public class SpawnAreas : MonoBehaviour
     void SpawnRandom(SpawnPrefabType type)
     {
         List<GameObject> spawnPrefabs;
-        int y = 0;
-        int areaNum = 0;
+        List<float> spawnPositionsY = new List<float>();
+
         Vector3 randomPosition;
+
+        int areaNum = 0;
 
         switch (type)
         {
             case SpawnPrefabType.Night:
                 spawnPrefabs = enemyPrefabs;
-                y = 1;  // 적은 한칸 위에서 생성
+                spawnPositionsY = _enemyBottomPosition;
                 break;
             case SpawnPrefabType.Morning:
                 spawnPrefabs = resourcePrefabs;
+                spawnPositionsY = _resourceBottomPosition;
                 break;
             default:
                 spawnPrefabs = alwaysPrefabs;
@@ -117,14 +154,14 @@ public class SpawnAreas : MonoBehaviour
         do
         {
             randomPosition = new Vector3(
-            Random.Range(randomArea.xMin, randomArea.xMax), y,
+            Random.Range(randomArea.xMin, randomArea.xMax), spawnPositionsY[spawnKind],
             Random.Range(randomArea.yMin, randomArea.yMax));
         }
         while (IsPositionOccupiedByOverlapSphere(randomPosition));
 
-        GameObject spawnEnemy = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
+        GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
 
-        spawnEnemy.transform.parent = transform;
+        spawnPrefab.transform.parent = transform;
     }
 
     bool IsPositionOccupiedByOverlapSphere(Vector3 position)
@@ -167,7 +204,7 @@ public class SpawnAreas : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        gizmoColor = new Color[]
+        _gizmoColor = new Color[]
         {
             new Color(0, 1, 0, .3f), new Color(1, 0, 0, .3f), new Color(0, 0, 1, .3f),
             new Color(1, 1, 0, .3f), new Color(1, 0, 1, .3f), new Color(0, 1, 1, .3f)
@@ -179,7 +216,7 @@ public class SpawnAreas : MonoBehaviour
 
         foreach (var area in spawnAreas)
         {
-            Gizmos.color = gizmoColor[spawnAreasNum % gizmoColor.Length];
+            Gizmos.color = _gizmoColor[spawnAreasNum % _gizmoColor.Length];
             Vector3 center = new Vector3(area.x + area.width / 2, 0, area.y + area.height / 2);
             Vector3 size = new Vector3(area.width, 1, area.height);
 
