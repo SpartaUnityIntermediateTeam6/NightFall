@@ -5,4 +5,6 @@ using BuildingSystem;
 
 public class Building : MonoBehaviour
 {
+
 }
+

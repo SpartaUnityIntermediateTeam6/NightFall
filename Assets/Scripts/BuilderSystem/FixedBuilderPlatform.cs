@@ -11,10 +11,7 @@ public class FixedBuilderPlatform : MonoBehaviour
 
     private IBuilderStrategy _builderStrategy;
 
-    void Awake()
-    {
-        _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
-    }
+    void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
     //Sample Code
     void Update()
