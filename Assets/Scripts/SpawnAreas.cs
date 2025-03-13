@@ -26,7 +26,13 @@ public class SpawnAreas : MonoBehaviour
 
     [SerializeField] private float alwaysPeriod;  // 항상 나오는 오브젝트 주기
 
-    [SerializeField] private int spawnCount;  // 생성 갯수
+    [SerializeField] private int resourceSpawnCount;  // 자원 생성 갯수
+
+    [SerializeField] private int enemySpawnCount; // 적 생성 갯수
+
+    [SerializeField] private int dDay;  // 지난 날짜
+
+    [SerializeField] private int enemySpawnRateUpDay;  // 적 스폰 비율 증가 날짜
 
     private float realMorningPeriod;
 
@@ -36,52 +42,29 @@ public class SpawnAreas : MonoBehaviour
 
     private float _nowTime;
 
+    private int _countNum = 1;
+
     Color[] _gizmoColor;
 
-    List<float> _resourceBottomPosition = new List<float>(); // 자원 오브젝트 밑 부분
-    List<float> _enemyBottomPosition = new List<float>(); // 적 오브젝트 밑 부분
+    List<float> _resourceBottomPosition; // 자원 오브젝트 밑 부분
+    List<float> _enemyBottomPosition;    // 적 오브젝트 밑 부분
 
     private Coroutine _coroutine;
     private Coroutine _alwaysCoroutine;
 
     private void Start()
-    {
-        realMorningPeriod = spawnDelay * spawnCount + morningPeriod;
+    { 
+        _resourceBottomPosition = new List<float>();
+        _enemyBottomPosition = new List<float>();
 
-        for (int i = 0; i < resourcePrefabs.Count; i++)
-        {
-            Collider collider = resourcePrefabs[i].GetComponent<Collider>();
-
-            if (collider != null)
-            {
-                // Collider의 하단 부분의 위치 계산
-                Vector3 bottomPosition = collider.bounds.min;
-                _resourceBottomPosition.Add(bottomPosition.y);
-            }
-            else
-            {
-                Debug.LogWarning($"{resourcePrefabs[i].name} does not have a Collider!");
-            }
-        }
-
-        for (int i = 0; i < enemyPrefabs.Count; i++)
-        {
-            Collider collider = enemyPrefabs[i].GetComponent<Collider>();
-
-            if (collider != null)
-            {
-                Vector3 bottomPosition = collider.bounds.min;
-                _enemyBottomPosition.Add(bottomPosition.y);
-            }
-            else
-            {
-                Debug.LogWarning($"{enemyPrefabs[i].name} does not have a Collider!");
-            }
-        }
+        GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
+        GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
     }
 
     private void Update()
     {
+        realMorningPeriod = (resourceSpawnCount > enemySpawnCount) ? (spawnDelay * resourceSpawnCount + morningPeriod) : (spawnDelay * enemySpawnCount + morningPeriod);
+
         _nowTime += Time.deltaTime;
 
         if (_nowTime >= realMorningPeriod)
@@ -106,6 +89,27 @@ public class SpawnAreas : MonoBehaviour
         else if(_spawnPeriod && _coroutine == null)
         {
             _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+        }
+    }
+
+    private void GetBottomPositions(List<GameObject> prefabs, List<float> bottomPositions, string type)
+    {
+        if (prefabs == null || bottomPositions == null)
+        {
+            Debug.LogWarning($"{type} Prefabs 또는 리스트가 초기화되지 않았습니다.");
+            return;
+        }
+
+        foreach (GameObject prefab in prefabs)
+        {
+            if (prefab.TryGetComponent(out Collider collider))
+            {
+                bottomPositions.Add(collider.bounds.min.y);
+            }
+            else
+            {
+                Debug.LogWarning($"{prefab.name} ({type}) 오브젝트에 Collider가 없습니다!");
+            }
         }
     }
 
@@ -143,13 +147,13 @@ public class SpawnAreas : MonoBehaviour
 
         GameObject randomPrefab = spawnPrefabs[spawnKind];
 
-        if ((int)type >= spawnAreas.Count - 1)
+        if ((int)type > spawnAreas.Count - 1)
         {
             Debug.LogWarning($"{type}에 해당하는 스폰 지역이 없습니다.");
             return;
         }
 
-        Rect randomArea = spawnAreas[(int)type];
+        Rect randomArea = spawnAreas[(int)type]; // 타입에 맞는 스폰 지역 할당
 
         do
         {
@@ -157,7 +161,7 @@ public class SpawnAreas : MonoBehaviour
             Random.Range(randomArea.xMin, randomArea.xMax), spawnPositionsY[spawnKind],
             Random.Range(randomArea.yMin, randomArea.yMax));
         }
-        while (IsPositionOccupiedByOverlapSphere(randomPosition));
+        while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
         GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
 
@@ -179,9 +183,24 @@ public class SpawnAreas : MonoBehaviour
         return false;
     }
 
+    void DayPass()
+    {
+        dDay++;
+        if (dDay % enemySpawnRateUpDay == 0)
+        {
+            enemySpawnCount += _countNum;
+            _countNum++;
+        }
+    }
+
 
     IEnumerator DelaySpawn(SpawnPrefabType type)
     {
+        int spawnCount = 0;
+
+        if (type == SpawnPrefabType.Morning) spawnCount = resourceSpawnCount;
+        else if (type == SpawnPrefabType.Night) spawnCount = enemySpawnCount;
+
         for (int i = 0; i < spawnCount; i++)
         {
             SpawnRandom(type);
@@ -196,6 +215,7 @@ public class SpawnAreas : MonoBehaviour
             case SpawnPrefabType.Night: 
                 _coroutine = null;
                 _nowTime = 0;
+                DayPass();
                 break;
             case SpawnPrefabType.Always: _alwaysCoroutine = null; break;
         }
