@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 217659400}
   - component: {fileID: 217659399}
   - component: {fileID: 217659398}
+  - component: {fileID: 217659406}
   - component: {fileID: 217659405}
   m_Layer: 0
   m_Name: Player
@@ -342,6 +343,20 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &217659406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217659397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300fbca4365e951458b5e5fac7b16c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  maxSanity: 100
 --- !u!1 &263826062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,10 +1412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHPBar: {fileID: 1868742100}
   playerHPText: {fileID: 1090667834}
-  maxPlayerHP: 100
   sanityBar: {fileID: 1459327500}
   sanityText: {fileID: 471854363}
-  maxSanity: 100
   beaconHPBar: {fileID: 1215258457}
   beaconHPText: {fileID: 263826063}
   maxBeaconHP: 200
