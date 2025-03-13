@@ -7,14 +7,15 @@ public class TPSCharacterController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
-    public float jumpForce = 7f; // 점프 힘 증가
+    public float jumpForce = 7f;
     public float mouseSensitivity = 2f;
 
     [Header("Ground Detection")]
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.3f;
-    public float coyoteTime = 0.2f; // 착지 직후 점프할 수 있는 유예 시간
+    public float coyoteTime = 0.2f; // 착지 후 점프 유예 시간
+    public float jumpCooldown = 0.1f; // 점프 직후 점프 방지 시간
 
     [Header("References")]
     public Transform cameraTransform;
@@ -23,11 +24,12 @@ public class TPSCharacterController : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float verticalSpeed = 0f;
-    private float gravity = -20f; // 중력 강화
+    private float gravity = -20f; // 중력 적용
     private float cameraPitch = 0f;
 
-    private bool jumpPressed = false;
+    private float lastJumpTime;
     private float coyoteTimeCounter = 0f;
+    private bool jumpRequested = false;
 
     private PlayerInputActions inputActions;
 
@@ -41,7 +43,7 @@ public class TPSCharacterController : MonoBehaviour
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
 
-        inputActions.Player.Jump.performed += ctx => jumpPressed = true;
+        inputActions.Player.Jump.performed += ctx => jumpRequested = true;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -64,39 +66,40 @@ public class TPSCharacterController : MonoBehaviour
 
         Vector3 desiredMove = (forward * moveInput.y + right * moveInput.x) * moveSpeed;
 
-        // 땅 감지 + 코요테 타임 (착지 직후 점프 가능)
         bool isGrounded = IsGrounded();
+
+        // 착지 감지 (코요테 타임 활성화)
         if (isGrounded)
         {
-            coyoteTimeCounter = coyoteTime; // 착지했으므로 코요테 타임 초기화
+            coyoteTimeCounter = coyoteTime;
         }
         else
         {
-            coyoteTimeCounter -= Time.deltaTime; // 공중에 있는 경우 감소
+            coyoteTimeCounter -= Time.deltaTime;
         }
 
-        // 점프 처리 (코요테 타임이 남아있을 때만 점프 가능)
-        if (jumpPressed && coyoteTimeCounter > 0f)
+        // 점프 요청 처리
+        if (jumpRequested && coyoteTimeCounter > 0f && Time.time - lastJumpTime > jumpCooldown)
         {
             verticalSpeed = jumpForce;
-            coyoteTimeCounter = 0f; // 점프 후 코요테 타임 제거
-            jumpPressed = false; // 점프 입력 초기화
+            lastJumpTime = Time.time;
+            coyoteTimeCounter = 0f; // 점프 후 코요테 타임 초기화
         }
 
+        jumpRequested = false; // 점프 요청 초기화
+
+        // 중력 적용
         if (!isGrounded)
         {
-            verticalSpeed += gravity * Time.deltaTime; // 중력 적용
+            verticalSpeed += gravity * Time.deltaTime;
         }
         else if (verticalSpeed < 0f)
         {
-            verticalSpeed = -2f; // 지면에 있을 때 즉시 멈추도록 설정
+            verticalSpeed = -2f; // 지면에서 부드럽게 멈추도록 설정
         }
 
         Vector3 moveDirection = desiredMove + Vector3.up * verticalSpeed;
         controller.Move(moveDirection * Time.deltaTime);
-
-        // 점프 입력 초기화
-        jumpPressed = false;
     }
 
     void RotateCamera()
@@ -113,7 +116,7 @@ public class TPSCharacterController : MonoBehaviour
 
     bool IsGrounded()
     {
-        return Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundLayer).Length > 0;
+        return Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
     }
 }
 
