@@ -8,7 +8,9 @@ public abstract class NPC : MonoBehaviour, IDamageable
     public float health;
     public float walkSpeed;
     public GameObject[] dropOnDead;
-    public float dropRange;
+    public float dropVerticalRange;
+    public float dropHorizontalRange;
+    public float dropForce;
 
     [Header("AI")]
     [HideInInspector] public NavMeshAgent agent;
@@ -76,10 +78,11 @@ public abstract class NPC : MonoBehaviour, IDamageable
         foreach (GameObject go in dropOnDead)
         {
             Instantiate(go, transform.position
-                + Vector3.up * Random.Range(1f, 2f)
-                + Vector3.forward * Random.Range(-dropRange, dropRange)
-                + Vector3.right * Random.Range(-dropRange, dropRange)
-                , Quaternion.identity);
+                + Vector3.up * Random.Range(1f, 1f + dropVerticalRange)
+                + Vector3.forward * Random.Range(-dropHorizontalRange, dropHorizontalRange)
+                + Vector3.right * Random.Range(-dropHorizontalRange, dropHorizontalRange)
+                , Quaternion.Euler(0, Random.Range(-180f, 180f), 0))
+                .GetComponent<Rigidbody>().AddForce(Vector3.up * dropForce, ForceMode.Impulse);
         }
     }
 }

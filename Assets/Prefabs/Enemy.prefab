@@ -51,12 +51,14 @@ MonoBehaviour:
   health: 10
   walkSpeed: 2
   dropOnDead:
-  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
-  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
-  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
-  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
-  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
-  dropRange: 0.8
+  - {fileID: 5398783356220101141, guid: 7b1c7b8233edb8d4b964aae5e4099ad3, type: 3}
+  - {fileID: 4939894178203630840, guid: 33d6cd8b99bcdd44cbb0b178f2846209, type: 3}
+  - {fileID: 6373988422950378310, guid: 938f5c6d8f569404ab076c6f782d22cb, type: 3}
+  - {fileID: 2883182246891195363, guid: 6bf3b97e803661c449b541b4bc0a3c7e, type: 3}
+  - {fileID: 1936239808558425968, guid: 5f7f1ff132b8a4b46b316781fb41c548, type: 3}
+  dropVerticalRange: 0
+  dropHorizontalRange: 0.1
+  dropForce: 3
   agent: {fileID: 0}
   minWanderDistance: 0
   maxWanderDistance: 0
