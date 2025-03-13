@@ -43,8 +43,6 @@ public class PlayerSample : MonoBehaviour
         //Sample
         var colliders = Physics.OverlapSphere(transform.position, radius, targetLayers, QueryTriggerInteraction.Collide);
 
-        IInteractable<PlayerSample> interactable;
-
         var target = colliders.Where(c => c.TryGetComponent(out IInteractable<PlayerSample> interatable)).
             OrderBy(c => c.ClosestPoint(transform.position)).
             FirstOrDefault();

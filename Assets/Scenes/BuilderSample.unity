@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 118207112}
+  buildBtn: {fileID: 1030456666}
   slotContent: {fileID: 1139182090}
   recipePrefab: {fileID: 1375735310}
 --- !u!114 &195685754
@@ -1241,10 +1242,9 @@ MonoBehaviour:
   buildingPrefab: {fileID: 2764385134098482464, guid: 4d055775d8a4513459b0c682d1e84db9, type: 3}
   recipeData: {fileID: 11400000, guid: 09645374e88a52241b2c9270111bf18c, type: 2}
   recipeEvent: {fileID: 11400000, guid: 9ff04c65729e7ee4095bf891837cec2a, type: 2}
-  buildTime: 0
   targetLayers:
     serializedVersion: 2
-    m_Bits: 33
+    m_Bits: 1
 --- !u!1 &1280230178
 GameObject:
   m_ObjectHideFlags: 0

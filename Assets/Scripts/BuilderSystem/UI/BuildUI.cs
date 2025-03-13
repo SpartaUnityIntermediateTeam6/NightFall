@@ -7,14 +7,15 @@ using UnityEngine.UI;
 public class BuildUI : MonoBehaviour
 {
     [SerializeField] private GameObject content;
+    [SerializeField] private Button buildBtn;
     [SerializeField] private GameObject slotContent;
     [SerializeField] private GameObject recipePrefab;
 
-    public void UpdateUI(RecipeData data)
+    public void UpdateUI(RecipeQuery data)
     {
-        Debug.Log(data.dates.Count);
+        content.SetActive(!content.activeInHierarchy);
         
-        foreach (var iter in data.dates)
+        foreach (var iter in data.recipeData.dates)
         {
             //Sample Code
             var go = Instantiate(recipePrefab, slotContent.transform);
@@ -23,8 +24,13 @@ public class BuildUI : MonoBehaviour
             go.GetComponent<Image>().sprite = iter.item.IconSprite;
             go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
                 iter.requiredAmount.ToString();
+
+            //Sample Code
         }
+
+        buildBtn.onClick.RemoveAllListeners();
+        buildBtn.onClick.AddListener(data.queryEvent.Invoke);
     }
 
-    //void OnEnable() => content.SetActive(false);
+    void OnEnable() => content.SetActive(false);
 }
