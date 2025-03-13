@@ -8,7 +8,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
 {
     [SerializeField] private Building buildingPrefab;
     [SerializeField] private RecipeData recipeData;
-    [SerializeField] private RecipeEvent recipeEvent;
+    [SerializeField] private RecipeGameEvent recipeEvent;
     [SerializeField] private LayerMask targetLayers;
 
     private IBuilderStrategy _builderStrategy;
