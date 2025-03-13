@@ -36,6 +36,8 @@ public class AttackingState : AIState
         {
             npc.agent.isStopped = true;
             npc.agent.velocity = Vector3.zero;
+            Quaternion lookRotation = Quaternion.LookRotation(curTarget.position - npc.transform.position);
+            npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, 0.1f);
             Attack(curTarget);
         }
     }

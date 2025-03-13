@@ -8,6 +8,7 @@ public abstract class NPC : MonoBehaviour, IDamageable
     public float health;
     public float walkSpeed;
     public GameObject[] dropOnDead;
+    public float dropRange;
 
     [Header("AI")]
     [HideInInspector] public NavMeshAgent agent;
@@ -39,6 +40,7 @@ public abstract class NPC : MonoBehaviour, IDamageable
     protected virtual void Start()
     {
         SetInitState();
+        Dead();
     }
 
     private void FixedUpdate()
@@ -61,13 +63,23 @@ public abstract class NPC : MonoBehaviour, IDamageable
         health = Mathf.Max(health - damage, 0);
     }
 
+    [ContextMenu("Dead")]
     public void Dead()
     {
-        foreach(GameObject go in dropOnDead)
-        {
-            Instantiate(go, transform.position, Quaternion.identity);
-        }
+        DropPrefab();
 
         Destroy(gameObject);
+    }
+
+    public void DropPrefab()
+    {
+        foreach (GameObject go in dropOnDead)
+        {
+            Instantiate(go, transform.position
+                + Vector3.up * Random.Range(1f, 2f)
+                + Vector3.forward * Random.Range(-dropRange, dropRange)
+                + Vector3.right * Random.Range(-dropRange, dropRange)
+                , Quaternion.identity);
+        }
     }
 }

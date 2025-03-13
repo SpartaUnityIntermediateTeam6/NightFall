@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [SelectionBase]
-public class Beacon : MonoBehaviour, IDamageable
+public class TestBeacon : MonoBehaviour, IDamageable
 {
     public float hp = 10;
     private float _maxHP;

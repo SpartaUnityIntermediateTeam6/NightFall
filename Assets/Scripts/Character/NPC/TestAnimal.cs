@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Animal : NPC
+public class TestAnimal : NPC
 {
     protected override void SetInitState()
     {

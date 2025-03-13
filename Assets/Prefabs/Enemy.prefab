@@ -50,7 +50,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   walkSpeed: 2
-  dropOnDead: []
+  dropOnDead:
+  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
+  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
+  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
+  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
+  - {fileID: 7924393466432919412, guid: 870a60e4708f3154f8717edf060635ea, type: 3}
+  dropRange: 0.8
   agent: {fileID: 0}
   minWanderDistance: 0
   maxWanderDistance: 0

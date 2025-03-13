@@ -2,6 +2,6 @@ using UnityEngine;
 
 public class TestManager : Singleton<TestManager>
 {
-    public Beacon beacon;
+    public TestBeacon beacon;
     public Transform player;
 }
