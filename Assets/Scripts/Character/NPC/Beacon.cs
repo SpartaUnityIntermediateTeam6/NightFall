@@ -1,26 +1,28 @@
 using UnityEngine;
 
+[SelectionBase]
 public class Beacon : MonoBehaviour, IDamageable
 {
-    private float _hp = 10;
+    public float hp = 10;
     private float _maxHP;
 
     private void Awake()
     {
         TestManager.Instance.beacon = this;
 
-        _maxHP = _hp;
+        _maxHP = hp;
     }
 
     public void Heal(int amount)
     {
-        _hp = Mathf.Min(_hp + amount, _maxHP);
+        hp = Mathf.Min(hp + amount, _maxHP);
     }
 
     public void TakeDamage(float damage)
     {
-        _hp = Mathf.Max(_hp - damage, 0);
-        if (_hp <= 0) Dead();
+        hp = Mathf.Max(hp - damage, 0);
+        Debug.Log($"비콘 공격. 남은 체력: {hp}");
+        if (hp <= 0) Dead();
     }
 
     public void Dead()

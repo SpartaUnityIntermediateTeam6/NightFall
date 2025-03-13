@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6153699587163039156}
-  - component: {fileID: 1146277100420384538}
+  - component: {fileID: 6179863167249556380}
   - component: {fileID: 4415055746944232945}
   - component: {fileID: 3711147864992602387}
   - component: {fileID: 3324882938374029948}
@@ -36,7 +36,7 @@ Transform:
   - {fileID: 262574809025880335}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146277100420384538
+--- !u!114 &6179863167249556380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,21 +45,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 4550666282778274709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ede2f1130d5476458f543ea61393e05, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d571d596a218694ab423dec6da3ba0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
   walkSpeed: 2
+  dropOnDead: []
   agent: {fileID: 0}
-  detectDistance: 5
-  isEnemy: 1
   minWanderDistance: 0
   maxWanderDistance: 0
   minWanderWaitTime: 0
   maxWanderWaitTime: 0
+  detectDistance: 10
+  attackRange: 1.5
+  attackRate: 1
+  attackDamage: 0
   beaconTarget: {fileID: 0}
-  attackRange: 2
-  attackRate: 2
 --- !u!136 &4415055746944232945
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -106,7 +107,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -119,7 +120,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4550666282778274709}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -193,7 +194,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: feb7796e0e3688a438af1f1042d4c393, type: 2}
+  - {fileID: 2100000, guid: fdf5f7874fccff246bdff39bcb6b2b7f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

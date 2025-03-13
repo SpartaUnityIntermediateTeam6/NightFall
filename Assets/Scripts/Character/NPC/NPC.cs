@@ -1,18 +1,17 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NPC : MonoBehaviour, IDamageable
+[SelectionBase]
+public abstract class NPC : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
     public float health;
     public float walkSpeed;
-    //public ItemData[] dropOnDead;
+    public GameObject[] dropOnDead;
 
     [Header("AI")]
     [HideInInspector] public NavMeshAgent agent;
     private AIState curState;
-    public float detectDistance;
-    public bool isEnemy;
 
     [Header("Wandering")]
     public float minWanderDistance;
@@ -21,10 +20,12 @@ public class NPC : MonoBehaviour, IDamageable
     public float maxWanderWaitTime;
 
     [Header("Attacking")]
-    [HideInInspector] public Transform beaconTarget;
-    //[HideInInspector] public Transform playerTarget;
+    public float detectDistance;
     public float attackRange;
     public float attackRate;
+    public float attackDamage;
+    [HideInInspector] public Transform beaconTarget;
+    //[HideInInspector] public Transform playerTarget;
 
     //private MeshRenderer[] meshRenderers;
 
@@ -35,20 +36,17 @@ public class NPC : MonoBehaviour, IDamageable
         agent.speed = walkSpeed;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        if (isEnemy)
-        {
-            beaconTarget = TestManager.Instance.beacon.transform;
-            SetState(new AttackingState(this));
-        }
-        else SetState(new WanderingState(this));
+        SetInitState();
     }
 
     private void FixedUpdate()
     {
         if(curState != null) curState.FixedUpdateState();
     }
+
+    protected abstract void SetInitState();
 
     public void SetState(AIState state)
     {
@@ -61,5 +59,15 @@ public class NPC : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         health = Mathf.Max(health - damage, 0);
+    }
+
+    public void Dead()
+    {
+        foreach(GameObject go in dropOnDead)
+        {
+            Instantiate(go, transform.position, Quaternion.identity);
+        }
+
+        Destroy(gameObject);
     }
 }

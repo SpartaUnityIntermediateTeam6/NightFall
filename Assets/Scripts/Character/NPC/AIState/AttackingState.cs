@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class AttackingState : AIState
 {
+    float lastAttackTime;
+
     public AttackingState(NPC npc) : base(npc) {  }
 
     public override void EnterState()
     {
         npc.agent.isStopped = false;
+        lastAttackTime = Time.time;
     }
 
     public override void ExitState()
@@ -18,19 +21,30 @@ public class AttackingState : AIState
     {
         Transform curTarget = npc.beaconTarget;
 
+        float beaconDistance = Vector3.Distance(npc.transform.position, npc.beaconTarget.position);
         float playerDistance = Vector3.Distance(npc.transform.position, TestManager.Instance.player.position);
-        if(playerDistance <= npc.detectDistance) curTarget = TestManager.Instance.player;
-        Debug.Log(playerDistance);
-        if (curTarget == null) return;
+        if (playerDistance < beaconDistance && playerDistance <= npc.detectDistance) curTarget = TestManager.Instance.player;
 
         float distance = Vector3.Distance(npc.transform.position, curTarget.position);
-        if (distance > npc.attackRange) npc.agent.SetDestination(curTarget.position);
-        else Attack(curTarget);
+
+        if (distance > npc.attackRange)
+        {
+            npc.agent.isStopped = false;
+            npc.agent.SetDestination(curTarget.position);
+        }
+        else
+        {
+            npc.agent.isStopped = true;
+            npc.agent.velocity = Vector3.zero;
+            Attack(curTarget);
+        }
     }
 
     void Attack(Transform target)
     {
-        if (target == npc.beaconTarget) Debug.Log("비콘 공격");
-        else Debug.Log("플레이어 공격");
+        if (Time.time - lastAttackTime <= npc.attackRate) return;
+
+        lastAttackTime = Time.time;
+        target.GetComponent<IDamageable>()?.TakeDamage(npc.attackDamage);
     }
 }

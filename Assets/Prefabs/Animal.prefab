@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6153699587163039156}
-  - component: {fileID: 1146277100420384538}
+  - component: {fileID: 3380065352288325470}
   - component: {fileID: 4415055746944232945}
   - component: {fileID: 3711147864992602387}
   - component: {fileID: 3324882938374029948}
   m_Layer: 0
-  m_Name: Cow
+  m_Name: Animal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   - {fileID: 262574809025880335}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146277100420384538
+--- !u!114 &3380065352288325470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,21 +45,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4550666282778274709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ede2f1130d5476458f543ea61393e05, type: 3}
+  m_Script: {fileID: 11500000, guid: e96fbe942a3aee74ea2704891fb02fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
-  walkSpeed: 2
+  walkSpeed: 1
+  dropOnDead: []
   agent: {fileID: 0}
-  detectDistance: 0
-  isEnemy: 0
-  minWanderDistance: 2
-  maxWanderDistance: 3
-  minWanderWaitTime: 1
+  minWanderDistance: 1
+  maxWanderDistance: 5
+  minWanderWaitTime: 2
   maxWanderWaitTime: 5
-  beaconTarget: {fileID: 0}
+  detectDistance: 0
   attackRange: 0
   attackRate: 0
+  beaconTarget: {fileID: 0}
 --- !u!136 &4415055746944232945
 CapsuleCollider:
   m_ObjectHideFlags: 0
