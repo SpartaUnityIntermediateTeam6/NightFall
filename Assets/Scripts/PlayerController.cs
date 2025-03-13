@@ -17,6 +17,10 @@ public class TPSCharacterController : MonoBehaviour
     public float coyoteTime = 0.2f; // 착지 후 점프 유예 시간
     public float jumpCooldown = 0.1f; // 점프 직후 점프 방지 시간
 
+    [Header("Gravity Settings")]
+    public float gravity = -20f;         // 기본 중력 값
+    public float fallMultiplier = 2.5f;    // 낙하 시 추가 중력 계수
+
     [Header("References")]
     public Transform cameraTransform;
     public CharacterController controller;
@@ -24,7 +28,6 @@ public class TPSCharacterController : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float verticalSpeed = 0f;
-    private float gravity = -20f; // 중력 적용
     private float cameraPitch = 0f;
 
     private float lastJumpTime;
@@ -57,6 +60,7 @@ public class TPSCharacterController : MonoBehaviour
 
     void Move()
     {
+        // 카메라 방향에 기반한 이동 벡터 계산
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         forward.y = 0f;
@@ -68,7 +72,7 @@ public class TPSCharacterController : MonoBehaviour
 
         bool isGrounded = IsGrounded();
 
-        // 착지 감지 (코요테 타임 활성화)
+        // 착지 감지 및 코요테 타임 활성화
         if (isGrounded)
         {
             coyoteTimeCounter = coyoteTime;
@@ -88,14 +92,21 @@ public class TPSCharacterController : MonoBehaviour
 
         jumpRequested = false; // 점프 요청 초기화
 
-        // 중력 적용
-        if (!isGrounded)
+        // 중력 적용 (자연스러운 낙하 효과)
+        // 점프 후 verticalSpeed가 양수인 경우에는 지면에 닿았더라도 점프 힘을 유지
+        if (isGrounded && verticalSpeed <= 0)
         {
-            verticalSpeed += gravity * Time.deltaTime;
+            verticalSpeed = -2f; // 지면에 닿은 경우, 충돌 감지를 위해 약간의 하강력 유지
         }
-        else if (verticalSpeed < 0f)
+        else
         {
-            verticalSpeed = -2f; // 지면에서 부드럽게 멈추도록 설정
+            // 하강 중일 때 추가 중력 적용 (fallMultiplier - 1 만큼 더 가속)
+            if (verticalSpeed < 0)
+            {
+                verticalSpeed += gravity * (fallMultiplier - 1) * Time.deltaTime;
+            }
+            // 기본 중력 적용
+            verticalSpeed += gravity * Time.deltaTime;
         }
 
         Vector3 moveDirection = desiredMove + Vector3.up * verticalSpeed;
