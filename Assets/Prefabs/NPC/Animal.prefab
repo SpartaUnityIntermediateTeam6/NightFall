@@ -51,6 +51,9 @@ MonoBehaviour:
   health: 5
   walkSpeed: 1
   dropOnDead: []
+  dropVerticalRange: 0
+  dropHorizontalRange: 0
+  dropForce: 0
   agent: {fileID: 0}
   minWanderDistance: 1
   maxWanderDistance: 5
@@ -59,6 +62,7 @@ MonoBehaviour:
   detectDistance: 0
   attackRange: 0
   attackRate: 0
+  attackDamage: 0
   beaconTarget: {fileID: 0}
 --- !u!136 &4415055746944232945
 CapsuleCollider:
@@ -193,7 +197,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: feb7796e0e3688a438af1f1042d4c393, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

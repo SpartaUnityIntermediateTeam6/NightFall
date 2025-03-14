@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TPSCharacterController : MonoBehaviour
+public class TPSCharacterController : MonoBehaviour, IInteractable<TPSCharacterController>
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -130,6 +130,11 @@ public class TPSCharacterController : MonoBehaviour
     bool IsGrounded()
     {
         return Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
+    public void Interaction(TPSCharacterController vistor)
+    {
+        vistor.Interaction(this);
     }
 }
 
