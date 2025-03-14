@@ -4,7 +4,7 @@ using UnityEngine;
 using BuildingSystem;
 using System;
 
-public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
+public class FixedBuilderPlatform : MonoBehaviour, IInteractable<TPSCharacterController>
 {
     [SerializeField] private Building buildingPrefab;
     [SerializeField] private RecipeData recipeData;
@@ -15,8 +15,16 @@ public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Interaction(null);
+        }
+    }
+
     //*Sample, inventory or player refernce
-    public void TryBuild(PlayerSample player)
+    public void TryBuild(TPSCharacterController player)
     {
         if (_builderStrategy.CanBuild(buildingPrefab))
         {
@@ -33,7 +41,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IInteractable<PlayerSample>
         return true;
     }
 
-    public void Interaction(PlayerSample vistor)
+    public void Interaction(TPSCharacterController vistor)
     {
         //UI 버튼에 이벤트를 전달. 건물 지어졌으면 return하는 코드 추가
         recipeEvent?.Raise(new RecipeDataSender(recipeData, () => TryBuild(vistor)));
