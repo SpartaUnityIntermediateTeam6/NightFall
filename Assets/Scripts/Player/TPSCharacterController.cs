@@ -7,7 +7,6 @@ public class TPSCharacterController : MonoBehaviour
 {
     [Header("Ground Detection")]
     public LayerMask groundLayer;
-    public Transform groundCheck;
     public float groundCheckRadius = 0.3f;
     public float coyoteTime = 0.2f; // 착지 후 점프 유예 시간
     public float jumpCooldown = 0.1f; // 점프 직후 점프 방지 시간
@@ -96,7 +95,3 @@ public class TPSCharacterController : MonoBehaviour
         return Physics.CheckCapsule(CapsuleTopPoint, CapsuleBottomPoint + -transform.up * groundCastDistance, controller.radius, groundLayer);
     }
 }
-
-
-
-

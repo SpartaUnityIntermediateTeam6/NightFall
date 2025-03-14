@@ -12,6 +12,7 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public UnityEvent<Vector2> OnMoveEvent;
     public UnityEvent OnJumpEvent;
+    public UnityEvent OnInteractionEvent;
 
 
     void Awake()
@@ -51,5 +52,13 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
 
+    }
+
+    public void OnInteraction(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            OnInteractionEvent?.Invoke();
+        }
     }
 }

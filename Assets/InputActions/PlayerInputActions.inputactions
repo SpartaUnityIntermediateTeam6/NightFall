@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInputAction",
+    "name": "PlayerInputActions",
     "maps": [
         {
             "name": "Player",
@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "db87a860-f6a6-4e61-bf05-69c7f2361ed5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -108,6 +117,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "087b6970-701b-4ef0-a801-c29d59b60fbc",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
