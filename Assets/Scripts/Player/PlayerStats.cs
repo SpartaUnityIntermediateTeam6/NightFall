@@ -9,6 +9,9 @@ public class PlayerStats : MonoBehaviour
     private float _hp;
     private float _maxSanity;
     private float _sanity;
+    //Modifier Stats
+    private float _moveSpeed = 5f;
+    private float _jumpPower = 7f;
 
     //Event Channel
     [SerializeField] private BoundedValueGameEvent hpEventChannel;
@@ -32,5 +35,15 @@ public class PlayerStats : MonoBehaviour
             _sanity = Mathf.Clamp(value, 0, _maxSanity);
             sanityEventChannel?.Raise(new BoundedValue(_sanity, 0, _maxSanity));
         }
+    }
+
+    public float MoveSpeed
+    {
+        get => _moveSpeed;
+    }
+
+    public float JumpPower
+    {
+        get => _jumpPower;
     }
 }
