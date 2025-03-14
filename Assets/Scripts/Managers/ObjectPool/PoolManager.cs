@@ -8,14 +8,14 @@ public class PoolManager
 
     class Pool
     {
-        public GameObject originalPrefab { get; private set; }
-        public Transform Root {  get; set; }
+        public GameObject OriginalPrefab { get; private set; }
+        public Transform Root { get; set; }
 
         private ObjectPool<Poolable> _pool;
 
         public void Init(GameObject original, int maxCapacity = 20)
         {
-            originalPrefab = original;
+            OriginalPrefab = original;
             Root = new GameObject().transform;
             Root.name = $"{original.name}_Pool";
 
@@ -29,8 +29,8 @@ public class PoolManager
 
         Poolable Create()
         {
-            GameObject go = GameObject.Instantiate(originalPrefab);
-            go.name = originalPrefab.name;
+            GameObject go = GameObject.Instantiate(OriginalPrefab);
+            go.name = OriginalPrefab.name;
             return go.GetOrAddComponent<Poolable>();
         }
 
@@ -54,7 +54,8 @@ public class PoolManager
         public Poolable Pop(Transform parent)
         {
             Poolable poolable = _pool.Get();
-            poolable.transform.SetParent (parent);
+            if (parent == null) poolable.transform.SetParent(Root);
+            else poolable.transform.SetParent(parent);
             //poolable.isUsing = true;
             return poolable;
         }
@@ -85,6 +86,7 @@ public class PoolManager
         pool.Root.SetParent(_root);
         _poolDict.Add(original.name, pool);
     }
+
     public Poolable Get(GameObject original, Transform parent = null)
     {
         if (_poolDict.ContainsKey(original.name) == false) CreatePool(original);
