@@ -5,18 +5,51 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Reference
-    private TPSCharacterController controller;
-    private PlayerStats stats;
+    private TPSCharacterController _controller;
+    private PlayerStats _stats;
+    private Inventory _inventory;
+    private InputReader _inputReader;
+    private Camera _camera;
 
     void Awake()
     {
-        //Refernce Initialize
-        controller = GetComponent<TPSCharacterController>();
-        stats = GetComponent<PlayerStats>();
+        _controller = GetComponent<TPSCharacterController>();
+        _stats = GetComponent<PlayerStats>();
+        _inputReader = GetComponent<InputReader>();
+        //Sample Code
+        _camera = Camera.main;
+
+        //inventory = GetComponent<Inventory>();
+
+        TestManager.Instance.player = this.transform;
     }
 
     void Update()
     {
+        //Sample Code
+        if (_inputReader.Input.Player.Move.ReadValue<Vector2>() != Vector2.zero)
+        {
+            Move(_inputReader.Input.Player.Move.ReadValue<Vector2>());
+        }
 
+        if (_inputReader.Input.Player.Jump.ReadValue<float>() != 0f)
+        {
+            Jump();
+        }
+    }
+
+    public void Move(Vector2 vec)
+    {
+        var right = Vector3.ProjectOnPlane(_camera.transform.right, transform.up) * vec.x;
+        var forward = Vector3.ProjectOnPlane(_camera.transform.forward, transform.up) * vec.y;
+
+        var project = right + forward;
+
+        _controller.Move(project * Time.deltaTime * _stats.MoveSpeed);
+    }
+
+    public void Jump()
+    {
+        _controller.Jump(_stats.JumpPower);
     }
 }
