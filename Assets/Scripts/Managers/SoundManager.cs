@@ -10,9 +10,9 @@ public class SoundManager : Singleton<SoundManager>
 
     [SerializeField] private AudioSource bgmPlayer = new AudioSource();//배경음악 재생기
     [SerializeField] private List<AudioSource> sfxPlayers = new List<AudioSource>();//효과음 재생기
-    public int maxPoolSize = 10;
+    private int _maxPoolSize = 10;
 
-    public AudioMixer audioMixer;
+    [SerializeField] private AudioMixer audioMixer;
     readonly string MIXER_MASTER = "MASTER";//모든 볼륨
     readonly string MIXER_BGM = "BGM";//배경 볼륨
     readonly string MIXER_SFX = "SFX";//효과음 볼륨
@@ -24,7 +24,9 @@ public class SoundManager : Singleton<SoundManager>
         BGM = new List<AudioClip>(Resources.LoadAll<AudioClip>("Sounds/BGM"));
         SFX = new List<AudioClip>(Resources.LoadAll<AudioClip>("Sounds/SFX"));
 
-        foreach(Transform child in transform)
+        audioMixer = Resources.Load<AudioMixer>("Sounds/AudioMixer");
+
+        foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
@@ -36,7 +38,7 @@ public class SoundManager : Singleton<SoundManager>
         bgmPlayer.playOnAwake = false;
         bgmPlayer.loop = true;
         
-        for(int i = 0; i < maxPoolSize; i++)
+        for(int i = 0; i < _maxPoolSize; i++)
         {
             GameObject sfxObject = new GameObject("SFXPlayer");
             sfxObject.transform.SetParent(transform);
