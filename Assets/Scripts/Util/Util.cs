@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Util
 {
-    public static T GetOrAddComponent<T>(this GameObject go) where T : MonoBehaviour
+    public static T GetOrAddComponent<T>(this GameObject go) where T : Component
     {
         return go.TryGetComponent<T>(out T component) ?  component : go.AddComponent<T>();
     }

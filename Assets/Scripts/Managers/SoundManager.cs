@@ -9,7 +9,7 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField] private List<AudioClip> SFX;//효과음 모음
 
     [SerializeField] private AudioSource bgmPlayer = new AudioSource();//배경음악 재생기
-    [SerializeField] private List<AudioSource> sfxPlayer = new List<AudioSource>();//효과음 재생기
+    [SerializeField] private List<AudioSource> sfxPlayers = new List<AudioSource>();//효과음 재생기
     public int maxPoolSize = 10;
 
     public AudioMixer audioMixer;
@@ -24,8 +24,30 @@ public class SoundManager : Singleton<SoundManager>
         BGM = new List<AudioClip>(Resources.LoadAll<AudioClip>("Sounds/BGM"));
         SFX = new List<AudioClip>(Resources.LoadAll<AudioClip>("Sounds/SFX"));
 
-        bgmPlayer = transform.GetChild(0).GetComponent<AudioSource>();
-        sfxPlayer = new List<AudioSource>(transform.GetChild(1).GetComponentsInChildren<AudioSource>());
+        foreach(Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        GameObject bgmObject = new GameObject("BGMPlayer");
+        bgmObject.transform.SetParent(transform);
+        bgmPlayer = bgmObject.AddComponent<AudioSource>();
+        bgmPlayer.outputAudioMixerGroup = audioMixer.FindMatchingGroups(MIXER_BGM)[0];
+        bgmPlayer.playOnAwake = false;
+        bgmPlayer.loop = true;
+        
+        for(int i = 0; i < maxPoolSize; i++)
+        {
+            GameObject sfxObject = new GameObject("SFXPlayer");
+            sfxObject.transform.SetParent(transform);
+            AudioSource sfxPlayer = sfxObject.AddComponent<AudioSource>();
+            sfxPlayer.outputAudioMixerGroup = audioMixer.FindMatchingGroups(MIXER_SFX)[0];
+            sfxPlayer.playOnAwake = false;
+            sfxPlayer.loop = false;
+            sfxPlayers.Add(sfxPlayer);
+        }
+
+        sfxPlayers = new List<AudioSource>(transform.GetChild(1).GetComponentsInChildren<AudioSource>());
     }
 
     private void Start()
@@ -56,12 +78,12 @@ public class SoundManager : Singleton<SoundManager>
         {
             if (SFX[i].name == name)
             {
-                for (int j = 0; j < sfxPlayer.Count; j++)
+                for (int j = 0; j < sfxPlayers.Count; j++)
                 {
-                    if (!sfxPlayer[j].isPlaying)
+                    if (!sfxPlayers[j].isPlaying)
                     {
-                        sfxPlayer[j].clip = SFX[i];
-                        sfxPlayer[j].Play();
+                        sfxPlayers[j].clip = SFX[i];
+                        sfxPlayers[j].Play();
                         return;
                     }
                 }
@@ -71,9 +93,10 @@ public class SoundManager : Singleton<SoundManager>
                 AudioSource newSource = sfx.AddComponent<AudioSource>();
                 newSource.clip = SFX[i];
                 newSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(MIXER_SFX)[0];
+                newSource.playOnAwake = false;
                 newSource.loop = false;
                 newSource.Play();
-                sfxPlayer.Add(newSource);
+                sfxPlayers.Add(newSource);
                 StartCoroutine(DestoryAudiosource(newSource));
                 return;
             }
@@ -82,7 +105,7 @@ public class SoundManager : Singleton<SoundManager>
 
     public void StopAllSFX()//모든 효과음 종료
     {
-        foreach(AudioSource s in sfxPlayer)
+        foreach(AudioSource s in sfxPlayers)
         {
             s.Stop();
         }
@@ -92,7 +115,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         yield return new WaitWhile(() => source.isPlaying);
 
-        sfxPlayer.Remove(source);
+        sfxPlayers.Remove(source);
         Destroy(source.gameObject);
     }
 
