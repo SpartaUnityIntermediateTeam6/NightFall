@@ -12,33 +12,33 @@ public enum SpawnPrefabType
 
 public class SpawnAreas : MonoBehaviour
 {
-    [SerializeField] List<Rect> spawnAreas;  // ½ºÆù Áö¿ª
+    [SerializeField] List<Rect> spawnAreas;  // ìŠ¤í° ì§€ì—­
 
-    [SerializeField] private List<GameObject> enemyPrefabs;  // Àû ÇÁ¸®ÆÕ
+    [SerializeField] private List<GameObject> enemyPrefabs;  // ì  í”„ë¦¬íŒ¹
 
-    [SerializeField] private List<GameObject> resourcePrefabs; // ÀÚ¿ø ÇÁ¸®ÆÕ
+    [SerializeField] private List<GameObject> resourcePrefabs; // ìì› í”„ë¦¬íŒ¹
 
-    [SerializeField] private List<GameObject> alwaysPrefabs;  // Ç×»ó ³ª¿À´Â ÇÁ¸®ÆÕ
+    [SerializeField] private List<GameObject> alwaysPrefabs;  // í•­ìƒ ë‚˜ì˜¤ëŠ” í”„ë¦¬íŒ¹
 
-    [SerializeField] private float spawnDelay;  // µ¿½Ã »ı¼º ¹æÁö, ½ºÆù µô·¹ÀÌ
+    [SerializeField] private float spawnDelay;  // ë™ì‹œ ìƒì„± ë°©ì§€, ìŠ¤í° ë”œë ˆì´
 
-    [SerializeField] private float morningPeriod;  // ¹ã³· ÁÖ±â
+    [SerializeField] private float morningPeriod;  // ë°¤ë‚® ì£¼ê¸°
 
-    [SerializeField] private float alwaysPeriod;  // Ç×»ó ³ª¿À´Â ¿ÀºêÁ§Æ® ÁÖ±â
+    [SerializeField] private float alwaysPeriod;  // í•­ìƒ ë‚˜ì˜¤ëŠ” ì˜¤ë¸Œì íŠ¸ ì£¼ê¸°
 
-    [SerializeField] private int resourceSpawnCount;  // ÀÚ¿ø »ı¼º °¹¼ö
+    [SerializeField] private int resourceSpawnCount;  // ìì› ìƒì„± ê°¯ìˆ˜
 
-    [SerializeField] private int enemySpawnCount; // Àû »ı¼º °¹¼ö
+    [SerializeField] private int enemySpawnCount; // ì  ìƒì„± ê°¯ìˆ˜
 
-    [SerializeField] private int dDay;  // Áö³­ ³¯Â¥
+    [SerializeField] private int dDay;  // ì§€ë‚œ ë‚ ì§œ
 
-    [SerializeField] private int enemySpawnRateUpDay;  // Àû ½ºÆù ºñÀ² Áõ°¡ ³¯Â¥
+    [SerializeField] private int enemySpawnRateUpDay;  // ì  ìŠ¤í° ë¹„ìœ¨ ì¦ê°€ ë‚ ì§œ
 
     private float realMorningPeriod;
 
-    private float _alwaysSpawnTime = 0f;  // alwaysÇÁ¸®ÆÕ ½ºÆù ½Ã°£
+    private float _alwaysSpawnTime = 0f;  // alwaysí”„ë¦¬íŒ¹ ìŠ¤í° ì‹œê°„
 
-    private bool _spawnPeriod; // ½ºÆùÁÖ±â È®ÀÎ
+    private bool _spawnPeriod; // ìŠ¤í°ì£¼ê¸° í™•ì¸
 
     private float _nowTime;
 
@@ -46,8 +46,8 @@ public class SpawnAreas : MonoBehaviour
 
     Color[] _gizmoColor;
 
-    List<float> _resourceBottomPosition; // ÀÚ¿ø ¿ÀºêÁ§Æ® ¹Ø ºÎºĞ
-    List<float> _enemyBottomPosition;    // Àû ¿ÀºêÁ§Æ® ¹Ø ºÎºĞ
+    List<float> _resourceBottomPosition; // ìì› ì˜¤ë¸Œì íŠ¸ ë°‘ ë¶€ë¶„
+    List<float> _enemyBottomPosition;    // ì  ì˜¤ë¸Œì íŠ¸ ë°‘ ë¶€ë¶„
 
     private Coroutine _coroutine;
     private Coroutine _alwaysCoroutine;
@@ -96,7 +96,7 @@ public class SpawnAreas : MonoBehaviour
     {
         if (prefabs == null || bottomPositions == null)
         {
-            Debug.LogWarning($"{type} Prefabs ¶Ç´Â ¸®½ºÆ®°¡ ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning($"{type} Prefabs ë˜ëŠ” ë¦¬ìŠ¤íŠ¸ê°€ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -108,7 +108,7 @@ public class SpawnAreas : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"{prefab.name} ({type}) ¿ÀºêÁ§Æ®¿¡ Collider°¡ ¾ø½À´Ï´Ù!");
+                Debug.LogWarning($"{prefab.name} ({type}) ì˜¤ë¸Œì íŠ¸ì— Colliderê°€ ì—†ìŠµë‹ˆë‹¤!");
             }
         }
     }
@@ -139,7 +139,7 @@ public class SpawnAreas : MonoBehaviour
 
         if (spawnPrefabs.Count == 0 || spawnAreas.Count == 0)
         {
-            Debug.LogWarning("spawnPrefabs ¶Ç´Â Spawn Areas°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("spawnPrefabs ë˜ëŠ” Spawn Areasê°€ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -149,11 +149,11 @@ public class SpawnAreas : MonoBehaviour
 
         if ((int)type > spawnAreas.Count - 1)
         {
-            Debug.LogWarning($"{type}¿¡ ÇØ´çÇÏ´Â ½ºÆù Áö¿ªÀÌ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning($"{type}ì— í•´ë‹¹í•˜ëŠ” ìŠ¤í° ì§€ì—­ì´ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
-        Rect randomArea = spawnAreas[(int)type]; // Å¸ÀÔ¿¡ ¸Â´Â ½ºÆù Áö¿ª ÇÒ´ç
+        Rect randomArea = spawnAreas[(int)type]; // íƒ€ì…ì— ë§ëŠ” ìŠ¤í° ì§€ì—­ í• ë‹¹
 
         do
         {
@@ -161,27 +161,31 @@ public class SpawnAreas : MonoBehaviour
             Random.Range(randomArea.xMin, randomArea.xMax), spawnPositionsY[spawnKind],
             Random.Range(randomArea.yMin, randomArea.yMax));
         }
-        while (IsPositionOccupiedByOverlapSphere(randomPosition));  // Å¸ÀÔ¿¡ ¸Â´Â ·£´ı ½ºÆù À§Ä¡ ÀúÀå
+        while (IsPositionOccupiedByOverlapSphere(randomPosition));  // íƒ€ì…ì— ë§ëŠ” ëœë¤ ìŠ¤í° ìœ„ì¹˜ ì €ì¥
 
         GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
 
         spawnPrefab.transform.parent = transform;
     }
 
-    bool IsPositionOccupiedByOverlapSphere(Vector3 position) // ½ºÆù ½Ã ÁÖº¯ ¿ÀºêÁ§Æ® Ã¼Å© ÇÔ¼ö
+    bool IsPositionOccupiedByOverlapSphere(Vector3 position) // ìŠ¤í° ì‹œ ì£¼ë³€ ì˜¤ë¸Œì íŠ¸ ì²´í¬ í•¨ìˆ˜
     {
-        int layerMask = LayerMask.GetMask("Enemy", "Resource", "Player");  // "Enemy"¿Í "Resource" ·¹ÀÌ¾î¸¸ È®ÀÎ
-        float checkRadius = 1f; // Ã¼Å©ÇÒ ¹İ°æ
+        int layerMask = LayerMask.GetMask("Enemy", "Resource", "Player");  // "Enemy"ì™€ "Resource" ë ˆì´ì–´ë§Œ í™•ì¸
+        float checkRadius = 1f; // ì²´í¬í•  ë°˜ê²½
         return Physics.CheckSphere(position, checkRadius, layerMask);
     }
 
     void DayPass()
     {
         dDay++;
-        if (dDay % enemySpawnRateUpDay == 0)
+
+        if (enemySpawnRateUpDay != 0)
         {
-            enemySpawnCount += _countNum;
-            _countNum++;
+            if (dDay % enemySpawnRateUpDay == 0)
+            {
+                enemySpawnCount += _countNum;
+                _countNum++;
+            }
         }
     }
 
