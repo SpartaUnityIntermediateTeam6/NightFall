@@ -9,6 +9,9 @@ using UnityEngine.EventSystems;
 // 인벤토리의 각 슬롯 UI를 관리하는 클래스
 public class ItemSlotUI : MonoBehaviour
 {
+    // 인벤토리에서 드래그 시 슬롯을 새로만들어 이미지를 참조
+    public Image IconImage => _iconImage;
+
     // 슬롯 내부 아이콘과 슬롯 경계 사이 여백
     [SerializeField] private float _padding = 1f;
 

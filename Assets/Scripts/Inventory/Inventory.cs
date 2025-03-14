@@ -353,6 +353,69 @@ public class Inventory : MonoBehaviour
             UpdateSlot(index);
     }
 
+    // 인벤토리에서 동일한 CountableItemData를 가진 아이템을 지정 수량만큼 소비
+    public bool TryConsumeItem(CountableItemData targetData, int amount)
+    {
+        if (targetData == null || amount <= 0) return false;
+
+        int total = 0;
+        List<(int index, CountableItem item)> slotList = new();
+
+        // 1단계: 전체 슬롯에서 동일한 아이템 찾기 + 수량 합산
+        for (int i = 0; i < Capacity; i++)
+        {
+            if (_items[i] is CountableItem ci && ci.CountableData == targetData)
+            {
+                total += ci.Amount;
+                slotList.Add((i, ci));
+
+                if (total >= amount)
+                    break;
+            }
+        }
+
+        // 수량 부족
+        if (total < amount)
+            return false;
+
+        // 2단계: 슬롯 순서대로 수량 소비
+        int remaining = amount;
+        foreach (var (index, item) in slotList)
+        {
+            if (remaining <= 0) break;
+
+            int consume = Mathf.Min(item.Amount, remaining);
+            item.SetAmount(item.Amount - consume);
+            remaining -= consume;
+
+            // 비었으면 제거
+            if (item.IsEmpty)
+                _items[index] = null;
+
+            UpdateSlot(index);
+        }
+
+        return true;
+    }
+
+    // 인벤토리 내에서 특정 CountableItemData 타입의 총 수량을 반환, 장비는 셀 수 없으니 처리 안함
+    public int GetTotalAmount(CountableItemData targetData)
+    {
+        if (targetData == null) return 0;
+
+        int total = 0;
+
+        for (int i = 0; i < Capacity; i++)
+        {
+            if (_items[i] is CountableItem ci && ci.CountableData == targetData)
+            {
+                total += ci.Amount;
+            }
+        }
+
+        return total;
+    }
+
     // 슬롯 접근 가능 여부 갱신
     public void UpdateAccessibleStatesAll()
     {
@@ -398,4 +461,14 @@ public class Inventory : MonoBehaviour
         UpdateAllSlot();
         _inventoryUI.UpdateAllSlotFilters();
     }
+
+    // 특정 인덱스의 Item 인스턴스를 반환
+    public Item GetItem(int index)
+    {
+        if (!IsValidIndex(index)) return null;
+        return _items[index];
+    }
+
+
+
 }
