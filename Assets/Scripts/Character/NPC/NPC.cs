@@ -42,7 +42,7 @@ public abstract class NPC : Poolable, IDamageable
     protected virtual void Start()
     {
         SetInitState();
-        Dead();
+        //Dead();
     }
 
     private void FixedUpdate()
