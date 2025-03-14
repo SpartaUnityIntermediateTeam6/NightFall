@@ -800,6 +800,8 @@ GameObject:
   - component: {fileID: 177280688}
   - component: {fileID: 177280687}
   - component: {fileID: 177280686}
+  - component: {fileID: 177280690}
+  - component: {fileID: 177280691}
   m_Layer: 5
   m_Name: BuildUI
   m_TagString: Untagged
@@ -909,6 +911,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177280684}
   m_CullTransparentMesh: 1
+--- !u!114 &177280690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177280684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0528da9db59caa848a0186f00c842eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 0d8981385fac8e14ba131fbcb5adb624, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &177280691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177280684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7a49aef8f62274797ac54a7dee2374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 769d92f37c93a3d45873abee4b38a39e, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 308199071}
+        m_TargetAssemblyTypeName: ButtonOnClickAddListener, Assembly-CSharp
+        m_MethodName: RemoveAllAndAdd
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &209291928
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,6 +1799,7 @@ GameObject:
   - component: {fileID: 308199070}
   - component: {fileID: 308199069}
   - component: {fileID: 308199068}
+  - component: {fileID: 308199071}
   m_Layer: 5
   m_Name: BuildBtn
   m_TagString: Untagged
@@ -1862,6 +1909,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 308199066}
   m_CullTransparentMesh: 1
+--- !u!114 &308199071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308199066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1798d77f17aaa4c45b7175ce3e671ccc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &309593728
 GameObject:
   m_ObjectHideFlags: 0
@@ -9998,7 +10057,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 2764385134098482464, guid: 4d055775d8a4513459b0c682d1e84db9, type: 3}
   recipeData: {fileID: 11400000, guid: 09645374e88a52241b2c9270111bf18c, type: 2}
-  recipeEvent: {fileID: 11400000, guid: 9ff04c65729e7ee4095bf891837cec2a, type: 2}
+  recipeEventChannel: {fileID: 11400000, guid: 9ff04c65729e7ee4095bf891837cec2a, type: 2}
+  inventoryEventChannel: {fileID: 11400000, guid: 0d8981385fac8e14ba131fbcb5adb624, type: 2}
+  buildUIEventChannel: {fileID: 11400000, guid: 769d92f37c93a3d45873abee4b38a39e, type: 2}
   targetLayers:
     serializedVersion: 2
     m_Bits: 1

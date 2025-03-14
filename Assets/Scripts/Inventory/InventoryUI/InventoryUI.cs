@@ -575,28 +575,28 @@ public class InventoryUI : MonoBehaviour
     // 슬롯에 아이템 아이콘 등록
     public void SetItemIcon(int index, Sprite icon)
     {
-        //Debug.Log($"Set Item Icon : Slot [{index}]");
+        Debug.Log($"Set Item Icon : Slot [{index}]");
         _slotUIList[index].SetItem(icon);
     }
 
     // 해당 슬롯의 아이템 개수 텍스트 지정
     public void SetItemAmountText(int index, int amount)
     {
-        //Debug.Log($"Set Item Amount Text : Slot [{index}], Amount [{amount}]");
+        Debug.Log($"Set Item Amount Text : Slot [{index}], Amount [{amount}]");
         _slotUIList[index].SetItemAmount(amount);
     }
 
     // 해당 슬롯의 아이템 개수 텍스트 숨기기
     public void HideItemAmountText(int index)
     {
-        //Debug.Log($"Hide Item Amount Text : Slot [{index}]");
+        Debug.Log($"Hide Item Amount Text : Slot [{index}]");
         _slotUIList[index].SetItemAmount(1);
     }
 
     // 슬롯에서 아이템 아이콘 제거, 개수 텍스트 숨기기
     public void RemoveItem(int index)
     {
-        //Debug.Log($"Remove Item : Slot [{index}]");
+        Debug.Log($"Remove Item : Slot [{index}]");
         _slotUIList[index].RemoveItem();
     }
 

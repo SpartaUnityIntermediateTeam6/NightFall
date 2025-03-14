@@ -8,7 +8,12 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
     [SerializeField] private Building buildingPrefab;
     [SerializeField] private BuildRecipeData recipeData;
-    [SerializeField] private RecipeGameEvent recipeEvent;
+    [Header("SO Events")]
+    [SerializeField] private RecipeGameEvent recipeEventChannel;
+    [SerializeField] private InventoryGameEvent inventoryEventChannel;
+    [SerializeField] private UnityActionGameEvent buildUIEventChannel;
+
+    [Header("Layers")]
     [SerializeField] private LayerMask targetLayers;
 
     private IBuilderStrategy _builderStrategy;
@@ -66,7 +71,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         {
             player.OnInteractionEvent -= Interaction;
             _playerCache = null;
-            recipeEvent?.Raise(null);
+            recipeEventChannel?.Raise(null);
         }
     }
 
@@ -75,6 +80,8 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         if (_playerCache == null)
             return;
 
-        recipeEvent?.Raise(new RecipeDataSender(recipeData, _playerCache.Inventory, TryBuild));
+        buildUIEventChannel?.Raise(TryBuild);
+        recipeEventChannel?.Raise(recipeData);
+        inventoryEventChannel?.Raise(_playerCache.Inventory);
     }
 }
