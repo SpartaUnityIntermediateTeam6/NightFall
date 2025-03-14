@@ -5044,7 +5044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeArrow: {fileID: 1018907130}
   time: 0
-  fullDayLength: 100
+  fullDayLength: 10
   startTime: 0.4
   noon: {x: 90, y: 0, z: 0}
   sun: {fileID: 705507994}
@@ -7108,7 +7108,7 @@ GameObject:
   - component: {fileID: 1182827649}
   - component: {fileID: 1182827648}
   m_Layer: 5
-  m_Name: DefenseDay
+  m_Name: DefenseDayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7153,7 +7153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 4
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7758,7 +7758,7 @@ GameObject:
   - component: {fileID: 1265709521}
   - component: {fileID: 1265709520}
   m_Layer: 5
-  m_Name: DayImage
+  m_Name: DefenseDayImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9380,6 +9380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af2a9b040fffbdc499afa9d88d05441f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dayText: {fileID: 1182827648}
   spawnAreas:
   - serializedVersion: 2
     x: -24.3
@@ -9405,6 +9406,7 @@ MonoBehaviour:
   enemySpawnCount: 2
   dDay: 0
   enemySpawnRateUpDay: 0
+  _sunMoonCycle: {fileID: 882707342}
 --- !u!1 &1602276676
 GameObject:
   m_ObjectHideFlags: 0
