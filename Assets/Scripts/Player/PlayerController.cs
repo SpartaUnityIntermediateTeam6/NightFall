@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour, IVisitable
     private InputReader _inputReader;
     private Camera _camera;
 
+    public Inventory Inventory => _inventory;
+
     public event Action OnInteractionEvent = delegate { };
 
     void Awake()
@@ -19,10 +21,9 @@ public class PlayerController : MonoBehaviour, IVisitable
         _controller = GetComponent<TPSCharacterController>();
         _stats = GetComponent<PlayerStats>();
         _inputReader = GetComponent<InputReader>();
+        _inventory = GetComponent<Inventory>();
         //Sample Code
         _camera = Camera.main;
-
-        //inventory = GetComponent<Inventory>();
 
         TestManager.Instance.player = this.transform;
     }

@@ -19,9 +19,16 @@ public class BuildUI : MonoBehaviour
         _slots.ForEach(go => Destroy(go));
         _slots.Clear();
 
+        if (data == null)
+        {
+            buildBtn.onClick.RemoveAllListeners();
+            content.SetActive(false);
+            return;
+        }
+
         content.SetActive(!content.activeInHierarchy);
         
-        foreach (var iter in data.recipeData.dates)
+        foreach (var iter in data.RecipeData.dates)
         {
             //Sample Code
             //프리펩 동적생성 or 오브젝트풀
@@ -29,8 +36,11 @@ public class BuildUI : MonoBehaviour
 
             go.SetActive(true);
             go.GetComponent<Image>().sprite = iter.item.IconSprite;
+
+            int currentCount = data.Inventory.GetTotalAmount(iter.item);
+
             go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
-                iter.requiredAmount.ToString();
+                $"{currentCount} / {iter.requiredAmount}";
 
             _slots.Add(go);
 

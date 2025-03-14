@@ -16,11 +16,10 @@ public class DroppedItem : Poolable, IVisitor
     {
         if (visitable is PlayerController player)
         {
-            //인벤토리 검사 수행
-            //인벤토리 검사 완료하면
-            //아이템 추가
-
-            TestManager.Instance.poolManager.Release(this);
+            if (player.Inventory.Add(ItemData, 1) == 0)
+            {
+                TestManager.Instance.poolManager.Release(this);
+            }
         }
     }
 

@@ -5,12 +5,14 @@ using System;
 
 public class RecipeDataSender
 {
-    public readonly RecipeData recipeData;
-    public readonly Action OnClickEvent = delegate { };
+    public BuildRecipeData RecipeData { get; }
+    public Action OnClickEvent = delegate { };
+    public Inventory Inventory { get; }
 
-    public RecipeDataSender(RecipeData data, Action buttonEvent)
+    public RecipeDataSender(BuildRecipeData data, Inventory inventory, Action buttonEvent)
     {
-        recipeData = data;
-        this.OnClickEvent += buttonEvent;
+        RecipeData = data;
+        OnClickEvent += buttonEvent;
+        Inventory = inventory;
     }
 }
