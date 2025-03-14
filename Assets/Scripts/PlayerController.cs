@@ -14,12 +14,12 @@ public class TPSCharacterController : MonoBehaviour
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.3f;
-    public float coyoteTime = 0.2f; // ÂøÁö ÈÄ Á¡ÇÁ À¯¿¹ ½Ã°£
-    public float jumpCooldown = 0.1f; // Á¡ÇÁ Á÷ÈÄ Á¡ÇÁ ¹æÁö ½Ã°£
+    public float coyoteTime = 0.2f; // ì°©ì§€ í›„ ì í”„ ìœ ì˜ˆ ì‹œê°„
+    public float jumpCooldown = 0.1f; // ì í”„ ì§í›„ ì í”„ ë°©ì§€ ì‹œê°„
 
     [Header("Gravity Settings")]
-    public float gravity = -20f;         // ±âº» Áß·Â °ª
-    public float fallMultiplier = 2.5f;    // ³«ÇÏ ½Ã Ãß°¡ Áß·Â °è¼ö
+    public float gravity = -20f;         // ê¸°ë³¸ ì¤‘ë ¥ ê°’
+    public float fallMultiplier = 2.5f;    // ë‚™í•˜ ì‹œ ì¶”ê°€ ì¤‘ë ¥ ê³„ìˆ˜
 
     [Header("References")]
     public Transform cameraTransform;
@@ -47,6 +47,8 @@ public class TPSCharacterController : MonoBehaviour
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
 
         inputActions.Player.Jump.performed += ctx => jumpRequested = true;
+
+        TestManager.Instance.player = transform;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -60,7 +62,7 @@ public class TPSCharacterController : MonoBehaviour
 
     void Move()
     {
-        // Ä«¸Ş¶ó ¹æÇâ¿¡ ±â¹İÇÑ ÀÌµ¿ º¤ÅÍ °è»ê
+        // ì¹´ë©”ë¼ ë°©í–¥ì— ê¸°ë°˜í•œ ì´ë™ ë²¡í„° ê³„ì‚°
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         forward.y = 0f;
@@ -72,7 +74,7 @@ public class TPSCharacterController : MonoBehaviour
 
         bool isGrounded = IsGrounded();
 
-        // ÂøÁö °¨Áö ¹× ÄÚ¿äÅ× Å¸ÀÓ È°¼ºÈ­
+        // ì°©ì§€ ê°ì§€ ë° ì½”ìš”í…Œ íƒ€ì„ í™œì„±í™”
         if (isGrounded)
         {
             coyoteTimeCounter = coyoteTime;
@@ -82,30 +84,30 @@ public class TPSCharacterController : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        // Á¡ÇÁ ¿äÃ» Ã³¸®
+        // ì í”„ ìš”ì²­ ì²˜ë¦¬
         if (jumpRequested && coyoteTimeCounter > 0f && Time.time - lastJumpTime > jumpCooldown)
         {
             verticalSpeed = jumpForce;
             lastJumpTime = Time.time;
-            coyoteTimeCounter = 0f; // Á¡ÇÁ ÈÄ ÄÚ¿äÅ× Å¸ÀÓ ÃÊ±âÈ­
+            coyoteTimeCounter = 0f; // ì í”„ í›„ ì½”ìš”í…Œ íƒ€ì„ ì´ˆê¸°í™”
         }
 
-        jumpRequested = false; // Á¡ÇÁ ¿äÃ» ÃÊ±âÈ­
+        jumpRequested = false; // ì í”„ ìš”ì²­ ì´ˆê¸°í™”
 
-        // Áß·Â Àû¿ë (ÀÚ¿¬½º·¯¿î ³«ÇÏ È¿°ú)
-        // Á¡ÇÁ ÈÄ verticalSpeed°¡ ¾ç¼öÀÎ °æ¿ì¿¡´Â Áö¸é¿¡ ´ê¾Ò´õ¶óµµ Á¡ÇÁ ÈûÀ» À¯Áö
+        // ì¤‘ë ¥ ì ìš© (ìì—°ìŠ¤ëŸ¬ìš´ ë‚™í•˜ íš¨ê³¼)
+        // ì í”„ í›„ verticalSpeedê°€ ì–‘ìˆ˜ì¸ ê²½ìš°ì—ëŠ” ì§€ë©´ì— ë‹¿ì•˜ë”ë¼ë„ ì í”„ í˜ì„ ìœ ì§€
         if (isGrounded && verticalSpeed <= 0)
         {
-            verticalSpeed = -2f; // Áö¸é¿¡ ´êÀº °æ¿ì, Ãæµ¹ °¨Áö¸¦ À§ÇØ ¾à°£ÀÇ ÇÏ°­·Â À¯Áö
+            verticalSpeed = -2f; // ì§€ë©´ì— ë‹¿ì€ ê²½ìš°, ì¶©ëŒ ê°ì§€ë¥¼ ìœ„í•´ ì•½ê°„ì˜ í•˜ê°•ë ¥ ìœ ì§€
         }
         else
         {
-            // ÇÏ°­ ÁßÀÏ ¶§ Ãß°¡ Áß·Â Àû¿ë (fallMultiplier - 1 ¸¸Å­ ´õ °¡¼Ó)
+            // í•˜ê°• ì¤‘ì¼ ë•Œ ì¶”ê°€ ì¤‘ë ¥ ì ìš© (fallMultiplier - 1 ë§Œí¼ ë” ê°€ì†)
             if (verticalSpeed < 0)
             {
                 verticalSpeed += gravity * (fallMultiplier - 1) * Time.deltaTime;
             }
-            // ±âº» Áß·Â Àû¿ë
+            // ê¸°ë³¸ ì¤‘ë ¥ ì ìš©
             verticalSpeed += gravity * Time.deltaTime;
         }
 
