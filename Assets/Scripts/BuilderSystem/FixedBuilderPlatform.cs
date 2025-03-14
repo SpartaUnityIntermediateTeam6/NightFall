@@ -60,7 +60,6 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
     void OnTriggerEnter(Collider other)
     {
         other.GetComponent<IVisitable>()?.Accept(this);
-        Debug.Log("123");
     }
 
     void OnTriggerExit(Collider other)

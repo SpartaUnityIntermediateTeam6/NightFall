@@ -38,7 +38,7 @@ public class BuildUI : MonoBehaviour
         }
 
         buildBtn.onClick.RemoveAllListeners();
-        buildBtn.onClick.AddListener(data.queryEvent.Invoke);
+        buildBtn.onClick.AddListener(data.OnClickEvent.Invoke);
     }
 
     void OnEnable() => content.SetActive(false);

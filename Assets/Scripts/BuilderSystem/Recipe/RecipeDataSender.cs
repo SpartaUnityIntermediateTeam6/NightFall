@@ -6,11 +6,11 @@ using System;
 public class RecipeDataSender
 {
     public readonly RecipeData recipeData;
-    public readonly Action queryEvent = delegate { };
+    public readonly Action OnClickEvent = delegate { };
 
-    public RecipeDataSender(RecipeData data, Action queryEvent)
+    public RecipeDataSender(RecipeData data, Action buttonEvent)
     {
         recipeData = data;
-        this.queryEvent += queryEvent;
+        this.OnClickEvent += buttonEvent;
     }
 }
