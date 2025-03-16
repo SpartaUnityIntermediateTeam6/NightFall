@@ -25,10 +25,10 @@ public abstract class NPC : Poolable, IDamageable
     [Header("Attacking")]
     public float detectDistance;
     public float attackRange;
+    [HideInInspector] public float zOffset;
     public float attackRate;
     public float attackDamage;
     [HideInInspector] public Transform beaconTarget;
-    //[HideInInspector] public Transform playerTarget;
 
     //private MeshRenderer[] meshRenderers;
 
@@ -37,6 +37,8 @@ public abstract class NPC : Poolable, IDamageable
         agent = GetComponent<NavMeshAgent>();
         //meshRenderers = GetComponentsInChildren<MeshRenderer>();
         agent.speed = walkSpeed;
+
+        zOffset = GetComponent<Collider>().bounds.extents.z;
     }
 
     protected virtual void Start()

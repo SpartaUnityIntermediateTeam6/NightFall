@@ -23,14 +23,17 @@ public class AttackingState : AIState
 
         float beaconDistance = Vector3.Distance(npc.transform.position, npc.beaconTarget.position);
         float playerDistance = Vector3.Distance(npc.transform.position, TestManager.Instance.player.position);
-        if (playerDistance < beaconDistance && playerDistance <= npc.detectDistance) curTarget = TestManager.Instance.player;
+        if (playerDistance < beaconDistance && playerDistance <= npc.detectDistance)
+        {
+            curTarget = TestManager.Instance.player;
+        }
 
+        npc.agent.SetDestination(curTarget.position);
         float distance = Vector3.Distance(npc.transform.position, curTarget.position);
-
-        if (distance > npc.attackRange)
+        
+        if (distance > npc.attackRange + npc.zOffset)
         {
             npc.agent.isStopped = false;
-            npc.agent.SetDestination(curTarget.position);
         }
         else
         {
