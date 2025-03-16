@@ -1057,7 +1057,6 @@ GameObject:
   - component: {fileID: 217659401}
   - component: {fileID: 217659408}
   - component: {fileID: 217659406}
-  - component: {fileID: 217659410}
   - component: {fileID: 217659412}
   - component: {fileID: 217659409}
   - component: {fileID: 217659411}
@@ -1272,21 +1271,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1926160883}
---- !u!114 &217659410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217659397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a19a78c371cfa74594b13f819e2bc58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerBody: {fileID: 217659404}
-  virtualCamera: {fileID: 217659409}
-  mouseSensitivity: 100
 --- !u!95 &217659411
 Animator:
   serializedVersion: 5
@@ -1321,7 +1305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 718327566}
-  attackEventChannel: {fileID: 11400000, guid: 664e6f3d3b6e2b643a90b882390f7e10, type: 2}
+  attackEventChannel: {fileID: 0}
 --- !u!1 &218135560
 GameObject:
   m_ObjectHideFlags: 0
@@ -5292,11 +5276,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 439eab82915a559419e41c2a809b0974, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.17
+      value: -0.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 439eab82915a559419e41c2a809b0974, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.13
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 439eab82915a559419e41c2a809b0974, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5562,6 +5546,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5643,6 +5628,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 217659404}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19a78c371cfa74594b13f819e2bc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBody: {fileID: 217659404}
+  mouseSensitivity: 40
 --- !u!1 &967874367
 GameObject:
   m_ObjectHideFlags: 0
@@ -8145,6 +8144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d531fe10243974e866fced0caec8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackEventChannel: {fileID: 0}
+  cameraTransform: {fileID: 0}
+  attackRange: 2
+  attackDamage: 25
 --- !u!4 &1385057334
 Transform:
   m_ObjectHideFlags: 0

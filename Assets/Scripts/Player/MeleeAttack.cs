@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class MeleeAttack : MonoBehaviour
 {
-    public Animator animator; // Animator 연결 필드
-    public Transform cameraTransform;
-    public float attackRange = 2.0f;
-    public int attackDamage = 25;
+    public Animator animator;
+    public AttackGameEvent attackEventChannel; // 이벤트 채널
+
     private bool isAttacking = false;
 
     void Start()
     {
-        if (animator == null) // Animator 자동 할당
+        if (animator == null)
         {
             animator = GetComponent<Animator>();
             if (animator == null)
@@ -32,9 +31,21 @@ public class MeleeAttack : MonoBehaviour
 
     void Attack()
     {
-        if (animator == null) return; // Animator가 없으면 실행하지 않음
         isAttacking = true;
-        animator.SetTrigger("Attack"); // 애니메이션 실행
+        animator.SetTrigger("Attack"); // 공격 애니메이션 실행
+    }
+
+    // 🎯 애니메이션 이벤트에서 호출할 함수 추가 (애니메이션 이벤트에서 실행)
+    public void OnAttackEvent()
+    {
+        if (attackEventChannel != null)
+        {
+            attackEventChannel.Raise(transform.position); // 이벤트 채널 실행
+        }
+        else
+        {
+            Debug.LogWarning("Attack Event Channel이 연결되지 않았습니다.");
+        }
     }
 
     public void EndAttack()
@@ -42,6 +53,7 @@ public class MeleeAttack : MonoBehaviour
         isAttacking = false;
     }
 }
+
 
 
 
