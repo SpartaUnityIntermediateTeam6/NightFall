@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 740502456}
   - component: {fileID: 740502458}
   m_Layer: 0
-  m_Name: Player
+  m_Name: TestPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1177,6 +1177,7 @@ GameObject:
   - component: {fileID: 1611569045}
   - component: {fileID: 1611569044}
   - component: {fileID: 1611569043}
+  - component: {fileID: 1611569047}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1226,7 +1227,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 914e0671525cdd24f98319c4f86cefec, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1271,6 +1272,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1611569047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611569042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff5b29d9942d7646a57505e67bea292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changedColor: {r: 0.0027804442, g: 0.4716981, b: 0, a: 0}
 --- !u!1001 &1633558578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1339,6 +1353,7 @@ GameObject:
   - component: {fileID: 1744562065}
   - component: {fileID: 1744562067}
   - component: {fileID: 1744562066}
+  - component: {fileID: 1744562068}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1381,7 +1396,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 54f68221dba618b4dbf74c9048b6164d, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1411,6 +1426,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744562064}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1744562068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744562064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff5b29d9942d7646a57505e67bea292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changedColor: {r: 0, g: 1, b: 0.5911093, a: 0}
 --- !u!1001 &1749628556
 PrefabInstance:
   m_ObjectHideFlags: 0
