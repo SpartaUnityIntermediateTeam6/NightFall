@@ -5,51 +5,48 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
+
+public class InputReader : PlayerInputActions.IPlayerActions
 {
-    private PlayerInputActions _inputActions;
-    public PlayerInputActions Input => _inputActions;
+    public Vector2 MoveInput { get; private set; }
+    public Vector2 LookInput { get; private set; }
+    public bool JumpInput { get; private set; }
+    public bool FireInput { get; private set; }
+    public bool AimInput { get; private set; } // 추가됨
 
-    public UnityEvent<Vector2> OnMoveEvent;
-    public UnityEvent OnJumpEvent;
+    private PlayerInputActions _playerInputActions;
 
-
-    void Awake()
+    public InputReader()
     {
-        _inputActions = new();
-        _inputActions.Player.SetCallbacks(this);
-    }
-
-    void Start()
-    {
-        
-    }
-
-    void OnEnable()
-    {
-        _inputActions.Enable();
-    }
-
-    void OnDisable()
-    {
-        _inputActions.Disable();
+        _playerInputActions = new PlayerInputActions();
+        _playerInputActions.Player.SetCallbacks(this);
+        _playerInputActions.Player.Enable();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        OnMoveEvent?.Invoke(context.ReadValue<Vector2>());
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started)
-        {
-            OnJumpEvent?.Invoke();
-        }
+        MoveInput = context.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        LookInput = context.ReadValue<Vector2>();
+    }
 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        JumpInput = context.performed;
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        FireInput = context.performed;
+    }
+
+    public void OnAim(InputAction.CallbackContext context) // 추가된 부분
+    {
+        AimInput = context.performed;
     }
 }
+
+

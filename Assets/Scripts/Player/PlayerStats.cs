@@ -1,49 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class PlayerStats : MonoBehaviour
 {
-    private float _maxHp;
-    private float _hp;
-    private float _maxSanity;
-    private float _sanity;
-    //Modifier Stats
+    private float _maxHp = 100f;
+    private float _hp = 100f;
+    private float _maxSanity = 100f;
+    private float _sanity = 100f;
     private float _moveSpeed = 5f;
     private float _jumpPower = 7f;
-
-    //Event Channel
-    [SerializeField] private BoundedValueGameEvent hpEventChannel;
-    [SerializeField] private BoundedValueGameEvent sanityEventChannel;
 
     public float Hp
     {
         get => _hp;
-        set
-        {
-            _hp = Mathf.Clamp(value, 0, _maxHp);
-            hpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHp));
-        }
+        set => _hp = Mathf.Clamp(value, 0, _maxHp);
     }
 
     public float Sanity
     {
         get => _sanity;
-        set
-        {
-            _sanity = Mathf.Clamp(value, 0, _maxSanity);
-            sanityEventChannel?.Raise(new BoundedValue(_sanity, 0, _maxSanity));
-        }
+        set => _sanity = Mathf.Clamp(value, 0, _maxSanity);
     }
 
-    public float MoveSpeed
-    {
-        get => _moveSpeed;
-    }
-
-    public float JumpPower
-    {
-        get => _jumpPower;
-    }
+    public float MoveSpeed => _moveSpeed;
+    public float JumpPower => _jumpPower;
 }
