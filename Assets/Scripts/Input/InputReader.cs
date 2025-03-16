@@ -12,6 +12,7 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public UnityEvent<Vector2> OnMoveEvent;
     public UnityEvent OnJumpEvent;
+    public UnityEvent OnAttackEvent;
 
 
     void Awake()
@@ -51,5 +52,13 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
 
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed) // 버튼이 눌렸을 때만 실행
+        {
+            OnAttackEvent?.Invoke();
+        }
     }
 }
