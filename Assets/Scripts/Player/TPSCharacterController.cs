@@ -30,13 +30,17 @@ public class TPSCharacterController : MonoBehaviour
     {
         HandleJump();
         HandleGravity();
+        Debug.Log("지면");
     }
 
     public void Move(Vector3 desiredMove)
     {
+        if (desiredMove.magnitude > 0) // 움직임이 있을 때만 실행
+        {
+            Debug.Log("캐릭터 이동: " + desiredMove);
+        }
         controller.Move(desiredMove);
     }
-
     public void Jump(float jumpPower)
     {
         _jumpForce = jumpPower;

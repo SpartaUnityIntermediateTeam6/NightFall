@@ -12,7 +12,7 @@ public class InputReader : PlayerInputActions.IPlayerActions
     public Vector2 LookInput { get; private set; }
     public bool JumpInput { get; private set; }
     public bool FireInput { get; private set; }
-    public bool AimInput { get; private set; } // 추가됨
+    public bool AimInput { get; private set; }
 
     private PlayerInputActions _playerInputActions;
 
@@ -43,7 +43,7 @@ public class InputReader : PlayerInputActions.IPlayerActions
         FireInput = context.performed;
     }
 
-    public void OnAim(InputAction.CallbackContext context) // 추가된 부분
+    public void OnAim(InputAction.CallbackContext context)
     {
         AimInput = context.performed;
     }

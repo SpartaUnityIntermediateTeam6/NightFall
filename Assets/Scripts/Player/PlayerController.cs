@@ -30,8 +30,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("MoveInput: " + _inputReader.MoveInput); // 입력값 디버깅
+
         HandleMouseLook();
-        Move(_inputReader.MoveInput);
+        if (_inputReader.MoveInput != Vector2.zero)
+        {
+            Move(_inputReader.MoveInput);
+        }
         if (_inputReader.JumpInput) Jump();
         if (_inputReader.FireInput) Fire();
         if (_inputReader.AimInput) Aim();
@@ -54,6 +59,7 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector2 moveInput)
     {
         Vector3 moveDirection = transform.right * moveInput.x + transform.forward * moveInput.y;
+        Debug.Log("이동 방향: " + moveDirection); // 이동 방향 확인
         _controller.Move(moveDirection * Time.deltaTime * _stats.MoveSpeed);
     }
 
