@@ -14,6 +14,7 @@ public enum SpawnPrefabType
 public class SpawnAreas : MonoBehaviour
 {
     public TextMeshProUGUI dayText;
+
     [SerializeField] List<Rect> spawnAreas;  // 스폰 지역
 
     [SerializeField] private List<GameObject> enemyPrefabs;  // 적 프리팹
@@ -23,8 +24,6 @@ public class SpawnAreas : MonoBehaviour
     [SerializeField] private List<GameObject> alwaysPrefabs;  // 항상 나오는 프리팹
 
     [SerializeField] private float spawnDelay;  // 동시 생성 방지, 스폰 딜레이
-
-    [SerializeField] private float morningPeriod;  // 밤낮 주기
 
     [SerializeField] private float alwaysPeriod;  // 항상 나오는 오브젝트 주기
 
@@ -36,17 +35,9 @@ public class SpawnAreas : MonoBehaviour
 
     [SerializeField] private int enemySpawnRateUpDay;  // 적 스폰 비율 증가 날짜
 
-    private float realMorningPeriod;
-
     private float _alwaysSpawnTime = 0f;  // always프리팹 스폰 시간
 
-    private bool _spawnPeriod; // 스폰주기 확인
-
-    private bool _isDaytime;  // 날짜 확인
-
-    private float _nowTime;
-
-    private int _countNum = 1;
+    private int _countNum = 1; // Enemy 스폰 증가 폭
 
     Color[] _gizmoColor;
 
@@ -69,26 +60,17 @@ public class SpawnAreas : MonoBehaviour
 
     private void Update()
     {
-        if (_sunMoonCycle.time >= 0.75f || _sunMoonCycle.time <= 0.25f)    // 밤 시간
-        {
-            _spawnPeriod = false;
-        }
-        else if (_sunMoonCycle.time > 0.25f && _sunMoonCycle.time < 0.75f)  // 낮 시간
-        {
-            _spawnPeriod = true;
-        }
-
         if (Time.time >= _alwaysSpawnTime && _alwaysCoroutine == null)
         {
             _alwaysCoroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Always));
             _alwaysSpawnTime = Time.time + alwaysPeriod;
         }
 
-        if (!_spawnPeriod && _coroutine == null)
+        if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
         {
             _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
         }
-        else if (_spawnPeriod && _coroutine == null)
+        else if (!_sunMoonCycle.isNight && _coroutine == null)
         {
             _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
         }
@@ -179,11 +161,9 @@ public class SpawnAreas : MonoBehaviour
 
     void DayPass()
     {
-        dayText.text = (++dDay).ToString();
-
         if (enemySpawnRateUpDay != 0)
         {
-            if (dDay % enemySpawnRateUpDay == 0)
+            if (_sunMoonCycle.dDay % enemySpawnRateUpDay == 0)
             {
                 enemySpawnCount += _countNum;
                 _countNum++;
@@ -199,7 +179,9 @@ public class SpawnAreas : MonoBehaviour
         if (type == SpawnPrefabType.Morning) spawnCount = resourceSpawnCount;
         else if (type == SpawnPrefabType.Night) spawnCount = enemySpawnCount;
 
-        for (int i = 0; i < spawnCount; i++)
+        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnDelay;
+
+            for (int i = 0; i < spawnCount; i++)
         {
             SpawnRandom(type);
             yield return new WaitForSeconds(spawnDelay);
@@ -207,14 +189,14 @@ public class SpawnAreas : MonoBehaviour
 
         if (type == SpawnPrefabType.Night)
         {
-            while (_sunMoonCycle.time >= 0.75f || _sunMoonCycle.time <= 0.25f)
+            while (_sunMoonCycle.isNight)
             {
                 yield return null;
             }
         }
-        else if (type == SpawnPrefabType.Morning)
+        else if(type == SpawnPrefabType.Morning)
         {
-            while (_sunMoonCycle.time < 0.75f && _sunMoonCycle.time > 0.25f)
+            while (!_sunMoonCycle.isNight)
             {
                 yield return null;
             }
