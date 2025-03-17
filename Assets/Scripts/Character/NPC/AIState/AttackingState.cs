@@ -34,11 +34,13 @@ public class AttackingState : AIState
         if (distance > npc.attackRange + npc.zOffset)
         {
             npc.agent.isStopped = false;
+            npc.animator.SetBool("isMoving", true);
         }
         else
         {
             npc.agent.isStopped = true;
             npc.agent.velocity = Vector3.zero;
+            npc.animator.SetBool("isMoving", false);
             Quaternion lookRotation = Quaternion.LookRotation(curTarget.position - npc.transform.position);
             npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, 0.1f);
             Attack(curTarget);
@@ -48,6 +50,8 @@ public class AttackingState : AIState
     void Attack(Transform target)
     {
         if (Time.time - lastAttackTime <= npc.attackRate) return;
+
+        npc.animator.SetTrigger("attack");
 
         lastAttackTime = Time.time;
         target.GetComponent<IDamageable>()?.TakeDamage(npc.attackDamage);
