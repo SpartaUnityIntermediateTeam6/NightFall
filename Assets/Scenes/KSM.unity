@@ -572,16 +572,17 @@ MonoBehaviour:
   timeArrow: {fileID: 1047519967}
   sunMoonTimer: {fileID: 1592422568}
   bigSunMoonTimer: {fileID: 2053329093}
+  bigTimeArrow: {fileID: 1163407392}
   skyBoxMaterial: {fileID: 2100000, guid: c4e2db44d5336e24799b6d1198236332, type: 2}
-  dDay: 0
   cycleDelay: 1
+  dDay: 0
   time: 0
   startTime: 0
   isNextDay: 0
   isNight: 0
   isRote: 0
-  sunTime: 5
-  moonTime: 10
+  sunTime: 1
+  moonTime: 60
   sun: {fileID: 1732974058}
   sunColor:
     serializedVersion: 2
@@ -7179,12 +7180,12 @@ GameObject:
   - component: {fileID: 1163407394}
   - component: {fileID: 1163407393}
   m_Layer: 5
-  m_Name: TimeArrow
+  m_Name: BigTimeArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1163407392
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7192,12 +7193,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163407391}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35420004, y: 0.17710002, z: 0.17710002}
+  m_LocalScale: {x: 0.98821807, y: 0.49410903, z: 0.49410903}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2053329093}
+  m_Father: {fileID: 1915557376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9422,8 +9423,8 @@ MonoBehaviour:
   alwaysPrefabs: []
   spawnDelay: 0.04
   alwaysPeriod: 0
-  resourceSpawnCount: 10
-  enemySpawnCount: 6
+  resourceSpawnCount: 2
+  enemySpawnCount: 2
   dDay: 0
   enemySpawnRateUpDay: 3
   maxResourceCount: 8
@@ -11284,6 +11285,7 @@ RectTransform:
   - {fileID: 177280685}
   - {fileID: 2098501367}
   - {fileID: 2053329093}
+  - {fileID: 1163407392}
   - {fileID: 1344107328}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12010,7 +12012,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1487173145}
-  - {fileID: 1163407392}
   m_Father: {fileID: 1915557376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

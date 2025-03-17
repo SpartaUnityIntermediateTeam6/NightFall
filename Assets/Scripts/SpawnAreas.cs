@@ -70,13 +70,24 @@ public class SpawnAreas : MonoBehaviour
             _alwaysSpawnTime = Time.time + alwaysPeriod;
         }
 
-        if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
+        if (_sunMoonCycle.dDay <= 3)
         {
-            _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
+            if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
+            {
+                _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
+            }
+            else if (!_sunMoonCycle.isNight && _coroutine == null)
+            {
+                _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+            }
         }
-        else if (!_sunMoonCycle.isNight && _coroutine == null)
+        else
         {
-            _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+            if(_coroutine == null)
+            {
+                enemySpawnCount = 100;
+                _coroutine = StartCoroutine(EndingGame());
+            }
         }
     }
 
@@ -245,6 +256,16 @@ public class SpawnAreas : MonoBehaviour
             case SpawnPrefabType.Always: _alwaysCoroutine = null; break;
         }
     }
+
+    IEnumerator EndingGame()
+    {
+        for (int i = 0; i < enemySpawnCount; i++)
+        {
+            SpawnRandom(SpawnPrefabType.Night);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+        
 
 
     private void OnDrawGizmosSelected()
