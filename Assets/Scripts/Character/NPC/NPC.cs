@@ -62,7 +62,10 @@ public abstract class NPC : Poolable, IDamageable
 
     public void TakeDamage(float damage)
     {
+        Debug.Log($"대미지 {damage} 입음: {name}");
         health = Mathf.Max(health - damage, 0);
+
+        if (health <= 0) Dead();
     }
 
     [ContextMenu("Dead")]
