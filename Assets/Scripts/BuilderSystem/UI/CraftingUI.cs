@@ -24,6 +24,12 @@ public class CraftingUI : MonoBehaviour
         if (eventInfo == null)
             return;
 
+        if (!eventInfo.UIActive)
+        {
+            view.SetActive(false);
+            return;
+        }
+
         _elementCache.ForEach(s => Destroy(s));
         _elementCache.Clear();
         view.gameObject.SetActive(true);
@@ -37,7 +43,6 @@ public class CraftingUI : MonoBehaviour
             go.SetElement(eventInfo.recipes[i], eventInfo.inventory, () =>
             {
                 eventInfo.onButtonEvent.Invoke(index);
-                view.gameObject.SetActive(false);
             });
 
             _elementCache.Add(go.gameObject);

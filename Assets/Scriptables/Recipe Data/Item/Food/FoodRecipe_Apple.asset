@@ -15,7 +15,6 @@ MonoBehaviour:
   recipeDates:
   - itemData: {fileID: 11400000, guid: e4f13aa8c96bef141856abb74166da86, type: 2}
     requiredAmount: 10
-    resultItem: {fileID: 11400000, guid: d647366ff51e15344b1800f927ac3c35, type: 2}
   - itemData: {fileID: 11400000, guid: 7734a9dec142a324796d24b11947316d, type: 2}
     requiredAmount: 10
-    resultItem: {fileID: 11400000, guid: d647366ff51e15344b1800f927ac3c35, type: 2}
+  resultItem: {fileID: 11400000, guid: d647366ff51e15344b1800f927ac3c35, type: 2}

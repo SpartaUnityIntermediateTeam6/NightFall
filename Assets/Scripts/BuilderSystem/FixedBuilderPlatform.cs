@@ -13,12 +13,18 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
     private IBuilderStrategy _builderStrategy;
     private PlayerController _playerCache;
+    private bool _uiFlag = false;
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
     void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
 
-    void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
+    void OnTriggerExit(Collider other)
+    {
+        other.GetComponent<IVisitable>()?.Cancel(this);
+        EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild, false));
+        _uiFlag = false;
+    }
 
     public void TryBuild(int index)
     {
@@ -46,8 +52,8 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         if (_playerCache == null)
             return;
 
-        //생성해서 사용
-        EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild));
+        EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild, !_uiFlag));
+        _uiFlag = !_uiFlag;
     }
 
     public void Visit<T>(T visitable) where T : Component, IVisitable
@@ -74,11 +80,13 @@ public class BuildInteractionEvent : IGameEvent
     public readonly List<Building> buildings = new();
     public readonly Inventory inventory;
     public readonly Action<int> onButtonEvent = delegate { };
+    public bool UIActive { get; set; }
 
-    public BuildInteractionEvent(List<Building> buildingsInfo, Inventory inventory, Action<int> onButtonEvent)
+    public BuildInteractionEvent(List<Building> buildingsInfo, Inventory inventory, Action<int> onButtonEvent, bool uIActive = true)
     {
         buildings = buildingsInfo;
         this.inventory = inventory;
         this.onButtonEvent = onButtonEvent;
+        UIActive = uIActive;
     }
 }

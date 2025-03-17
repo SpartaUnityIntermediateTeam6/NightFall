@@ -15,8 +15,8 @@ public class Building : MonoBehaviour, IVisitor
     public string BuildingName => buildingName;
     public string BuildingDescription => buildingDescription;
 
-    void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
-    void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
+    protected virtual void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
+    protected virtual void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
 
     public void Visit<T>(T visitable) where T : Component, IVisitable
     {
