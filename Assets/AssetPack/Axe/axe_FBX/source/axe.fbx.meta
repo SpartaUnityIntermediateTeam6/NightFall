@@ -176,14 +176,14 @@ ModelImporter:
       - time: 0.50153846
         functionName: ApplyDamage()
         data: ApplyDamage()
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 919132149155446097, guid: 439eab82915a559419e41c2a809b0974, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 1
         functionName: EndAttack()
         data: EndAttack()
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 919132149155446097, guid: 439eab82915a559419e41c2a809b0974, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

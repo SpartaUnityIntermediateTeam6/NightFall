@@ -37,7 +37,9 @@ public class MeleeAttack : MonoBehaviour
     {
         if (animator == null) return; // Animator가 없으면 실행하지 않음
         isAttacking = true;
-        animator.SetTrigger("ApplyDamage()"); // 공격 애니메이션 실행
+        animator.SetTrigger("ApplyDamage"); // 공격 애니메이션 실행
+        animator.SetBool("New Bool", true); // 공격 애니메이션 실행
+        Debug.Log("공격 실행");
 
         if (attackSoundManager != null)
         {
