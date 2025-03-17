@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,86 +10,113 @@ public enum SpawnPrefabType
     Always
 }
 
-public class SpawnAreas : Poolable
+public class SpawnAreas : MonoBehaviour
 {
-    public TextMeshProUGUI dayText;
+    [SerializeField] List<Rect> spawnAreas;  // ½ºÆù Áö¿ª
 
-    [SerializeField] List<Rect> spawnAreas;  // ìŠ¤í° ì§€ì—­
+    [SerializeField] private List<GameObject> enemyPrefabs;  // Àû ÇÁ¸®ÆÕ
 
-    [SerializeField] private List<GameObject> enemyPrefabs;  // ì  í”„ë¦¬íŒ¹
+    [SerializeField] private List<GameObject> resourcePrefabs; // ÀÚ¿ø ÇÁ¸®ÆÕ
 
-    [SerializeField] private List<GameObject> resourcePrefabs; // ìì› í”„ë¦¬íŒ¹
+    [SerializeField] private List<GameObject> alwaysPrefabs;  // Ç×»ó ³ª¿À´Â ÇÁ¸®ÆÕ
 
-    [SerializeField] private List<GameObject> alwaysPrefabs;  // í•­ìƒ ë‚˜ì˜¤ëŠ” í”„ë¦¬íŒ¹
+    [SerializeField] private float spawnDelay;  // µ¿½Ã »ı¼º ¹æÁö, ½ºÆù µô·¹ÀÌ
 
-    [SerializeField] private float spawnDelay;  // ë™ì‹œ ìƒì„± ë°©ì§€, ìŠ¤í° ë”œë ˆì´
+    [SerializeField] private float morningPeriod;  // ¹ã³· ÁÖ±â
 
-    [SerializeField] private float alwaysPeriod;  // í•­ìƒ ë‚˜ì˜¤ëŠ” ì˜¤ë¸Œì íŠ¸ ì£¼ê¸°
+    [SerializeField] private float alwaysPeriod;  // Ç×»ó ³ª¿À´Â ¿ÀºêÁ§Æ® ÁÖ±â
 
-    [SerializeField] private int resourceSpawnCount;  // ìì› ìƒì„± ê°¯ìˆ˜
+    [SerializeField] private int resourceSpawnCount;  // ÀÚ¿ø »ı¼º °¹¼ö
 
-    [SerializeField] private int enemySpawnCount; // ì  ìƒì„± ê°¯ìˆ˜
+    [SerializeField] private int enemySpawnCount; // Àû »ı¼º °¹¼ö
 
-    [SerializeField] private int dDay;  // ì§€ë‚œ ë‚ ì§œ
+    [SerializeField] private int dDay;  // Áö³­ ³¯Â¥
 
-    [SerializeField] private int enemySpawnRateUpDay;  // ì  ìŠ¤í° ë¹„ìœ¨ ì¦ê°€ ë‚ ì§œ
+    [SerializeField] private int enemySpawnRateUpDay;  // Àû ½ºÆù ºñÀ² Áõ°¡ ³¯Â¥
 
-    [SerializeField] private int maxResourceCount;
+    private float realMorningPeriod;
 
-    private List<GameObject> activeMorningObjects = new List<GameObject>();
+    private float _alwaysSpawnTime = 0f;  // alwaysÇÁ¸®ÆÕ ½ºÆù ½Ã°£
 
-    private float _alwaysSpawnTime = 0f;  // alwaysí”„ë¦¬íŒ¹ ìŠ¤í° ì‹œê°„
+    private bool _spawnPeriod; // ½ºÆùÁÖ±â È®ÀÎ
 
-    private int _countNum = 1; // Enemy ìŠ¤í° ì¦ê°€ í­
+    private float _nowTime;
+
+    private int _countNum = 1;
 
     Color[] _gizmoColor;
 
+    List<float> _resourceBottomPosition; // ÀÚ¿ø ¿ÀºêÁ§Æ® ¹Ø ºÎºĞ
+    List<float> _enemyBottomPosition;    // Àû ¿ÀºêÁ§Æ® ¹Ø ºÎºĞ
 
     private Coroutine _coroutine;
     private Coroutine _alwaysCoroutine;
 
-    public SunMoonCycle _sunMoonCycle;
+    private void Start()
+    { 
+        _resourceBottomPosition = new List<float>();
+        _enemyBottomPosition = new List<float>();
 
+        GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
+        GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
+    }
 
     private void Update()
     {
+        realMorningPeriod = (resourceSpawnCount > enemySpawnCount) ? (spawnDelay * resourceSpawnCount + morningPeriod) : (spawnDelay * enemySpawnCount + morningPeriod);
+
+        _nowTime += Time.deltaTime;
+
+        if (_nowTime >= realMorningPeriod)
+        {
+            _spawnPeriod = false;
+        }
+        else
+        {
+            _spawnPeriod = true;
+        }
+
         if (Time.time >= _alwaysSpawnTime && _alwaysCoroutine == null)
         {
             _alwaysCoroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Always));
             _alwaysSpawnTime = Time.time + alwaysPeriod;
         }
 
-        if (_sunMoonCycle.dDay <= 3)
+        if (!_spawnPeriod && _coroutine == null)
         {
-            if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
-            {
-                _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
-            }
-            else if (!_sunMoonCycle.isNight && _coroutine == null)
-            {
-                _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
-            }
+            _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
         }
-        else
+        else if(_spawnPeriod && _coroutine == null)
         {
-            if (_coroutine == null)
+            _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+        }
+    }
+
+    private void GetBottomPositions(List<GameObject> prefabs, List<float> bottomPositions, string type)
+    {
+        if (prefabs == null || bottomPositions == null)
+        {
+            Debug.LogWarning($"{type} Prefabs ¶Ç´Â ¸®½ºÆ®°¡ ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            return;
+        }
+
+        foreach (GameObject prefab in prefabs)
+        {
+            if (prefab.TryGetComponent(out Collider collider))
             {
-                enemySpawnCount = 300;
-                _coroutine = StartCoroutine(EndingGame());
+                bottomPositions.Add(collider.bounds.min.y);
+            }
+            else
+            {
+                Debug.LogWarning($"{prefab.name} ({type}) ¿ÀºêÁ§Æ®¿¡ Collider°¡ ¾ø½À´Ï´Ù!");
             }
         }
     }
 
-
     void SpawnRandom(SpawnPrefabType type)
     {
-        if (type == SpawnPrefabType.Morning && activeMorningObjects.Count >= maxResourceCount)
-        {
-            //Debug.Log("ì´ë¯¸ ìµœëŒ€ ê°œìˆ˜ì…ë‹ˆë‹¤.");
-            return;
-        }
-
         List<GameObject> spawnPrefabs;
+        List<float> spawnPositionsY = new List<float>();
 
         Vector3 randomPosition;
 
@@ -98,9 +124,11 @@ public class SpawnAreas : Poolable
         {
             case SpawnPrefabType.Night:
                 spawnPrefabs = enemyPrefabs;
+                spawnPositionsY = _enemyBottomPosition;
                 break;
             case SpawnPrefabType.Morning:
                 spawnPrefabs = resourcePrefabs;
+                spawnPositionsY = _resourceBottomPosition;
                 break;
             default:
                 spawnPrefabs = alwaysPrefabs;
@@ -111,7 +139,7 @@ public class SpawnAreas : Poolable
 
         if (spawnPrefabs.Count == 0 || spawnAreas.Count == 0)
         {
-            Debug.LogWarning("spawnPrefabs ë˜ëŠ” Spawn Areasê°€ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+            Debug.LogWarning("spawnPrefabs ¶Ç´Â Spawn Areas°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
             return;
         }
 
@@ -121,63 +149,39 @@ public class SpawnAreas : Poolable
 
         if ((int)type > spawnAreas.Count - 1)
         {
-            Debug.LogWarning($"{type}ì— í•´ë‹¹í•˜ëŠ” ìŠ¤í° ì§€ì—­ì´ ì—†ìŠµë‹ˆë‹¤.");
+            Debug.LogWarning($"{type}¿¡ ÇØ´çÇÏ´Â ½ºÆù Áö¿ªÀÌ ¾ø½À´Ï´Ù.");
             return;
         }
 
-        Rect randomArea = spawnAreas[(int)type]; // íƒ€ì…ì— ë§ëŠ” ìŠ¤í° ì§€ì—­ í• ë‹¹
+        Rect randomArea = spawnAreas[(int)type]; // Å¸ÀÔ¿¡ ¸Â´Â ½ºÆù Áö¿ª ÇÒ´ç
 
         do
         {
             randomPosition = new Vector3(
-            Random.Range(randomArea.xMin, randomArea.xMax), 100f,
+            Random.Range(randomArea.xMin, randomArea.xMax), spawnPositionsY[spawnKind],
             Random.Range(randomArea.yMin, randomArea.yMax));
-
-            RaycastHit hit;
-            if (Physics.Raycast(randomPosition, Vector3.down, out hit, Mathf.Infinity))
-            {
-                randomPosition.y = hit.point.y; // ì¶©ëŒ ì§€ì ì˜ Y ì¢Œí‘œ ì‚¬ìš©
-            }
-            else
-            {
-                Debug.LogWarning("Raycast ì‹¤íŒ¨: ë°”ë‹¥ì„ ì°¾ì§€ ëª»í•¨");
-                return;
-            }
         }
-        while (IsPositionOccupiedByOverlapSphere(randomPosition));  // íƒ€ì…ì— ë§ëŠ” ëœë¤ ìŠ¤í° ìœ„ì¹˜ ì €ì¥
+        while (IsPositionOccupiedByOverlapSphere(randomPosition));  // Å¸ÀÔ¿¡ ¸Â´Â ·£´ı ½ºÆù À§Ä¡ ÀúÀå
 
-        Poolable poolable = TestManager.Instance.poolManager.Get(randomPrefab);
+        GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
 
-        poolable.transform.position = randomPosition;
-        poolable.transform.rotation = Quaternion.identity;
-
-        //GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
-
-
-        if (type == SpawnPrefabType.Morning)
-        {
-            activeMorningObjects.Add(poolable.gameObject);
-            poolable.gameObject.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(poolable.gameObject);
-        }
+        spawnPrefab.transform.parent = transform;
     }
 
-
-    bool IsPositionOccupiedByOverlapSphere(Vector3 position) // ìŠ¤í° ì‹œ ì£¼ë³€ ì˜¤ë¸Œì íŠ¸ ì²´í¬ í•¨ìˆ˜
+    bool IsPositionOccupiedByOverlapSphere(Vector3 position) // ½ºÆù ½Ã ÁÖº¯ ¿ÀºêÁ§Æ® Ã¼Å© ÇÔ¼ö
     {
-        int layerMask = LayerMask.GetMask("Enemy", "Resource", "Player");  // "Enemy"ì™€ "Resource" ë ˆì´ì–´ë§Œ í™•ì¸
-        float checkRadius = 1f; // ì²´í¬í•  ë°˜ê²½
+        int layerMask = LayerMask.GetMask("Enemy", "Resource", "Player");  // "Enemy"¿Í "Resource" ·¹ÀÌ¾î¸¸ È®ÀÎ
+        float checkRadius = 1f; // Ã¼Å©ÇÒ ¹İ°æ
         return Physics.CheckSphere(position, checkRadius, layerMask);
     }
 
     void DayPass()
     {
-        if (enemySpawnRateUpDay != 0)
+        dDay++;
+        if (dDay % enemySpawnRateUpDay == 0)
         {
-            if (_sunMoonCycle.dDay % enemySpawnRateUpDay == 0)
-            {
-                enemySpawnCount += _countNum;
-                _countNum++;
-            }
+            enemySpawnCount += _countNum;
+            _countNum++;
         }
     }
 
@@ -189,51 +193,25 @@ public class SpawnAreas : Poolable
         if (type == SpawnPrefabType.Morning) spawnCount = resourceSpawnCount;
         else if (type == SpawnPrefabType.Night) spawnCount = enemySpawnCount;
 
-        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnCount;
-
         for (int i = 0; i < spawnCount; i++)
         {
             SpawnRandom(type);
             yield return new WaitForSeconds(spawnDelay);
         }
 
-        if (type == SpawnPrefabType.Night)
-        {
-            while (_sunMoonCycle.isNight)
-            {
-                yield return null;
-            }
-        }
-        else if (type == SpawnPrefabType.Morning)
-        {
-            while (!_sunMoonCycle.isNight)
-            {
-                yield return null;
-            }
-        }
+        yield return new WaitForSeconds(morningPeriod);
 
         switch (type)
         {
-            case SpawnPrefabType.Morning:
+            case SpawnPrefabType.Morning: _coroutine = null; break;
+            case SpawnPrefabType.Night: 
                 _coroutine = null;
-                break;
-            case SpawnPrefabType.Night:
-                _coroutine = null;
+                _nowTime = 0;
                 DayPass();
                 break;
             case SpawnPrefabType.Always: _alwaysCoroutine = null; break;
         }
     }
-
-    IEnumerator EndingGame()
-    {
-        for (int i = 0; i < enemySpawnCount; i++)
-        {
-            SpawnRandom(SpawnPrefabType.Night);
-            yield return new WaitForSeconds(0.05f);
-        }
-    }
-
 
 
     private void OnDrawGizmosSelected()

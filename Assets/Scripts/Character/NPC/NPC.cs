@@ -90,7 +90,7 @@ public abstract class NPC : Poolable, IDamageable
             ExplodeDrop(go);
         }
 
-        TestManager.Instance.poolManager.Release(this);
+        Destroy(gameObject);
     }
 
     void ExplodeDrop(GameObject go)

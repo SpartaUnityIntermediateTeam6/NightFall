@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IVisitable
 {
     //Reference
     private TPSCharacterController _controller;
@@ -11,15 +12,18 @@ public class PlayerController : MonoBehaviour
     private InputReader _inputReader;
     private Camera _camera;
 
+    public Inventory Inventory => _inventory;
+
+    public event Action OnInteractionEvent = delegate { };
+
     void Awake()
     {
         _controller = GetComponent<TPSCharacterController>();
         _stats = GetComponent<PlayerStats>();
         _inputReader = GetComponent<InputReader>();
+        _inventory = GetComponent<Inventory>();
         //Sample Code
         _camera = Camera.main;
-
-        //inventory = GetComponent<Inventory>();
 
         TestManager.Instance.player = this.transform;
     }
@@ -51,5 +55,20 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         _controller.Jump(_stats.JumpPower);
+    }
+
+    public void Interaction()
+    {
+        OnInteractionEvent?.Invoke();
+    }
+
+    public void Accept(IVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
+
+    public void Cancel(IVisitor visitor)
+    {
+        visitor.Leave(this);
     }
 }
