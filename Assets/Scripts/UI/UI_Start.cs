@@ -34,10 +34,6 @@ public class UI_Start : MonoBehaviour
 
         optionCloseButton.onClick.AddListener(CloseOption);
 
-        masterSlider.value = SoundManager.Instance.GetMasterVolume();
-        bgmSlider.value = SoundManager.Instance.GetBGMVolume();
-        sfxSlider.value = SoundManager.Instance.GetSFXVolume();
-
         masterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
         bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
         sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
@@ -48,6 +44,10 @@ public class UI_Start : MonoBehaviour
     private void Start()
     {
         SoundManager.Instance.PlayBGM("BGM_Day");
+
+        masterSlider.value = SoundManager.Instance.GetMasterVolume();
+        bgmSlider.value = SoundManager.Instance.GetBGMVolume();
+        sfxSlider.value = SoundManager.Instance.GetSFXVolume();
     }
 
     void OpenOption()
