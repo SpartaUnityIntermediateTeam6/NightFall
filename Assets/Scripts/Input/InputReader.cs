@@ -63,13 +63,14 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (context.performed) // 버튼이 눌렸을 때만 실행
         {
             OnAttackEvent?.Invoke();
+        }
+    }
 
     public void OnInteraction(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started)
         {
             OnInteractionEvent?.Invoke();
-
         }
     }
 }

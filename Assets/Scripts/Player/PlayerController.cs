@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour, IVisitable
 
     public event Action OnInteractionEvent = delegate { };
 
-
     void Awake()
     {
         _controller = GetComponent<TPSCharacterController>();
@@ -28,6 +27,9 @@ public class PlayerController : MonoBehaviour, IVisitable
         _camera = Camera.main;
 
         TestManager.Instance.player = this.transform;
+
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()

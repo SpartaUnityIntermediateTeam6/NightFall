@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using BuildingSystem;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
@@ -17,7 +16,10 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
-    void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
+    void OnTriggerEnter(Collider other)
+    {
+        other.GetComponent<IVisitable>()?.Accept(this);
+    }
 
     void OnTriggerExit(Collider other)
     {
@@ -48,7 +50,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
     }
 
     public void Interaction()
-    {   
+    {
         if (_playerCache == null)
             return;
 

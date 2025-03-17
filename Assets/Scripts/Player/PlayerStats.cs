@@ -17,10 +17,6 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
     private bool isSanityDecreasing = true; // 정신력 감소 활성화 여부
 
-    // Modifier Stats
-    private float _moveSpeed = 5f;
-    private float _jumpPower = 7f;
-
     // Event Channel
     [SerializeField] private BoundedValueGameEvent hpEventChannel;
     [SerializeField] private BoundedValueGameEvent sanityEventChannel;
