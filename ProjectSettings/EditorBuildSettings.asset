@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 41b0b2d9880a03c4cb3443984aba1241
+  - enabled: 1
+    path: Assets/Scenes/KSM.unity
+    guid: edf1ccf848e00fd46ab11ea0771ffefb
+  - enabled: 1
+    path: Assets/Scenes/KSM_Start.unity
+    guid: 4f69681d6c8e579409ea37d80ec85a89
   m_configObjects: {}

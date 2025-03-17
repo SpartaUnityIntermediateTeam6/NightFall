@@ -25,18 +25,22 @@ public abstract class NPC : Poolable, IDamageable
     [Header("Attacking")]
     public float detectDistance;
     public float attackRange;
+    [HideInInspector] public float zOffset;
     public float attackRate;
     public float attackDamage;
     [HideInInspector] public Transform beaconTarget;
-    //[HideInInspector] public Transform playerTarget;
 
+    public Animator animator;
     //private MeshRenderer[] meshRenderers;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        //meshRenderers = GetComponentsInChildren<MeshRenderer>();
         agent.speed = walkSpeed;
+        //meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        if(animator == null) animator = GetComponent<Animator>();
+
+        zOffset = GetComponent<Collider>().bounds.extents.z;
     }
 
     protected virtual void Start()
@@ -63,14 +67,19 @@ public abstract class NPC : Poolable, IDamageable
     public void TakeDamage(float damage)
     {
         health = Mathf.Max(health - damage, 0);
+
+        if (health <= 0) Dead();
     }
 
     [ContextMenu("Dead")]
     public void Dead()
     {
-        DropPrefab();
+        SetState(new IdleState(this));
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        animator.SetTrigger("dead");
 
-        Destroy(gameObject);
+        Invoke(nameof(DropPrefab), 1);
     }
 
     public void DropPrefab()
@@ -79,6 +88,8 @@ public abstract class NPC : Poolable, IDamageable
         {
             ExplodeDrop(go);
         }
+
+        Destroy(gameObject);
     }
 
     void ExplodeDrop(GameObject go)
