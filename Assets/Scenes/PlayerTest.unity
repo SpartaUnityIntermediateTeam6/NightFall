@@ -1304,7 +1304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8de98b565237994da41fd59324439d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 718327566}
+  animator: {fileID: 217659411}
   attackSoundManager: {fileID: 1712706454}
   cameraTransform: {fileID: 963194228}
   attackRange: 2
@@ -4541,11 +4541,6 @@ Transform:
 --- !u!4 &718327565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 439eab82915a559419e41c2a809b0974, type: 3}
-  m_PrefabInstance: {fileID: 922441010}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &718327566 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 439eab82915a559419e41c2a809b0974, type: 3}
   m_PrefabInstance: {fileID: 922441010}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &795697015
