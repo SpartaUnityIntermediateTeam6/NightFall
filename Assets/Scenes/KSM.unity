@@ -8767,12 +8767,13 @@ MonoBehaviour:
     width: 51.5
     height: 90.3
   enemyPrefabs:
-  - {fileID: 4550666282778274709, guid: d7694bc9d89792341beb111552aca57b, type: 3}
+  - {fileID: 7772691839334871840, guid: 45b600aefe85dd9409783f98bd95f432, type: 3}
+  - {fileID: 7683746843967978998, guid: 6f22d1382fdcab24691dc9bf6b5d4b60, type: 3}
   resourcePrefabs:
   - {fileID: 6715108962492213052, guid: 903f579cf44f7294283e767711583cb7, type: 3}
   - {fileID: 5385911026636077525, guid: e4916ee939c36584e91c854056068342, type: 3}
   - {fileID: 9165049786249271192, guid: fa798bb796fffaf428a9b1f804856f5c, type: 3}
-  - {fileID: 4550666282778274709, guid: b736c133ff09b1f488d61008b17edefe, type: 3}
+  - {fileID: 4550666282778274709, guid: cea780a191f4b8440a861429ebb3467b, type: 3}
   alwaysPrefabs: []
   spawnDelay: 0.04
   morningPeriod: 1
