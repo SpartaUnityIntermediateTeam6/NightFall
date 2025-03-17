@@ -1,15 +1,16 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Util
 {
-    public static T GetOrAddComponent<T>(this GameObject go) where T : MonoBehaviour
+    public static T GetOrAddComponent<T>(this GameObject go) where T : Component
     {
         return go.TryGetComponent<T>(out T component) ?  component : go.AddComponent<T>();
     }
 
     /// <summary>
-    /// Resources/Prefab Æú´õ ³»ÀÇ ÁöÁ¤µÈ °æ·Î¿¡¼­ PrefabÀ» ·ÎµåÇÏ¿© ÇÏÀÌ¾î¶óÅ°¿¡ Ãß°¡ÇÕ´Ï´Ù.
+    /// Resources/Prefab í´ë” ë‚´ì˜ ì§€ì •ëœ ê²½ë¡œì—ì„œ Prefabì„ ë¡œë“œí•˜ì—¬ í•˜ì´ì–´ë¼í‚¤ì— ì¶”ê°€í•©ë‹ˆë‹¤.
     /// </summary>
     public static GameObject InstantiatePrefab(string path, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
     {
@@ -24,7 +25,7 @@ public static class Util
     }
 
     /// <summary>
-    /// Resources/Prefab Æú´õ ³»ÀÇ ÁöÁ¤µÈ °æ·Î¿¡¼­ PrefabÀ» ·ÎµåÇÏ¿© Ãß°¡µÈ ÇÏÀÌ¾î¶óÅ°ÀÇ ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
+    /// Resources/Prefab í´ë” ë‚´ì˜ ì§€ì •ëœ ê²½ë¡œì—ì„œ Prefabì„ ë¡œë“œí•˜ì—¬ ì¶”ê°€ëœ í•˜ì´ì–´ë¼í‚¤ì˜ ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
     /// </summary>
     public static T InstantiatePrefabAndGetComponent<T>(string path, Vector3 position = default, Quaternion rotation = default, Transform parent = null) where T : Component
     {

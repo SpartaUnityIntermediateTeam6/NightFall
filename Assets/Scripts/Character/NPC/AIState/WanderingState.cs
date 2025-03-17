@@ -22,6 +22,7 @@ public class WanderingState : AIState
     {
         if(!npc.agent.pathPending && npc.agent.remainingDistance <= 0.5f)
         {
+            //npc.animator.SetBool("isMoving", false);
             waitTime -= Time.deltaTime;
             if(waitTime <= 0f)
             {
@@ -47,6 +48,7 @@ public class WanderingState : AIState
         {
             npc.agent.SetDestination(hit.position);
         }
+        //npc.animator.SetBool("isMoving", true);
         waitTime = Random.Range(npc.minWanderWaitTime, npc.maxWanderWaitTime);
     }
 }
