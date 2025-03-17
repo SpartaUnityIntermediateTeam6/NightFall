@@ -424,6 +424,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2224631629379079515}
+  - component: {fileID: 810262848596427168}
   - component: {fileID: 1689328422377287189}
   - component: {fileID: 660889131126976642}
   m_Layer: 0
@@ -450,6 +451,27 @@ Transform:
   - {fileID: 2744458613416315908}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &810262848596427168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385911026636077525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461b0b907bae1734f97357d18f09ac88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  dropOnDead:
+  - {fileID: 5398783356220101141, guid: 7b1c7b8233edb8d4b964aae5e4099ad3, type: 3}
+  - {fileID: 4939894178203630840, guid: 33d6cd8b99bcdd44cbb0b178f2846209, type: 3}
+  - {fileID: 6373988422950378310, guid: 938f5c6d8f569404ab076c6f782d22cb, type: 3}
+  - {fileID: 2883182246891195363, guid: 6bf3b97e803661c449b541b4bc0a3c7e, type: 3}
+  dropVerticalRange: 0
+  dropHorizontalRange: 0.1
+  dropForce: 5
 --- !u!136 &1689328422377287189
 CapsuleCollider:
   m_ObjectHideFlags: 0

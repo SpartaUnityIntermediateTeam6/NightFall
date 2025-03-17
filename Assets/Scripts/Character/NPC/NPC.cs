@@ -72,10 +72,12 @@ public abstract class NPC : Poolable, IDamageable
     [ContextMenu("Dead")]
     public void Dead()
     {
+        SetState(new IdleState(this));
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         animator.SetTrigger("dead");
-        Invoke(nameof(DropPrefab), 1);
 
-        Destroy(gameObject);
+        Invoke(nameof(DropPrefab), 1);
     }
 
     public void DropPrefab()
@@ -84,6 +86,8 @@ public abstract class NPC : Poolable, IDamageable
         {
             ExplodeDrop(go);
         }
+
+        Destroy(gameObject);
     }
 
     void ExplodeDrop(GameObject go)

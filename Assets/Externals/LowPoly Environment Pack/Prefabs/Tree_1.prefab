@@ -293,6 +293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4987703534332377790}
+  - component: {fileID: 5308424782575433623}
   - component: {fileID: 2007574458942363669}
   - component: {fileID: 1128801696073635560}
   m_Layer: 0
@@ -319,6 +320,27 @@ Transform:
   - {fileID: 675362773351243871}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5308424782575433623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6715108962492213052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461b0b907bae1734f97357d18f09ac88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  dropOnDead:
+  - {fileID: 5398783356220101141, guid: 7b1c7b8233edb8d4b964aae5e4099ad3, type: 3}
+  - {fileID: 4939894178203630840, guid: 33d6cd8b99bcdd44cbb0b178f2846209, type: 3}
+  - {fileID: 6373988422950378310, guid: 938f5c6d8f569404ab076c6f782d22cb, type: 3}
+  - {fileID: 2883182246891195363, guid: 6bf3b97e803661c449b541b4bc0a3c7e, type: 3}
+  dropVerticalRange: 0
+  dropHorizontalRange: 0.1
+  dropForce: 5
 --- !u!136 &2007574458942363669
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -354,7 +376,7 @@ NavMeshObstacle:
   m_Shape: 0
   m_Extents: {x: 0.86, y: 4.482, z: 0.86}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.02, y: 3.5, z: 0.2}
   m_TimeToStationary: 0.5

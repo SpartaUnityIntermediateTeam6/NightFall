@@ -1797,7 +1797,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   walkSpeed: 3
-  dropOnDead: []
+  dropOnDead:
+  - {fileID: 1936239808558425968, guid: 5f7f1ff132b8a4b46b316781fb41c548, type: 3}
   dropVerticalRange: 0
   dropHorizontalRange: 0
   dropForce: 0
