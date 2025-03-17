@@ -20,6 +20,8 @@ public class ButtonOnClickAddListener : MonoBehaviour
         {
             _button.onClick.AddListener(addEvent);
         }
+
+        
     }
 
     public void RemoveAllAndAdd(UnityAction addEvent)

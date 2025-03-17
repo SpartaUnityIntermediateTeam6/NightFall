@@ -6,45 +6,44 @@ using UnityEngine.UI;
 
 public class BuildUI : MonoBehaviour
 {
-    [SerializeField] private GameObject content;
-    [SerializeField] private GameObject slotContent;
+    [SerializeField] private GameObject view;
+    [SerializeField] private GameObject elementParent;
     [SerializeField] private GameObject buildInfoElementPrefab;
 
     //Sample Code
-    private List<GameObject> _slots = new();
+    private readonly List<GameObject> _elementCache = new();
 
-    public void UpdateUI(BuildRecipeData data)
+    void OnEnable()
     {
-        _slots.ForEach(go => Destroy(go));
-        _slots.Clear();
-
-        if (data == null)
-        {
-            content.SetActive(false);
-            return;
-        }
-
-        content.SetActive(!content.activeInHierarchy);
-        
-        foreach (var iter in data.recipeDates)
-        {
-            //Sample Code
-            //프리펩 동적생성 or 오브젝트풀
-            var go = Instantiate(buildInfoElementPrefab, slotContent.transform);
-
-            go.SetActive(true);
-            go.GetComponent<Image>().sprite = iter.itemData.IconSprite;
-
-            //int currentCount = data.Inventory.GetTotalAmount(iter.item);
-
-            //go.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
-               // $"{currentCount} / {iter.requiredAmount}";
-
-            _slots.Add(go);
-
-            //Sample Code
-        }
+        EventBus.Subscribe<BuildInteractionEvent>(OnBuildInteraction);
+        view.SetActive(false);
     }
 
-    void OnEnable() => content.SetActive(false);
+    void OnDisable() => EventBus.Unsubscribe<BuildInteractionEvent>(OnBuildInteraction);
+
+    private void OnBuildInteraction(BuildInteractionEvent eventInfo)
+    {
+        if (eventInfo == null)
+            return;
+
+        _elementCache.ForEach(s => Destroy(s));
+        _elementCache.Clear();
+        view.gameObject.SetActive(true);
+
+        for(int i = 0; i < eventInfo.buildings.Count; i++)
+        {
+            var iter = eventInfo.buildings[i];
+            var index = i;
+            var go = Instantiate(buildInfoElementPrefab, elementParent.transform).GetComponent<BuildingElement>();
+
+            go.gameObject.SetActive(true);
+            go.SetBuildingInfo(iter, eventInfo.inventory, () =>
+            {
+                eventInfo.onButtonEvent.Invoke(index);
+                view.gameObject.SetActive(false);
+            });
+
+            _elementCache.Add(go.gameObject);
+        }
+    }
 }

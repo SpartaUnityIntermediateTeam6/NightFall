@@ -6,13 +6,7 @@ using System;
 
 public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
-    [SerializeField] private Building buildingPrefab;
-    [SerializeField] private List<Building> buildingList = new();
-    //[SerializeField] private BuildRecipeData recipeData;
-    [Header("SO Events")]
-    [SerializeField] private RecipeGameEvent recipeEventChannel;
-    [SerializeField] private InventoryGameEvent inventoryEventChannel;
-    [SerializeField] private UnityActionGameEvent buildUIEventChannel;
+    [SerializeField] private List<Building> buildingPrefabs = new();
 
     [Header("Layers")]
     [SerializeField] private LayerMask targetLayers;
@@ -26,20 +20,24 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
     void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
 
-    public void TryBuild()
+    public void TryBuild(int index)
     {
-        if (_builderStrategy.CanBuild(buildingPrefab) && _playerCache != null)
+        if (index >= buildingPrefabs.Count)
+            return;
+
+        if (_builderStrategy.CanBuild(buildingPrefabs[index]) && _playerCache != null)
         {
             var inventory = _playerCache.Inventory;
 
-            //foreach (var iter in recipeData.recipeDates)
-            //{
-            //    if (inventory.GetTotalAmount(iter.itemData) < iter.requiredAmount)
-            //        return;
-            //}
+            foreach (var iter in buildingPrefabs[index].RecipeData.recipeDates)
+            {
+                if (inventory.GetTotalAmount(iter.itemData) < iter.requiredAmount)
+                    return;
+            }
+            buildingPrefabs[index].RecipeData.recipeDates.ForEach(r => inventory.TryConsumeItem(r.itemData,
+                r.requiredAmount));
 
-            //recipeData.recipeDates.ForEach(d => inventory.TryConsumeItem(d.itemData, d.requiredAmount));
-            _builderStrategy.Build(buildingPrefab);
+            _builderStrategy.Build(buildingPrefabs[index]);
         }
     }
 
@@ -48,9 +46,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         if (_playerCache == null)
             return;
 
-        buildUIEventChannel?.Raise(TryBuild);
-        //recipeEventChannel?.Raise(recipeData);
-        inventoryEventChannel?.Raise(_playerCache.Inventory);
+        EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild));
     }
 
     public void Visit<T>(T visitable) where T : Component, IVisitable
@@ -68,7 +64,20 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         {
             player.OnInteractionEvent -= Interaction;
             _playerCache = null;
-            recipeEventChannel?.Raise(null);
         }
+    }
+}
+
+public class BuildInteractionEvent : IGameEvent
+{
+    public readonly List<Building> buildings = new();
+    public readonly Inventory inventory;
+    public readonly Action<int> onButtonEvent = delegate { };
+
+    public BuildInteractionEvent(List<Building> buildingsInfo, Inventory inventory, Action<int> onButtonEvent)
+    {
+        buildings = buildingsInfo;
+        this.inventory = inventory;
+        this.onButtonEvent = onButtonEvent;
     }
 }
