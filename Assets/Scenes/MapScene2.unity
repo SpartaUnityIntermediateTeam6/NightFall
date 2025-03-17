@@ -2200,6 +2200,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 10
+  cone: {fileID: 0}
+  floatingSpeed: 0
+  floatingHeight: 0
+  rotateSpeed: 0
 --- !u!65 &325149416
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5177,14 +5181,14 @@ MonoBehaviour:
   bigTimeArrow: {fileID: 331997949}
   skyBoxMaterial: {fileID: 2100000, guid: c4e2db44d5336e24799b6d1198236332, type: 2}
   cycleDelay: 1
-  dDay: 0
+  dDay: 3
   time: 0
   startTime: 0
   isNextDay: 0
   isNight: 0
   isRote: 0
-  sunTime: 5
-  moonTime: 10
+  sunTime: 2
+  moonTime: 5
   sun: {fileID: 705507994}
   sunColor:
     serializedVersion: 2
