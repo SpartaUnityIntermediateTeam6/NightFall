@@ -6,11 +6,29 @@ public class TestBeacon : MonoBehaviour, IDamageable
     public float hp = 10;
     private float _maxHP;
 
+    [Header("Floating")]
+    [SerializeField] private Transform cone;
+    public float floatingSpeed;
+    public float floatingHeight;
+    public float rotateSpeed;
+    private Vector3 _startPos;
+
     private void Awake()
     {
         TestManager.Instance.beacon = this;
 
         _maxHP = hp;
+
+        cone = transform.GetChild(0);
+        _startPos = cone.position;
+    }
+
+    private void Update()
+    {
+        float floatY = _startPos.y + (Mathf.Sin(Time.time * floatingSpeed) + 1) * floatingHeight;
+        cone.position = new Vector3(_startPos.x, floatY, _startPos.z);
+
+        cone.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
     }
 
     public void Heal(int amount)
@@ -21,7 +39,7 @@ public class TestBeacon : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         hp = Mathf.Max(hp - damage, 0);
-        Debug.Log($"∫Òƒ‹ ∞¯∞›. ≥≤¿∫ √º∑¬: {hp}");
+        Debug.Log($"ÎπÑÏΩò Í≥µÍ≤©. ÎÇ®ÏùÄ Ï≤¥Î†•: {hp}");
         if (hp <= 0) Dead();
     }
 
