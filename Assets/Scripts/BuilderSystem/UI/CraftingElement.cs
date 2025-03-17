@@ -1,28 +1,31 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
+using System;
 
-public class BuildingElement : MonoBehaviour
+public class CraftingElement : MonoBehaviour
 {
+    [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI nameTmp;
     [SerializeField] private TextMeshProUGUI descTmp;
     [SerializeField] private Button buildBtn;
     [SerializeField] private GameObject recipeInfoElementPrefab;
     [SerializeField] private GameObject elementParent;
 
-    public void SetElement(Building building, Inventory inventory, Action buttonEvent)
+    public void SetElement(ItemRecipeData building, Inventory inventory, Action buttonEvent)
     {
-        nameTmp.text = building.BuildingName;
-        descTmp.text = building.BuildingDescription;
+        nameTmp.text = building.resultItem.Name;
+        descTmp.text = building.resultItem.Tooltip;
+        itemIcon.sprite = building.resultItem.IconSprite;
+
         buildBtn.onClick.AddListener(() =>
         {
             buttonEvent?.Invoke();
         });
 
-        foreach (var iter in building.RecipeData.recipeDates)
+        foreach (var iter in building.recipeDates)
         {
             var go = Instantiate(recipeInfoElementPrefab, elementParent.transform);
             go.SetActive(true);

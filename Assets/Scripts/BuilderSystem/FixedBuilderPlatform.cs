@@ -46,6 +46,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         if (_playerCache == null)
             return;
 
+        //생성해서 사용
         EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild));
     }
 

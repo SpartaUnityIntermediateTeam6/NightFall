@@ -9,6 +9,8 @@ public class Building : MonoBehaviour, IVisitor
     [SerializeField] protected string buildingName;
     [SerializeField, TextArea] protected string buildingDescription;
 
+    protected PlayerController _playerCache;
+
     public BuildRecipeData RecipeData => recipeData;
     public string BuildingName => buildingName;
     public string BuildingDescription => buildingDescription;
@@ -16,23 +18,25 @@ public class Building : MonoBehaviour, IVisitor
     void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
     void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
 
-    public void Leave<T>(T visitable) where T : Component, IVisitable
-    {
-        if (visitable is PlayerController player)
-        {
-            player.OnInteractionEvent += Interaction;
-        }
-    }
-
     public void Visit<T>(T visitable) where T : Component, IVisitable
     {
         if (visitable is PlayerController player)
         {
-            player.OnInteractionEvent -= Interaction;
+            player.OnInteractionEvent += Interaction;
+            _playerCache = player;
         }
     }
 
-    private void Interaction()
+    public void Leave<T>(T visitable) where T : Component, IVisitable
+    {
+        if (visitable is PlayerController player)
+        {
+            player.OnInteractionEvent -= Interaction;
+            _playerCache = null;
+        }
+    }
+
+    protected virtual void Interaction()
     {
 
     }

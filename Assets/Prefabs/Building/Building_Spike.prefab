@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a57f4ee5d326d4db15086f959e5943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recipeData: {fileID: 11400000, guid: 68955092a68563c459840deefe756cd9, type: 2}
+  buildingName: Spike Building
+  buildingDescription: Spike
+  damage: 0
 --- !u!65 &5249405627409592702
 BoxCollider:
   m_ObjectHideFlags: 0

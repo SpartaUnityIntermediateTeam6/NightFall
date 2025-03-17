@@ -1,27 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class BuildUI : MonoBehaviour
+public class CraftingUI : MonoBehaviour
 {
     [SerializeField] private GameObject view;
     [SerializeField] private GameObject elementParent;
-    [SerializeField] private GameObject buildInfoElementPrefab;
+    [SerializeField] private GameObject craftingInfoElementPrefab;
 
     //Sample Code
     private readonly List<GameObject> _elementCache = new();
 
     void OnEnable()
     {
-        EventBus.Subscribe<BuildInteractionEvent>(OnBuildInteraction);
+        EventBus.Subscribe<CraftingInteractionEvent>(OnBuildInteraction);
         view.SetActive(false);
     }
 
-    void OnDisable() => EventBus.Unsubscribe<BuildInteractionEvent>(OnBuildInteraction);
+    void OnDisable() => EventBus.Unsubscribe<CraftingInteractionEvent>(OnBuildInteraction);
 
-    private void OnBuildInteraction(BuildInteractionEvent eventInfo)
+    private void OnBuildInteraction(CraftingInteractionEvent eventInfo)
     {
         if (eventInfo == null)
             return;
@@ -30,15 +28,13 @@ public class BuildUI : MonoBehaviour
         _elementCache.Clear();
         view.gameObject.SetActive(true);
 
-        for(int i = 0; i < eventInfo.buildings.Count; i++)
+        for (int i = 0; i < eventInfo.recipes.Count; i++)
         {
-            var iter = eventInfo.buildings[i];
             var index = i;
-            var go = Instantiate(buildInfoElementPrefab, elementParent.transform).GetComponent<BuildingElement>();
+            var go = Instantiate(craftingInfoElementPrefab, elementParent.transform).GetComponent<CraftingElement>();
 
             go.gameObject.SetActive(true);
-
-            go.SetElement(iter, eventInfo.inventory, () =>
+            go.SetElement(eventInfo.recipes[i], eventInfo.inventory, () =>
             {
                 eventInfo.onButtonEvent.Invoke(index);
                 view.gameObject.SetActive(false);

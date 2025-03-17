@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace BuildingSystem
@@ -25,7 +26,10 @@ namespace BuildingSystem
 
         public bool CanBuild(Building buildable)
         {
-            BoxCollider buildingCollider = buildable.GetComponent<BoxCollider>();
+            var buildingCollider = buildable.GetComponents<BoxCollider>().FirstOrDefault(c => !c.isTrigger);
+
+            if (buildingCollider == null)
+                return false;
 
             var centerPos = _builderColliderCache.bounds.center + 
                 Vector3.up * _builderColliderCache.bounds.extents.y * 0.5f + 
