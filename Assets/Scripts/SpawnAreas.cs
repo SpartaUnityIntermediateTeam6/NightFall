@@ -11,7 +11,7 @@ public enum SpawnPrefabType
     Always
 }
 
-public class SpawnAreas : MonoBehaviour
+public class SpawnAreas : Poolable
 {
     public TextMeshProUGUI dayText;
 
@@ -53,14 +53,6 @@ public class SpawnAreas : MonoBehaviour
 
     public SunMoonCycle _sunMoonCycle;
 
-    private void Start()
-    {
-        //_resourceBottomPosition = new List<float>();
-        //_enemyBottomPosition = new List<float>();
-
-        //GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
-        //GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
-    }
 
     private void Update()
     {
@@ -91,30 +83,6 @@ public class SpawnAreas : MonoBehaviour
         }
     }
 
-    /*
-    private void GetBottomPositions(List<GameObject> prefabs, List<float> bottomPositions, string type)
-    {
-        
-        if (prefabs == null || bottomPositions == null)
-        {
-            Debug.LogWarning($"{type} Prefabs 또는 리스트가 초기화되지 않았습니다.");
-            return;
-        }
-
-        foreach (GameObject prefab in prefabs)
-        {
-            if (prefab.TryGetComponent(out Collider collider))
-            {
-                bottomPositions.Add(collider.bounds.min.y);
-            }
-            else
-            {
-                Debug.LogWarning($"{prefab.name} ({type}) 오브젝트에 Collider가 없습니다!");
-            }
-        }
-        
-    }
-    */
 
     void SpawnRandom(SpawnPrefabType type)
     {
@@ -125,7 +93,6 @@ public class SpawnAreas : MonoBehaviour
         }
 
         List<GameObject> spawnPrefabs;
-        //List<float> spawnPositionsY = new List<float>();
 
         Vector3 randomPosition;
 
@@ -133,11 +100,9 @@ public class SpawnAreas : MonoBehaviour
         {
             case SpawnPrefabType.Night:
                 spawnPrefabs = enemyPrefabs;
-                //spawnPositionsY = _enemyBottomPosition;
                 break;
             case SpawnPrefabType.Morning:
                 spawnPrefabs = resourcePrefabs;
-                //spawnPositionsY = _resourceBottomPosition;
                 break;
             default:
                 spawnPrefabs = alwaysPrefabs;
@@ -183,7 +148,14 @@ public class SpawnAreas : MonoBehaviour
         }
         while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
-        GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
+        Poolable poolable = TestManager.Instance.poolManager.Get(randomPrefab);
+        GameObject spawnPrefab = poolable.gameObject;
+        spawnPrefab.transform.position = randomPosition;
+        spawnPrefab.transform.rotation = Quaternion.identity;
+
+        //GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
+
+        
 
         spawnPrefab.transform.parent = transform;
 
@@ -193,6 +165,7 @@ public class SpawnAreas : MonoBehaviour
             spawnPrefab.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(spawnPrefab);
         }
     }
+
 
     bool IsPositionOccupiedByOverlapSphere(Vector3 position) // 스폰 시 주변 오브젝트 체크 함수
     {
