@@ -87,7 +87,7 @@ public class PoolManager
         _poolDict.Add(original.name, pool);
     }
 
-    public Poolable Get(GameObject original, Transform parent = null)
+    public Poolable Get(GameObject original, int count = 10, Transform parent = null)
     {
         if (_poolDict.ContainsKey(original.name) == false) CreatePool(original);
 

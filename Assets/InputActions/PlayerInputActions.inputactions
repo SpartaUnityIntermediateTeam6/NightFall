@@ -33,9 +33,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Interaction",
+                    "name": "Attack",
                     "type": "Button",
-                    "id": "db87a860-f6a6-4e61-bf05-69c7f2361ed5",
+                    "id": "10993f83-9b0f-4e69-99fb-9fca0fbfda24",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -122,12 +122,12 @@
                 },
                 {
                     "name": "",
-                    "id": "087b6970-701b-4ef0-a801-c29d59b60fbc",
-                    "path": "<Keyboard>/f",
+                    "id": "07d577f2-db20-47f5-b32b-dcfdb7e7746a",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC",
-                    "action": "Interaction",
+                    "groups": "",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
