@@ -9,11 +9,14 @@ public class SunMoonCycle : MonoBehaviour
     public RectTransform timeArrow; // UI 화살표의 RectTransform
     public RectTransform sunMoonTimer;
     public RectTransform bigSunMoonTimer;
+    public RectTransform bigTimeArrow;
     public Material skyBoxMaterial;
-    public int dDay;
+
     public float cycleDelay;
 
     public event Action dayNight;
+
+    public int dDay;
 
     [Range(0.0f, 1f)]
     public float time;
@@ -68,12 +71,6 @@ public class SunMoonCycle : MonoBehaviour
             DayNightUpdate();
         }
 
-        if(Vector3.Distance(bigSunMoonTimer.eulerAngles, new Vector3(0, 0, isNight ? 180.0f : 0)) < 0.1f && isRote)
-        {
-            bigSunMoonTimer.gameObject.SetActive(false);
-            sunMoonTimer.Rotate(0, 0, 180f);
-            isRote = false;
-        }
         
         UpdateLighting(sun, sunColor, sunIntensity);
         sun.intensity = sunIntensity.Evaluate(time);
@@ -99,8 +96,16 @@ public class SunMoonCycle : MonoBehaviour
         dayNight?.Invoke();
 
         bigSunMoonTimer.gameObject.SetActive(true);
-        bigSunMoonTimer.DORotate(new Vector3(0, 0, isNight ? -180f : 0f), cycleDelay).SetEase(Ease.InOutQuad);
-        
+        bigTimeArrow.gameObject.SetActive(true);
+
+        bigSunMoonTimer.DOLocalRotate(bigSunMoonTimer.transform.eulerAngles + new Vector3(0, 0, 180f), cycleDelay).SetEase(Ease.InOutQuad).OnComplete(() => 
+            { 
+                bigSunMoonTimer.gameObject.SetActive(false);
+                bigTimeArrow.gameObject.SetActive(false);
+                sunMoonTimer.Rotate(0, 0, 180f); 
+                isRote = false; 
+            });
+
         if (!isNight) dayText.text = (++dDay).ToString();
     }
 

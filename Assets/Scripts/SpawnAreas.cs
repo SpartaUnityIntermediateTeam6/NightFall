@@ -55,11 +55,11 @@ public class SpawnAreas : MonoBehaviour
 
     private void Start()
     { 
-        _resourceBottomPosition = new List<float>();
-        _enemyBottomPosition = new List<float>();
+        //_resourceBottomPosition = new List<float>();
+        //_enemyBottomPosition = new List<float>();
 
-        GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
-        GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
+        //GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
+        //GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
     }
 
     private void Update()
@@ -80,8 +80,10 @@ public class SpawnAreas : MonoBehaviour
         }
     }
 
+    /*
     private void GetBottomPositions(List<GameObject> prefabs, List<float> bottomPositions, string type)
     {
+        
         if (prefabs == null || bottomPositions == null)
         {
             Debug.LogWarning($"{type} Prefabs 또는 리스트가 초기화되지 않았습니다.");
@@ -99,18 +101,20 @@ public class SpawnAreas : MonoBehaviour
                 Debug.LogWarning($"{prefab.name} ({type}) 오브젝트에 Collider가 없습니다!");
             }
         }
+        
     }
+    */
 
     void SpawnRandom(SpawnPrefabType type)
     {
-        if(activeMorningObjects.Count >= maxResourceCount)
+        if(type == SpawnPrefabType.Morning && activeMorningObjects.Count >= maxResourceCount)
         {
             //Debug.Log("이미 최대 개수입니다.");
             return;
         }
 
         List<GameObject> spawnPrefabs;
-        List<float> spawnPositionsY = new List<float>();
+        //List<float> spawnPositionsY = new List<float>();
 
         Vector3 randomPosition;
 
@@ -118,11 +122,11 @@ public class SpawnAreas : MonoBehaviour
         {
             case SpawnPrefabType.Night:
                 spawnPrefabs = enemyPrefabs;
-                spawnPositionsY = _enemyBottomPosition;
+                //spawnPositionsY = _enemyBottomPosition;
                 break;
             case SpawnPrefabType.Morning:
                 spawnPrefabs = resourcePrefabs;
-                spawnPositionsY = _resourceBottomPosition;
+                //spawnPositionsY = _resourceBottomPosition;
                 break;
             default:
                 spawnPrefabs = alwaysPrefabs;
@@ -206,7 +210,7 @@ public class SpawnAreas : MonoBehaviour
         if (type == SpawnPrefabType.Morning) spawnCount = resourceSpawnCount;
         else if (type == SpawnPrefabType.Night) spawnCount = enemySpawnCount;
 
-        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnDelay;
+        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnCount;
 
         for (int i = 0; i < spawnCount; i++)
         {
