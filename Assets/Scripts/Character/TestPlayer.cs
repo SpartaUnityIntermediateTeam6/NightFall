@@ -8,7 +8,7 @@ public class TestPlayer : MonoBehaviour, IDamageable
     private void Awake()
     {
         //TestManager.Instance.player = transform;
-        SoundManager.Instance.PlayBGM("BGM_Day");
+        //SoundManager.Instance.PlayBGM("BGM_Day");
     }
 
     public void TakeDamage(float damage)
