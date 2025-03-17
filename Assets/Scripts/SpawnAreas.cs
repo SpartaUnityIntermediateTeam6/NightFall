@@ -152,8 +152,19 @@ public class SpawnAreas : MonoBehaviour
         do
         {
             randomPosition = new Vector3(
-            Random.Range(randomArea.xMin, randomArea.xMax), spawnPositionsY[spawnKind],
+            Random.Range(randomArea.xMin, randomArea.xMax), 100f,
             Random.Range(randomArea.yMin, randomArea.yMax));
+
+            RaycastHit hit;
+            if (Physics.Raycast(randomPosition, Vector3.down, out hit, Mathf.Infinity))
+            {
+                randomPosition.y = hit.point.y; // 충돌 지점의 Y 좌표 사용
+            }
+            else
+            {
+                Debug.LogWarning("Raycast 실패: 바닥을 찾지 못함");
+                return;
+            }
         }
         while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
