@@ -35,7 +35,7 @@ public class SpawnAreas : MonoBehaviour
 
     [SerializeField] private int enemySpawnRateUpDay;  // 적 스폰 비율 증가 날짜
 
-    [SerializeField ]private int maxResourceCount;
+    [SerializeField] private int maxResourceCount;
 
     private List<GameObject> activeMorningObjects = new List<GameObject>();
 
@@ -54,12 +54,12 @@ public class SpawnAreas : MonoBehaviour
     public SunMoonCycle _sunMoonCycle;
 
     private void Start()
-    { 
-        _resourceBottomPosition = new List<float>();
-        _enemyBottomPosition = new List<float>();
+    {
+        //_resourceBottomPosition = new List<float>();
+        //_enemyBottomPosition = new List<float>();
 
-        GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
-        GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
+        //GetBottomPositions(resourcePrefabs, _resourceBottomPosition, "Resource");
+        //GetBottomPositions(enemyPrefabs, _enemyBottomPosition, "Enemy");
     }
 
     private void Update()
@@ -70,18 +70,31 @@ public class SpawnAreas : MonoBehaviour
             _alwaysSpawnTime = Time.time + alwaysPeriod;
         }
 
-        if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
+        if (_sunMoonCycle.dDay <= 3)
         {
-            _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
+            if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
+            {
+                _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Night));
+            }
+            else if (!_sunMoonCycle.isNight && _coroutine == null)
+            {
+                _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+            }
         }
-        else if (!_sunMoonCycle.isNight && _coroutine == null)
+        else
         {
-            _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+            if (_coroutine == null)
+            {
+                enemySpawnCount = 100;
+                _coroutine = StartCoroutine(EndingGame());
+            }
         }
     }
 
+    /*
     private void GetBottomPositions(List<GameObject> prefabs, List<float> bottomPositions, string type)
     {
+        
         if (prefabs == null || bottomPositions == null)
         {
             Debug.LogWarning($"{type} Prefabs 또는 리스트가 초기화되지 않았습니다.");
@@ -99,18 +112,20 @@ public class SpawnAreas : MonoBehaviour
                 Debug.LogWarning($"{prefab.name} ({type}) 오브젝트에 Collider가 없습니다!");
             }
         }
+        
     }
+    */
 
     void SpawnRandom(SpawnPrefabType type)
     {
-        if(activeMorningObjects.Count >= maxResourceCount)
+        if (type == SpawnPrefabType.Morning && activeMorningObjects.Count >= maxResourceCount)
         {
             //Debug.Log("이미 최대 개수입니다.");
             return;
         }
 
         List<GameObject> spawnPrefabs;
-        List<float> spawnPositionsY = new List<float>();
+        //List<float> spawnPositionsY = new List<float>();
 
         Vector3 randomPosition;
 
@@ -118,11 +133,11 @@ public class SpawnAreas : MonoBehaviour
         {
             case SpawnPrefabType.Night:
                 spawnPrefabs = enemyPrefabs;
-                spawnPositionsY = _enemyBottomPosition;
+                //spawnPositionsY = _enemyBottomPosition;
                 break;
             case SpawnPrefabType.Morning:
                 spawnPrefabs = resourcePrefabs;
-                spawnPositionsY = _resourceBottomPosition;
+                //spawnPositionsY = _resourceBottomPosition;
                 break;
             default:
                 spawnPrefabs = alwaysPrefabs;
@@ -152,8 +167,19 @@ public class SpawnAreas : MonoBehaviour
         do
         {
             randomPosition = new Vector3(
-            Random.Range(randomArea.xMin, randomArea.xMax), spawnPositionsY[spawnKind],
+            Random.Range(randomArea.xMin, randomArea.xMax), 100f,
             Random.Range(randomArea.yMin, randomArea.yMax));
+
+            RaycastHit hit;
+            if (Physics.Raycast(randomPosition, Vector3.down, out hit, Mathf.Infinity))
+            {
+                randomPosition.y = hit.point.y; // 충돌 지점의 Y 좌표 사용
+            }
+            else
+            {
+                Debug.LogWarning("Raycast 실패: 바닥을 찾지 못함");
+                return;
+            }
         }
         while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
@@ -161,7 +187,7 @@ public class SpawnAreas : MonoBehaviour
 
         spawnPrefab.transform.parent = transform;
 
-        if(type == SpawnPrefabType.Morning)
+        if (type == SpawnPrefabType.Morning)
         {
             activeMorningObjects.Add(spawnPrefab);
             spawnPrefab.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(spawnPrefab);
@@ -195,7 +221,7 @@ public class SpawnAreas : MonoBehaviour
         if (type == SpawnPrefabType.Morning) spawnCount = resourceSpawnCount;
         else if (type == SpawnPrefabType.Night) spawnCount = enemySpawnCount;
 
-        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnDelay;
+        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnCount;
 
         for (int i = 0; i < spawnCount; i++)
         {
@@ -210,7 +236,7 @@ public class SpawnAreas : MonoBehaviour
                 yield return null;
             }
         }
-        else if(type == SpawnPrefabType.Morning)
+        else if (type == SpawnPrefabType.Morning)
         {
             while (!_sunMoonCycle.isNight)
             {
@@ -230,6 +256,16 @@ public class SpawnAreas : MonoBehaviour
             case SpawnPrefabType.Always: _alwaysCoroutine = null; break;
         }
     }
+
+    IEnumerator EndingGame()
+    {
+        for (int i = 0; i < enemySpawnCount; i++)
+        {
+            SpawnRandom(SpawnPrefabType.Night);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
 
 
     private void OnDrawGizmosSelected()

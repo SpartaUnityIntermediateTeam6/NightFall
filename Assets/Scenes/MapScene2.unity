@@ -2249,12 +2249,12 @@ GameObject:
   - component: {fileID: 331997951}
   - component: {fileID: 331997950}
   m_Layer: 5
-  m_Name: TimeArrow
+  m_Name: BigTimeArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &331997949
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2262,12 +2262,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331997948}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35420004, y: 0.17710002, z: 0.17710002}
+  m_LocalScale: {x: 0.98821807, y: 0.49410903, z: 0.49410903}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 732264628}
+  m_Father: {fileID: 1915557376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4747,7 +4747,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 450320453}
-  - {fileID: 331997949}
   m_Father: {fileID: 1915557376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5175,9 +5174,10 @@ MonoBehaviour:
   timeArrow: {fileID: 1018907130}
   sunMoonTimer: {fileID: 387540649}
   bigSunMoonTimer: {fileID: 732264628}
+  bigTimeArrow: {fileID: 331997949}
   skyBoxMaterial: {fileID: 2100000, guid: c4e2db44d5336e24799b6d1198236332, type: 2}
-  dDay: 0
   cycleDelay: 1
+  dDay: 0
   time: 0
   startTime: 0
   isNextDay: 0
@@ -11062,6 +11062,7 @@ RectTransform:
   - {fileID: 177280685}
   - {fileID: 99383324}
   - {fileID: 732264628}
+  - {fileID: 331997949}
   - {fileID: 1122747030}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
