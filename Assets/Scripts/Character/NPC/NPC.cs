@@ -30,7 +30,7 @@ public abstract class NPC : Poolable, IDamageable
     public float attackDamage;
     [HideInInspector] public Transform beaconTarget;
 
-    [HideInInspector] public Animator animator;
+    public Animator animator;
     //private MeshRenderer[] meshRenderers;
 
     private void Awake()
@@ -38,7 +38,7 @@ public abstract class NPC : Poolable, IDamageable
         agent = GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
         //meshRenderers = GetComponentsInChildren<MeshRenderer>();
-        animator = GetComponent<Animator>();
+        if(animator == null) animator = GetComponent<Animator>();
 
         zOffset = GetComponent<Collider>().bounds.extents.z;
     }
