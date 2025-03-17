@@ -45,8 +45,6 @@ public class SpawnAreas : Poolable
 
     Color[] _gizmoColor;
 
-    List<float> _resourceBottomPosition; // 자원 오브젝트 밑 부분
-    List<float> _enemyBottomPosition;    // 적 오브젝트 밑 부분
 
     private Coroutine _coroutine;
     private Coroutine _alwaysCoroutine;
@@ -77,7 +75,7 @@ public class SpawnAreas : Poolable
         {
             if (_coroutine == null)
             {
-                enemySpawnCount = 100;
+                enemySpawnCount = 300;
                 _coroutine = StartCoroutine(EndingGame());
             }
         }
@@ -149,20 +147,17 @@ public class SpawnAreas : Poolable
         while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
         Poolable poolable = TestManager.Instance.poolManager.Get(randomPrefab);
-        GameObject spawnPrefab = poolable.gameObject;
-        spawnPrefab.transform.position = randomPosition;
-        spawnPrefab.transform.rotation = Quaternion.identity;
+
+        poolable.transform.position = randomPosition;
+        poolable.transform.rotation = Quaternion.identity;
 
         //GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
 
-        
-
-        spawnPrefab.transform.parent = transform;
 
         if (type == SpawnPrefabType.Morning)
         {
-            activeMorningObjects.Add(spawnPrefab);
-            spawnPrefab.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(spawnPrefab);
+            activeMorningObjects.Add(poolable.gameObject);
+            poolable.gameObject.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(poolable.gameObject);
         }
     }
 

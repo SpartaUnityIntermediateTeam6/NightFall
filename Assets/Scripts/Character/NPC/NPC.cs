@@ -70,7 +70,7 @@ public abstract class NPC : Poolable, IDamageable
     {
         DropPrefab();
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public void DropPrefab()
@@ -79,6 +79,8 @@ public abstract class NPC : Poolable, IDamageable
         {
             ExplodeDrop(go);
         }
+
+        TestManager.Instance.poolManager.Release(this);
     }
 
     void ExplodeDrop(GameObject go)
