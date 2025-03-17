@@ -8,7 +8,7 @@ public class BuildUI : MonoBehaviour
 {
     [SerializeField] private GameObject content;
     [SerializeField] private GameObject slotContent;
-    [SerializeField] private GameObject recipePrefab;
+    [SerializeField] private GameObject buildInfoElementPrefab;
 
     //Sample Code
     private List<GameObject> _slots = new();
@@ -26,14 +26,14 @@ public class BuildUI : MonoBehaviour
 
         content.SetActive(!content.activeInHierarchy);
         
-        foreach (var iter in data.dates)
+        foreach (var iter in data.recipeDates)
         {
             //Sample Code
             //프리펩 동적생성 or 오브젝트풀
-            var go = Instantiate(recipePrefab, slotContent.transform);
+            var go = Instantiate(buildInfoElementPrefab, slotContent.transform);
 
             go.SetActive(true);
-            go.GetComponent<Image>().sprite = iter.item.IconSprite;
+            go.GetComponent<Image>().sprite = iter.itemData.IconSprite;
 
             //int currentCount = data.Inventory.GetTotalAmount(iter.item);
 

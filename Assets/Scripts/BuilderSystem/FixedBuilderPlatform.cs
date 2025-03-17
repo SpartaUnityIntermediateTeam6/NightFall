@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using BuildingSystem;
 using System;
+using Util.E;
 
 public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
     [SerializeField] private Building buildingPrefab;
-    [SerializeField] private BuildRecipeData recipeData;
+    [SerializeField] private List<Building> buildingList = new();
+    //[SerializeField] private BuildRecipeData recipeData;
     [Header("SO Events")]
     [SerializeField] private RecipeGameEvent recipeEventChannel;
     [SerializeField] private InventoryGameEvent inventoryEventChannel;
@@ -21,23 +23,9 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            //Interaction(null);
-        }
-    }
+    void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
 
-    void OnTriggerEnter(Collider other)
-    {
-        other.GetComponent<IVisitable>()?.Accept(this);
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        other.GetComponent<IVisitable>()?.Cancel(this);
-    }
+    void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
 
     public void TryBuild()
     {
@@ -45,15 +33,25 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
         {
             var inventory = _playerCache.Inventory;
 
-            foreach (var iter in recipeData.dates)
-            {
-                if (inventory.GetTotalAmount(iter.item) < iter.requiredAmount)
-                    return;
-            }
+            //foreach (var iter in recipeData.recipeDates)
+            //{
+            //    if (inventory.GetTotalAmount(iter.itemData) < iter.requiredAmount)
+            //        return;
+            //}
 
-            recipeData.dates.ForEach(d => inventory.TryConsumeItem(d.item, d.requiredAmount));
+            //recipeData.recipeDates.ForEach(d => inventory.TryConsumeItem(d.itemData, d.requiredAmount));
             _builderStrategy.Build(buildingPrefab);
         }
+    }
+
+    public void Interaction()
+    {   
+        if (_playerCache == null)
+            return;
+
+        buildUIEventChannel?.Raise(TryBuild);
+        //recipeEventChannel?.Raise(recipeData);
+        inventoryEventChannel?.Raise(_playerCache.Inventory);
     }
 
     public void Visit<T>(T visitable) where T : Component, IVisitable
@@ -73,15 +71,5 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
             _playerCache = null;
             recipeEventChannel?.Raise(null);
         }
-    }
-
-    public void Interaction()
-    {
-        if (_playerCache == null)
-            return;
-
-        buildUIEventChannel?.Raise(TryBuild);
-        recipeEventChannel?.Raise(recipeData);
-        inventoryEventChannel?.Raise(_playerCache.Inventory);
     }
 }
