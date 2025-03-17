@@ -174,16 +174,16 @@ ModelImporter:
       curves: []
       events:
       - time: 0.50153846
-        functionName: ApplyDamage()
-        data: ApplyDamage()
-        objectReferenceParameter: {fileID: 919132149155446097, guid: 439eab82915a559419e41c2a809b0974, type: 3}
+        functionName: ApplyDamage
+        data: 
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 1
-        functionName: EndAttack()
-        data: EndAttack()
-        objectReferenceParameter: {fileID: 919132149155446097, guid: 439eab82915a559419e41c2a809b0974, type: 3}
+        functionName: EndAttack
+        data: 
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
