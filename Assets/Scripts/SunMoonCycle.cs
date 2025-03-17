@@ -11,6 +11,7 @@ public class SunMoonCycle : MonoBehaviour
     public RectTransform bigSunMoonTimer;
     public Material skyBoxMaterial;
     public int dDay;
+    public float cycleDelay;
 
     public event Action dayNight;
 
@@ -94,9 +95,11 @@ public class SunMoonCycle : MonoBehaviour
         isRote = true;
         isNight = !isNight;
         time = isNight ? 0.5f : 0;
+
         dayNight?.Invoke();
+
         bigSunMoonTimer.gameObject.SetActive(true);
-        bigSunMoonTimer.DORotate(new Vector3(0, 0, isNight ? -180f : 0f), 1.0f).SetEase(Ease.InOutQuad);
+        bigSunMoonTimer.DORotate(new Vector3(0, 0, isNight ? -180f : 0f), cycleDelay).SetEase(Ease.InOutQuad);
         
         if (!isNight) dayText.text = (++dDay).ToString();
     }

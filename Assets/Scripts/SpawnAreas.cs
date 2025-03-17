@@ -35,6 +35,10 @@ public class SpawnAreas : MonoBehaviour
 
     [SerializeField] private int enemySpawnRateUpDay;  // 적 스폰 비율 증가 날짜
 
+    [SerializeField ]private int maxResourceCount;
+
+    private List<GameObject> activeMorningObjects = new List<GameObject>();
+
     private float _alwaysSpawnTime = 0f;  // always프리팹 스폰 시간
 
     private int _countNum = 1; // Enemy 스폰 증가 폭
@@ -99,6 +103,12 @@ public class SpawnAreas : MonoBehaviour
 
     void SpawnRandom(SpawnPrefabType type)
     {
+        if(activeMorningObjects.Count >= maxResourceCount)
+        {
+            //Debug.Log("이미 최대 개수입니다.");
+            return;
+        }
+
         List<GameObject> spawnPrefabs;
         List<float> spawnPositionsY = new List<float>();
 
@@ -150,6 +160,12 @@ public class SpawnAreas : MonoBehaviour
         GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
 
         spawnPrefab.transform.parent = transform;
+
+        if(type == SpawnPrefabType.Morning)
+        {
+            activeMorningObjects.Add(spawnPrefab);
+            spawnPrefab.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(spawnPrefab);
+        }
     }
 
     bool IsPositionOccupiedByOverlapSphere(Vector3 position) // 스폰 시 주변 오브젝트 체크 함수
@@ -181,7 +197,7 @@ public class SpawnAreas : MonoBehaviour
 
         if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnDelay;
 
-            for (int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < spawnCount; i++)
         {
             SpawnRandom(type);
             yield return new WaitForSeconds(spawnDelay);

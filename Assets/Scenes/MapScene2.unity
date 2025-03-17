@@ -5177,6 +5177,7 @@ MonoBehaviour:
   bigSunMoonTimer: {fileID: 732264628}
   skyBoxMaterial: {fileID: 2100000, guid: c4e2db44d5336e24799b6d1198236332, type: 2}
   dDay: 0
+  cycleDelay: 1
   time: 0
   startTime: 0
   isNextDay: 0
@@ -9528,6 +9529,7 @@ MonoBehaviour:
   enemySpawnCount: 2
   dDay: 0
   enemySpawnRateUpDay: 0
+  maxResourceCount: 8
   _sunMoonCycle: {fileID: 882707342}
 --- !u!1 &1602276676
 GameObject:
