@@ -20,8 +20,9 @@ public class WanderingState : AIState
 
     public override void FixedUpdateState()
     {
-        if(!npc.agent.pathPending && npc.agent.remainingDistance <= 0.5f)
+        if(!npc.agent.pathPending && npc.agent.remainingDistance <= 0.1f)
         {
+            npc.animator.SetBool("isMoving", false);
             waitTime -= Time.deltaTime;
             if(waitTime <= 0f)
             {
@@ -47,6 +48,7 @@ public class WanderingState : AIState
         {
             npc.agent.SetDestination(hit.position);
         }
+        npc.animator.SetBool("isMoving", true);
         waitTime = Random.Range(npc.minWanderWaitTime, npc.maxWanderWaitTime);
     }
 }
