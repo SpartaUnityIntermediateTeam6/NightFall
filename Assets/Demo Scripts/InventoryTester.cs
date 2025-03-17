@@ -39,11 +39,11 @@ public class InventoryTester : MonoBehaviour
         {
             for (int i = 0; i < _itemDataArray.Length; i++)
             {
-                _inventory.Add(_itemDataArray[i], 3);
+                _inventory.Add(_itemDataArray[i], 1);
 
                 // 수량형 아이템인 경우, 255개 추가 (최대 테스트용)
                 if (_itemDataArray[i] is CountableItemData)
-                    _inventory.Add(_itemDataArray[i], 255);
+                    _inventory.Add(_itemDataArray[i], 5);
             }
         }
 
@@ -64,6 +64,7 @@ public class InventoryTester : MonoBehaviour
 
         _AddPortionA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[4]));
         _AddPortionA50.onClick.AddListener(() => _inventory.Add(_itemDataArray[4], 50));
+
         _AddPortionB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[5]));
         _AddPortionB50.onClick.AddListener(() => _inventory.Add(_itemDataArray[5], 50));
     }

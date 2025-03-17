@@ -43,14 +43,14 @@ public class PlayerSample : MonoBehaviour, IVisitable
         //Sample
         var colliders = Physics.OverlapSphere(transform.position, radius, targetLayers, QueryTriggerInteraction.Collide);
 
-        var target = colliders.Where(c => c.TryGetComponent(out IInteractable<PlayerSample> interatable)).
-            OrderBy(c => c.ClosestPoint(transform.position)).
-            FirstOrDefault();
+        //var target = colliders.Where(c => c.TryGetComponent(out IInteractable<PlayerSample> interatable)).
+        //    OrderBy(c => c.ClosestPoint(transform.position)).
+        //    FirstOrDefault();
 
-        if (target != null)
-        {
-            target.GetComponent<IInteractable<PlayerSample>>().Interaction(this);
-        }
+        //if (target != null)
+        //{
+        //    target.GetComponent<IInteractable<PlayerSample>>().Interaction(this);
+        //}
     }
 
     public void Accept(IVisitor visitor)

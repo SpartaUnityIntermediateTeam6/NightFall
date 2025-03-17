@@ -46,6 +46,7 @@ public class Inventory : MonoBehaviour
     // 인벤토리 최대 용량 (외부 접근은 읽기 전용)
     public int Capacity { get; private set; }
 
+    [SerializeField] private InventoryGameEvent inventoryEventChannel;
     // 초기 슬롯 수
     [SerializeField, Range(8, 64)] private int _initalCapacity = 32;
     // 최대 슬롯 수
@@ -140,6 +141,7 @@ public class Inventory : MonoBehaviour
     {
         if (!IsValidIndex(index)) return;
         Item item = _items[index];
+        inventoryEventChannel?.Raise(this);
 
         if (item != null)
         {

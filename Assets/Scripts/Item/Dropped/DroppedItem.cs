@@ -1,17 +1,27 @@
 using UnityEngine;
 
-public class DroppedItem : Poolable
+public class DroppedItem : Poolable, IVisitor
 {
     public ItemData ItemData;
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player")) Gather();
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<IVisitable>()?.Accept(this);
+        }
     }
 
-    void Gather()
+    public void Visit<T>(T visitable) where T : Component, IVisitable
     {
-        TestManager.Instance.poolManager.Release(this);
-        //인벤토리로 들어가는 메서드
+        if (visitable is PlayerController player)
+        {
+            if (player.Inventory.Add(ItemData, 1) == 0)
+            {
+                TestManager.Instance.poolManager.Release(this);
+            }
+        }
     }
+
+    public void Leave<T>(T visitable) where T : Component, IVisitable { }
 }

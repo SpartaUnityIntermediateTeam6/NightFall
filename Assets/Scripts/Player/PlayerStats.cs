@@ -9,6 +9,9 @@ public class PlayerStats : MonoBehaviour
     private float _hp;
     private float _maxSanity = 100f; // 최대 정신력 기본값 추가
     private float _sanity;
+    //Modifier Stats
+    private float _moveSpeed = 5f;
+    private float _jumpPower = 7f;
 
     // 정신력 감소 관련 변수
     [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량

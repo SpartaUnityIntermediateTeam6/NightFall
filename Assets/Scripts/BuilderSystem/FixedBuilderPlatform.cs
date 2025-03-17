@@ -4,46 +4,89 @@ using UnityEngine;
 using BuildingSystem;
 using System;
 
-public class FixedBuilderPlatform : MonoBehaviour, IInteractable<TPSCharacterController>
+public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
-    [SerializeField] private Building buildingPrefab;
-    [SerializeField] private RecipeData recipeData;
-    [SerializeField] private RecipeGameEvent recipeEvent;
+    [SerializeField] private List<Building> buildingPrefabs = new();
+
+    [Header("Layers")]
     [SerializeField] private LayerMask targetLayers;
 
     private IBuilderStrategy _builderStrategy;
+    private PlayerController _playerCache;
+    private bool _uiFlag = false;
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
-    void Update()
+    void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
+
+    void OnTriggerExit(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        other.GetComponent<IVisitable>()?.Cancel(this);
+        EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild, false));
+        _uiFlag = false;
+    }
+
+    public void TryBuild(int index)
+    {
+        if (index >= buildingPrefabs.Count)
+            return;
+
+        if (_builderStrategy.CanBuild(buildingPrefabs[index]) && _playerCache != null)
         {
-            Interaction(null);
+            var inventory = _playerCache.Inventory;
+
+            foreach (var iter in buildingPrefabs[index].RecipeData.recipeDates)
+            {
+                if (inventory.GetTotalAmount(iter.itemData) < iter.requiredAmount)
+                    return;
+            }
+            buildingPrefabs[index].RecipeData.recipeDates.ForEach(r => inventory.TryConsumeItem(r.itemData,
+                r.requiredAmount));
+
+            _builderStrategy.Build(buildingPrefabs[index]);
         }
     }
 
-    //*Sample, inventory or player refernce
-    public void TryBuild(TPSCharacterController player)
+    public void Interaction()
+    {   
+        if (_playerCache == null)
+            return;
+
+        EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild, !_uiFlag));
+        _uiFlag = !_uiFlag;
+    }
+
+    public void Visit<T>(T visitable) where T : Component, IVisitable
     {
-        if (_builderStrategy.CanBuild(buildingPrefab))
+        if (visitable is PlayerController player)
         {
-            //인벤토리에서 체크하고 가져올때 FuncPredicate 람다식만 수정 EX/ 재료 충족하면 return true
-            
-            _builderStrategy.Build(buildingPrefab, new FuncPredicate(CanBuild));
+            player.OnInteractionEvent += Interaction;
+            _playerCache = player;
         }
     }
 
-    private bool CanBuild()
+    public void Leave<T>(T visitable) where T : Component, IVisitable
     {
-        //recipeData
-
-        return true;
+        if (visitable is PlayerController player)
+        {
+            player.OnInteractionEvent -= Interaction;
+            _playerCache = null;
+        }
     }
+}
 
-    public void Interaction(TPSCharacterController vistor)
+public class BuildInteractionEvent : IGameEvent
+{
+    public readonly List<Building> buildings = new();
+    public readonly Inventory inventory;
+    public readonly Action<int> onButtonEvent = delegate { };
+    public bool UIActive { get; set; }
+
+    public BuildInteractionEvent(List<Building> buildingsInfo, Inventory inventory, Action<int> onButtonEvent, bool uIActive = true)
     {
-        //UI 버튼에 이벤트를 전달. 건물 지어졌으면 return하는 코드 추가
-        recipeEvent?.Raise(new RecipeDataSender(recipeData, () => TryBuild(vistor)));
+        buildings = buildingsInfo;
+        this.inventory = inventory;
+        this.onButtonEvent = onButtonEvent;
+        UIActive = uIActive;
     }
 }
