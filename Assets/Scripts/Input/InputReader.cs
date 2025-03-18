@@ -76,6 +76,8 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (context.started)
         {
             OnInventoryEvent?.Invoke();
+            if (Cursor.lockState == CursorLockMode.Locked) Cursor.lockState = CursorLockMode.None;
+            else Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }

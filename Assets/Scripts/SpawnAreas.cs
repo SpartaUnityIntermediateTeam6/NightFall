@@ -142,7 +142,6 @@ public class SpawnAreas : Poolable
         while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
         Poolable poolable;
-
         
         poolable = GameManager.Instance.poolManager.Get(randomPrefab);
 
