@@ -1,5 +1,6 @@
 using System.Diagnostics.Tracing;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [SelectionBase]
 public class Beacon : MonoBehaviour, IDamageable
@@ -60,4 +61,5 @@ public class Beacon : MonoBehaviour, IDamageable
     {
         Destroy(gameObject);
     }
+
 }

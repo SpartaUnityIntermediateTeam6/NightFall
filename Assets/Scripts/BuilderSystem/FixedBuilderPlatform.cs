@@ -13,6 +13,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
     private IBuilderStrategy _builderStrategy;
     private PlayerController _playerCache;
+    private bool _canBuild = true;
 
     void Awake() => _builderStrategy = new FixedPositionBuilder(gameObject, targetLayers);
 
@@ -22,7 +23,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
     public void TryBuild(int index)
     {
-        if (index >= buildingPrefabs.Count)
+        if (index >= buildingPrefabs.Count || !_canBuild)
             return;
 
         if (_builderStrategy.CanBuild(buildingPrefabs[index]) && _playerCache != null)
@@ -38,13 +39,17 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
                 r.requiredAmount));
 
             _builderStrategy.Build(buildingPrefabs[index]);
+            _canBuild = false;
         }
     }
 
     public void Interaction()
     {
-        if (_playerCache == null)
+        if (_playerCache == null || !_canBuild)
+        {
+            uiEventChannel?.Raise(false);
             return;
+        }
 
         EventBus.Call(new BuildInteractionEvent(buildingPrefabs, _playerCache?.Inventory, TryBuild));
         uiEventChannel?.Raise(true);
