@@ -68,9 +68,9 @@ public class Inventory : MonoBehaviour
             { typeof(WeaponItemData),  20000 },
             { typeof(ArmorItemData),   30000 },
         };
-
-    // 아이템 비교 클래스: ID + 타입 가중치 기반 정렬
-    private class ItemComparer : IComparer<Item>
+    
+// 아이템 비교 클래스: ID + 타입 가중치 기반 정렬
+private class ItemComparer : IComparer<Item>
     {
         public int Compare(Item a, Item b)
         {
