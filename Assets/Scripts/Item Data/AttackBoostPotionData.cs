@@ -9,12 +9,12 @@ public class AttackBoostPotionData : CountableItemData
 
     public float AttackBoostAmount => attackBoostAmount;
 
+    // ✅ 아이템 객체 생성 메서드 구현 (필수)
     public override Item CreateItem()
     {
-        AttackBoostPotion potion = new AttackBoostPotion();
-        potion.Initialize(this); //  올바르게 Initialize() 호출
-        return potion;
+        return new AttackBoostPotion(this, 1);
     }
 }
+
 
 

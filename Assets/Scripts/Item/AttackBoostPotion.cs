@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class AttackBoostPotion : CountableItem, IUsableItem
 {
-    // ✅ `SetData()`를 사용하여 데이터 설정
-    public void Initialize(AttackBoostPotionData data)
-    {
-        this.SetData(data);
-        this.SetAmount(1); // 기본 수량을 1로 설정
-    }
+    // 생성자 (아이템 데이터와 개수 설정)
+    public AttackBoostPotion(AttackBoostPotionData data, int amount = 1) : base(data, amount) { }
 
+    // ✅ 아이템 사용 기능 구현
     public bool Use()
     {
         PlayerStats playerStats = GameObject.FindObjectOfType<PlayerStats>();
@@ -23,15 +20,15 @@ public class AttackBoostPotion : CountableItem, IUsableItem
         playerStats.UpgradeAttackPower(potionData.AttackBoostAmount);
         Debug.Log($"🧪 {potionData.AttackBoostAmount} 만큼 공격력이 증가했습니다!");
 
+        // 수량 감소
+        Amount--;
         return true;
     }
 
+    // ✅ 수량을 지정한 복제본을 만드는 메서드 (필수 구현)
     protected override CountableItem Clone(int amount)
     {
-        AttackBoostPotion clone = new AttackBoostPotion();
-        clone.Initialize(this.Data as AttackBoostPotionData);
-        clone.SetAmount(amount);
-        return clone;
+        return new AttackBoostPotion(Data as AttackBoostPotionData, amount);
     }
 }
 
