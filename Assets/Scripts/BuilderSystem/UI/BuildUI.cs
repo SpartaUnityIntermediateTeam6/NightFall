@@ -52,4 +52,9 @@ public class BuildUI : MonoBehaviour
             _elementCache.Add(go.gameObject);
         }
     }
+
+    public void OnUI(GameObject go)
+    {
+        view.SetActive(true);
+    }
 }

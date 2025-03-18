@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
+    [SerializeField] private GameObjectGameEvent uiEventChannel;
     [SerializeField] private List<Building> buildingPrefabs = new();
 
     [Header("Layers")]
