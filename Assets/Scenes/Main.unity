@@ -319,8 +319,8 @@ MonoBehaviour:
   isNextDay: 0
   isNight: 0
   isRote: 0
-  sunTime: 1000
-  moonTime: 1000
+  sunTime: 100
+  moonTime: 100
   sun: {fileID: 1286963572}
   sunColor:
     serializedVersion: 2
@@ -2709,12 +2709,20 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3427010142321493439, guid: 5e436a80471179344bf3182af0778b52, type: 3}
+      propertyPath: _attackPower
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3427010142321493439, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       propertyPath: sunMoonCycle
       value: 
       objectReference: {fileID: 161140186}
     - target: {fileID: 3427010142321493439, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       propertyPath: sanityDecayRate
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3427010142321493439, guid: 5e436a80471179344bf3182af0778b52, type: 3}
+      propertyPath: _meleeAttackPower
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3687965600364832270, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       propertyPath: m_Layer

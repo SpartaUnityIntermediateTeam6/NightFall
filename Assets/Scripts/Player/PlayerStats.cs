@@ -59,6 +59,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
             {
                 OnSanityDepleted();
             }
+
+            if (_sanity > 0)
+            {
+                OnSanityHealed();
+            }
         }
     }
 
@@ -146,6 +151,12 @@ public class PlayerStats : MonoBehaviour, IDamageable
     {
         Debug.Log("⚠ 플레이어 정신력 소진! 패널티 적용!");
         _moveSpeed = 2f;
+    }
+
+    private void OnSanityHealed()
+    {
+        Debug.Log("🌟 플레이어 정신력 회복! 패널티 해제!");
+        _moveSpeed = 5f;
     }
 
     public void RecoverSanity(float amount)
