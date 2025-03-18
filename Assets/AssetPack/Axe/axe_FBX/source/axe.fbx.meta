@@ -173,17 +173,38 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0
+        functionName: PlayAttackSound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: PlayAttackSound
+        data: 
+        objectReferenceParameter: {fileID: 1301974033003432789, guid: 5e436a80471179344bf3182af0778b52, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.50131875
+        functionName: PlayHitSoundEarly
+        data: 
+        objectReferenceParameter: {fileID: 1301974033003432789, guid: 5e436a80471179344bf3182af0778b52, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.50153846
         functionName: ApplyDamage
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 1301974033003432789, guid: 5e436a80471179344bf3182af0778b52, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 1
         functionName: EndAttack
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 1301974033003432789, guid: 5e436a80471179344bf3182af0778b52, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
