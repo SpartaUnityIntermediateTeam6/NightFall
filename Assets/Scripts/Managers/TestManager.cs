@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TestManager : Singleton<TestManager>
 {
-    public TestBeacon beacon;
+    public Beacon beacon;
     public Transform player;
 
     public PoolManager poolManager = new();

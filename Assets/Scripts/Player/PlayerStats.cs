@@ -6,28 +6,12 @@ using System;
 public class PlayerStats : MonoBehaviour, IDamageable
 {
     private float _maxHp;
-    private float _hp;
-    private float _maxSanity = 100f; // 최대 정신력 기본값 추가
-    private float _sanity;
+    [SerializeField] private float _hp;
+    private float _maxSanity; // 최대 정신력 기본값 추가
+    [SerializeField] private float _sanity;
     //Modifier Stats
-    private float _moveSpeed = 5f;
-    private float _jumpPower = 7f;
-
-    // 정신력 감소 관련 변수
-    [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
-    private bool isSanityDecreasing = true; // 정신력 감소 활성화 여부
-
-    // Event Channel
-    [SerializeField] private BoundedValueGameEvent hpEventChannel;
-    [SerializeField] private BoundedValueGameEvent sanityEventChannel;
-    [SerializeField] private BoolGameEvent deadEventChannel;
-
-    private void Start()
-    {
-        // 정신력 초기화
-        _sanity = _maxSanity;
-        StartCoroutine(DecreaseSanityOverTime()); // 정신력 감소 루틴 시작
-    }
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _jumpPower = 7f;
 
     public float Hp
     {
@@ -56,6 +40,31 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     public float MoveSpeed => _moveSpeed;
     public float JumpPower => _jumpPower;
+
+    // 정신력 감소 관련 변수
+    [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
+    private bool isSanityDecreasing = true; // 정신력 감소 활성화 여부
+
+    // Event Channel
+    [SerializeField] private BoundedValueGameEvent hpEventChannel;
+    [SerializeField] private BoundedValueGameEvent sanityEventChannel;
+    [SerializeField] private BoolGameEvent deadEventChannel;
+
+    private void Awake()
+    {
+        _maxHp = Hp;
+        hpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHp));
+
+        _maxSanity = Sanity;
+        sanityEventChannel?.Raise(new BoundedValue(_sanity, 0, _maxSanity));
+    }
+
+    private void Start()
+    {
+        // 정신력 초기화
+        
+        StartCoroutine(DecreaseSanityOverTime()); // 정신력 감소 루틴 시작
+    }
 
     public void TakeDamage(float damage)
     {
