@@ -18,7 +18,7 @@ public class Building : MonoBehaviour, IVisitor
     protected virtual void OnTriggerEnter(Collider other) => other.GetComponent<IVisitable>()?.Accept(this);
     protected virtual void OnTriggerExit(Collider other) => other.GetComponent<IVisitable>()?.Cancel(this);
 
-    public void Visit<T>(T visitable) where T : Component, IVisitable
+    public virtual void Visit<T>(T visitable) where T : Component, IVisitable
     {
         if (visitable is PlayerController player)
         {
@@ -27,7 +27,7 @@ public class Building : MonoBehaviour, IVisitor
         }
     }
 
-    public void Leave<T>(T visitable) where T : Component, IVisitable
+    public virtual void Leave<T>(T visitable) where T : Component, IVisitable
     {
         if (visitable is PlayerController player)
         {

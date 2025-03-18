@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dd38922d41d69d4993b7c5ad8bde8e1, type: 3}
-  m_Name: BuilderView
+  m_Script: {fileID: 11500000, guid: ebc86cad7b2de0c40ab820387b6869f4, type: 3}
+  m_Name: BuildView
   m_EditorClassIdentifier: 

@@ -157,6 +157,7 @@ MonoBehaviour:
   recipeData: {fileID: 11400000, guid: 4a1b6536d7d935c48af66d5eb736338f, type: 2}
   buildingName: Crafting Building
   buildingDescription: Crafting
+  uiEventChannel: {fileID: 11400000, guid: 0b977b0cc9ecf9d4ca79da4be066f7ac, type: 2}
   itemRecipeDates:
   - {fileID: 11400000, guid: 0e337f341a0768e409adbc4d70fd76d7, type: 2}
   - {fileID: 11400000, guid: 0e337f341a0768e409adbc4d70fd76d7, type: 2}
