@@ -23,6 +23,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     // 정신력 감소 관련 변수
     [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
+    [SerializeField] private float sanityAddRate = 1f; // 초당 정신력 회복량
 
     // Event Channel
     [SerializeField] private BoundedValueGameEvent hpEventChannel;
@@ -72,11 +73,20 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (sunMoonCycle.isNight && _coroutine == null) 
-            _coroutine = StartCoroutine(DecreaseSanityOverTime());
-        else if (!sunMoonCycle.isNight && _coroutine == null) 
-            _coroutine = StartCoroutine(AddSanityOverTime());
+        if (_coroutine == null)
+        {
+            if (sunMoonCycle.isNight)
+            {
+                _coroutine = StartCoroutine(DecreaseSanityOverTime());
+            }
+            else
+            {
+                _coroutine = StartCoroutine(AddSanityOverTime());
+            }
+        }
     }
+
+    
 
     public void TakeDamage(float damage)
     {
@@ -126,7 +136,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         while (!sunMoonCycle.isNight)
         {
             yield return new WaitForSeconds(1f);
-            Sanity += sanityDecayRate;
+            Sanity += sanityAddRate;
         }
 
         _coroutine = null;

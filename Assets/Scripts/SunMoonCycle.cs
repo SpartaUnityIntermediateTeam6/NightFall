@@ -40,6 +40,8 @@ public class SunMoonCycle : MonoBehaviour
     public AnimationCurve reflectionIntensityMultiplier;
     public AnimationCurve skyBoxCurve;
 
+    public event Action OnDayNightChange;
+
     void Start()
     {
         originalSkyColor = RenderSettings.skybox.GetFloat("_AtmosphereThickness");
@@ -134,6 +136,11 @@ public class SunMoonCycle : MonoBehaviour
         // 실행 종료 시 원래 값으로 복원
         RenderSettings.skybox.SetFloat("_AtmosphereThickness", originalSkyColor);
         skyBoxMaterial.SetColor("_GroundColor", originalGroundColor);
+    }
+
+    protected virtual void  HandleDayNightChange()
+    {
+
     }
 
 }
