@@ -7,6 +7,8 @@ public class GameManager : Singleton<GameManager>
 
     public PoolManager poolManager = new();
 
+    public SunMoonCycle sunMoonCycle = new();
+
     protected override void Awake()
     {
         isGlobal = false;

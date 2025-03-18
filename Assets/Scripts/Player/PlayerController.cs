@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IVisitable
 {
@@ -12,6 +13,8 @@ public class PlayerController : MonoBehaviour, IVisitable
     private InputReader _inputReader;
     private Camera _camera;
     public Inventory Inventory => _inventory;
+
+    public SunMoonCycle _sunMoonCycle;
 
     public event Action OnInteractionEvent = delegate { };
 
@@ -28,8 +31,7 @@ public class PlayerController : MonoBehaviour, IVisitable
 
         GameManager.Instance.player = this.transform;
 
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -74,5 +76,14 @@ public class PlayerController : MonoBehaviour, IVisitable
     public void Cancel(IVisitor visitor)
     {
         visitor.Leave(this);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.CompareTag("Beacon") && _sunMoonCycle.dDay > 3)
+        {
+           SceneManager.LoadScene("Credit");
+           Cursor.lockState = CursorLockMode.None;
+        }
     }
 }
