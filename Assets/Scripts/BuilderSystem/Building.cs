@@ -38,6 +38,6 @@ public class Building : MonoBehaviour, IVisitor
 
     protected virtual void Interaction()
     {
-
+        
     }
 }

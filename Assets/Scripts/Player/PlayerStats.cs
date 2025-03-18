@@ -62,7 +62,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
     }
 
-    private void Awake()
+    private void Start()
     {
         Hp = _maxHp;
         hpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHp));

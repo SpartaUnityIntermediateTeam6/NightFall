@@ -31,11 +31,12 @@ public class Beacon : MonoBehaviour, IDamageable
         GameManager.Instance.beacon = this;
 
         _maxHP = HP;
-        beaconHpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHP));
 
         cone = transform.GetChild(0);
         _startPos = cone.position;
     }
+
+    void Start() => beaconHpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHP));
 
     private void Update()
     {

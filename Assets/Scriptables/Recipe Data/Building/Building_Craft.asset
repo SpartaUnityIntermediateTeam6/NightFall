@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeDates:
   - itemData: {fileID: 11400000, guid: 2926711759049d84cb1264e0a4cc34ae, type: 2}
-    requiredAmount: 10
+    requiredAmount: 12
   - itemData: {fileID: 11400000, guid: f6996a6c2e6bad442b4548015818a750, type: 2}
-    requiredAmount: 10
+    requiredAmount: 12

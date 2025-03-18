@@ -80,6 +80,7 @@ public abstract class NPC : Poolable, IDamageable
             SetState(new DeadState(this));
             animator.SetTrigger("dead");
             Invoke(nameof(DropPrefab), 1);
+            EventBus.Call(new DeadEvent(1));
         }
     }
 
@@ -105,5 +106,15 @@ public abstract class NPC : Poolable, IDamageable
             + Vector3.right * Random.Range(-dropHorizontalRange, dropHorizontalRange);
         poolable.transform.rotation = Quaternion.Euler(0, Random.Range(-180f, 180f), 0);
         poolable.GetComponent<Rigidbody>().AddForce(randomDir * dropForce, ForceMode.Impulse);
+    }
+}
+
+public class DeadEvent : IGameEvent
+{
+    public int a;
+
+    public DeadEvent(int aa)
+    {
+        a = aa;
     }
 }
