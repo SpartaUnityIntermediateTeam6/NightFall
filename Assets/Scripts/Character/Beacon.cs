@@ -62,11 +62,4 @@ public class Beacon : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.CompareTag("Player"))
-        {
-            if (GameManager.Instance.sunMoonCycle.dDay > 3) SceneManager.LoadScene("Credit");
-        }
-    }
 }

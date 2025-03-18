@@ -22,11 +22,7 @@ public class SpawnAreas : Poolable
 
     [SerializeField] private List<GameObject> resourcePrefabs; // 자원 프리팹
 
-    [SerializeField] private List<GameObject> alwaysPrefabs;  // 항상 나오는 프리팹
-
     [SerializeField] private float spawnDelay;  // 동시 생성 방지, 스폰 딜레이
-
-    [SerializeField] private float alwaysPeriod;  // 항상 나오는 오브젝트 주기
 
     [SerializeField] private int resourceSpawnCount;  // 자원 생성 갯수
 
@@ -42,8 +38,6 @@ public class SpawnAreas : Poolable
 
     private List<Poolable> _enemyList = new List<Poolable>();
 
-    private float _alwaysSpawnTime = 0f;  // always프리팹 스폰 시간
-
     private int _countNum = 1; // Enemy 스폰 증가 폭
 
     Color[] _gizmoColor;
@@ -57,12 +51,6 @@ public class SpawnAreas : Poolable
 
     private void Update()
     {
-        if (Time.time >= _alwaysSpawnTime && _alwaysCoroutine == null)
-        {
-            _alwaysCoroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Always));
-            _alwaysSpawnTime = Time.time + alwaysPeriod;
-        }
-
         if (_sunMoonCycle.dDay <= 3)
         {
             if (_sunMoonCycle.isNight && !_sunMoonCycle.isRote && _coroutine == null)
@@ -112,13 +100,11 @@ public class SpawnAreas : Poolable
                 spawnPrefabs = resourcePrefabs;
                 break;
             default:
-                spawnPrefabs = alwaysPrefabs;
+                spawnPrefabs = null;
                 break;
         }
 
-        if (type == SpawnPrefabType.Always) return;
-
-        if (spawnPrefabs.Count == 0 || spawnAreas.Count == 0)
+        if (spawnPrefabs == null || spawnPrefabs.Count == 0 || spawnAreas.Count == 0)
         {
             Debug.LogWarning("spawnPrefabs 또는 Spawn Areas가 설정되지 않았습니다.");
             return;
@@ -232,7 +218,6 @@ public class SpawnAreas : Poolable
                 _coroutine = null;
                 DayPass();
                 break;
-            case SpawnPrefabType.Always: _alwaysCoroutine = null; break;
         }
     }
 
