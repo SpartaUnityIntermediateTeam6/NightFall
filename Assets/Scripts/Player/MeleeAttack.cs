@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeAttack : MonoBehaviour
@@ -36,6 +34,11 @@ public class MeleeAttack : MonoBehaviour
 
     void Update()
     {
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0) && !isAttacking)
         {
             Attack();
