@@ -650,6 +650,12 @@ public class InventoryUI : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
+
+    public void ToggleUI()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
+
     private void AdjustContentArea(int totalSlotCount)
     {
         int columnCount = _horizontalSlotCount;

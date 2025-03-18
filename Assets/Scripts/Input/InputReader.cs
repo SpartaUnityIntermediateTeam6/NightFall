@@ -12,12 +12,9 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public UnityEvent<Vector2> OnMoveEvent;
     public UnityEvent OnJumpEvent;
-
     public UnityEvent OnAttackEvent;
-
     public UnityEvent OnInteractionEvent;
-
-
+    public UnityEvent OnInventoryEvent;
 
     void Awake()
     {
@@ -71,6 +68,14 @@ public class InputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (context.phase == InputActionPhase.Started)
         {
             OnInteractionEvent?.Invoke();
+        }
+    }
+
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnInventoryEvent?.Invoke();
         }
     }
 }
