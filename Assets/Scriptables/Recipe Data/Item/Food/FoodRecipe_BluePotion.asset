@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4247a2a92c59c7d4ebd571c3aa1512d2, type: 3}
-  m_Name: FoodRecipe_Apple
+  m_Name: FoodRecipe_BluePotion
   m_EditorClassIdentifier: 
   recipeDates:
   - itemData: {fileID: 11400000, guid: e4f13aa8c96bef141856abb74166da86, type: 2}
-    requiredAmount: 10
+    requiredAmount: 15
   - itemData: {fileID: 11400000, guid: 7734a9dec142a324796d24b11947316d, type: 2}
-    requiredAmount: 10
-  resultItem: {fileID: 11400000, guid: d647366ff51e15344b1800f927ac3c35, type: 2}
+    requiredAmount: 15
+  resultItem: {fileID: 11400000, guid: bc8ef14a239d41b4dba21b80469c847d, type: 2}

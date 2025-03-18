@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MeleeAttack : MonoBehaviour
 {
+    [SerializeField] private LayerMask targetLayers;
+
     public Animator animator;
-    public AttackSoundManager attackSoundManager;
     public Transform cameraTransform;
     public float attackRange = 2.0f;
 
@@ -54,39 +55,38 @@ public class MeleeAttack : MonoBehaviour
         Debug.Log("⚔️ 공격 실행");
     }
 
-    // 🎯 애니메이션 이벤트에서 호출할 함수 (소리를 먼저 재생)
-    public void PlayHitSoundEarly()
-    {
-        if (attackSoundManager != null)
-        {
-            attackSoundManager.PlayAttackSound(); // ✅ 공격 소리 재생 (휘두르는 소리)
-        }
-    }
-
     // ✅ 타격 판정 수행 (애니메이션이 끝날 때 호출됨)
     public void ApplyDamage()
     {
         if (playerStats == null) return; // ✅ PlayerStats가 없으면 실행하지 않음
         int attackDamage = (int)playerStats.AttackPower; // ✅ 현재 플레이어 공격력 사용
 
-        RaycastHit hit;
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, attackRange))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, attackRange, 
+            targetLayers))
         {
-            GameObject targetObject = hit.collider.gameObject;
-            int targetLayer = targetObject.layer;
-            string layerName = LayerMask.LayerToName(targetLayer);
+            Debug.Log(hit.collider.name);
 
-            if (targetObject.TryGetComponent<IDamageable>(out IDamageable target))
+            GameObject targetObject = hit.collider.gameObject;
+            int layerIdx = targetObject.layer;
+            string layerName = LayerMask.LayerToName(layerIdx);
+
+            if (targetObject.TryGetComponent(out IDamageable target))
             {
                 target.TakeDamage(attackDamage);
                 Debug.Log($"🎯 {targetObject.name}({layerName})에게 {attackDamage} 피해를 입힘!");
 
                 // ✅ 타격 성공 시 타격 소리 재생 (PlayScheduled 활용)
-                if (attackSoundManager != null)
-                {
-                    attackSoundManager.PlayHitSound(targetObject);
-                }
+
+                SoundManager.Instance.PlaySFX(layerName == "Enemy" ? "EnemyAttack" : "WoodAttack");
             }
+            else
+            {
+                SoundManager.Instance.PlaySFX("BaseAttack");
+            }
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX("BaseAttack");
         }
     }
 
