@@ -89,7 +89,7 @@ public class PoolManager
 
     public Poolable Get(GameObject original, int count = 10, Transform parent = null)
     {
-        if (_poolDict.ContainsKey(original.name) == false) CreatePool(original);
+        if (_poolDict.ContainsKey(original.name) == false) CreatePool(original, count);
 
         return _poolDict[original.name].Pop(parent);
     }
