@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 41b0b2d9880a03c4cb3443984aba1241
-  - enabled: 1
-    path: Assets/Scenes/KSM.unity
-    guid: edf1ccf848e00fd46ab11ea0771ffefb
-  - enabled: 1
-    path: Assets/Scenes/KSM_Start.unity
+    path: Assets/Scenes/Start.unity
     guid: 4f69681d6c8e579409ea37d80ec85a89
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 502aa731fcadc414cb7fafd10f1d940f
+  - enabled: 1
+    path: Assets/Scenes/Credit.unity
+    guid: 268fd8e7a273abc42b2a3dd8b3ef98c3
   m_configObjects: {}

@@ -7,9 +7,9 @@ public class PlayerStats : MonoBehaviour, IDamageable
 {
     [Header("기본 스탯")]
     [SerializeField] private float _maxHp = 100f;
-    [SerializeField] private float _hp;
+    private float _hp;
     [SerializeField] private float _maxSanity = 100f;
-    [SerializeField] private float _sanity;
+    private float _sanity;
 
     [Header("이동 관련 스탯")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -20,19 +20,16 @@ public class PlayerStats : MonoBehaviour, IDamageable
     [SerializeField] private float _meleeAttackPower = 15f; // ✅ 근접 공격력 (인스펙터에 표시)
 
     // 정신력 감소 관련 변수
-    [SerializeField] private float sanityDecayRate = 1f;
-    private bool isSanityDecreasing = true;
+    [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
+    private bool isSanityDecreasing = true; // 정신력 감소 활성화 여부
 
     // Event Channel
     [SerializeField] private BoundedValueGameEvent hpEventChannel;
     [SerializeField] private BoundedValueGameEvent sanityEventChannel;
     [SerializeField] private BoolGameEvent deadEventChannel;
 
-    private void Start()
-    {
-        _sanity = _maxSanity;
-        StartCoroutine(DecreaseSanityOverTime());
-    }
+    public float MoveSpeed => _moveSpeed;
+    public float JumpPower => _jumpPower;
 
     public float Hp
     {
@@ -59,8 +56,19 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
     }
 
-    public float MoveSpeed => _moveSpeed;
-    public float JumpPower => _jumpPower;
+    private void Awake()
+    {
+        Hp = _maxHp;
+        hpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHp));
+
+        Sanity = _maxSanity;
+        sanityEventChannel?.Raise(new BoundedValue(_sanity, 0, _maxSanity));
+    }
+
+    private void Start()
+    {
+        StartCoroutine(DecreaseSanityOverTime()); // 정신력 감소 루틴 시작
+    }
 
     public void TakeDamage(float damage)
     {
@@ -72,8 +80,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
     [ContextMenu("Dead")]
     public void Dead()
     {
-        Debug.Log("죽음");
-        //이벤트 채널 이용
         deadEventChannel?.Raise(false);
     }
 

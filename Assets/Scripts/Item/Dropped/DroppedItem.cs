@@ -18,7 +18,7 @@ public class DroppedItem : Poolable, IVisitor
         {
             if (player.Inventory.Add(ItemData) == 0)
             {
-                TestManager.Instance.poolManager.Release(this);
+                GameManager.Instance.poolManager.Release(this);
             }
         }
     }

@@ -90,7 +90,7 @@ public abstract class NPC : Poolable, IDamageable
             ExplodeDrop(go);
         }
 
-        TestManager.Instance.poolManager.Release(this);
+        GameManager.Instance.poolManager.Release(this);
     }
 
     void ExplodeDrop(GameObject go)
@@ -98,7 +98,7 @@ public abstract class NPC : Poolable, IDamageable
         Vector3 randomDir = Random.onUnitSphere;
         randomDir.y = Mathf.Abs(randomDir.y);
 
-        Poolable poolable = TestManager.Instance.poolManager.Get(go);
+        Poolable poolable = GameManager.Instance.poolManager.Get(go);
         poolable.transform.position = transform.position
             + Vector3.up * Random.Range(1f, 1f + dropVerticalRange)
             + Vector3.forward * Random.Range(-dropHorizontalRange, dropHorizontalRange)

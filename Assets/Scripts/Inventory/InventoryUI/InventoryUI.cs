@@ -101,6 +101,9 @@ public class InventoryUI : MonoBehaviour
         InitSlots();
         InitButtonEvents();
         InitToggleEvents();
+
+        //임시 코드
+        gameObject.SetActive(false);
     }
 
     // 프레임마다 호출: 마우스 입력 및 슬롯 UI 상호작용 처리

@@ -75,7 +75,7 @@ public class SpawnAreas : Poolable
 
                 foreach (Poolable obj in _enemyList)
                 {
-                    TestManager.Instance.poolManager.Release(obj);
+                    GameManager.Instance.poolManager.Release(obj);
                 }
                 _enemyList.Clear();
             }
@@ -158,7 +158,7 @@ public class SpawnAreas : Poolable
         Poolable poolable;
 
         
-        poolable = TestManager.Instance.poolManager.Get(randomPrefab);
+        poolable = GameManager.Instance.poolManager.Get(randomPrefab);
 
         poolable.transform.position = randomPosition;
         poolable.transform.rotation = Quaternion.identity;
