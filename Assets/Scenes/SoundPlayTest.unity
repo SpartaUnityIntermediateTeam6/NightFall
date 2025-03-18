@@ -954,7 +954,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1246505908
+--- !u!114 &1246505921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -963,10 +963,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1246505906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c47881743b3668648a37d2c67b0bf2e2, type: 3}
+  m_Script: {fileID: 11500000, guid: ce3d9cbb8706e504bb88cf92cf6d7649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 1246505907}
   attackSound: {fileID: 8300000, guid: 953726089a81992438cb877d4f313bc7, type: 3}
+  hitEnemySound: {fileID: 8300000, guid: 54f9bc82c62a48a41be01c8951d2c0c7, type: 3}
+  hitResourceSound: {fileID: 8300000, guid: a1c3a723d9b23f04480f7c17379490a6, type: 3}
 --- !u!114 &1280039776 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1093676404995016772, guid: 143fffd5c0d0f514eac131a13eb17b93, type: 3}
@@ -2571,6 +2574,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7298021044085087856, guid: 5e436a80471179344bf3182af0778b52, type: 3}
+      propertyPath: attackSoundManager
+      value: 
+      objectReference: {fileID: 1246505921}
     - target: {fileID: 7397019678577605634, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -2625,7 +2632,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1301974033003432789, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1246505908}
+      addedObject: {fileID: 1246505921}
     - targetCorrespondingSourceObject: {fileID: 1301974033003432789, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1246505907}
