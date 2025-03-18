@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour, IDamageable
 {
     private float _maxHp;
     private float _hp;
@@ -20,6 +20,7 @@ public class PlayerStats : MonoBehaviour
     // Event Channel
     [SerializeField] private BoundedValueGameEvent hpEventChannel;
     [SerializeField] private BoundedValueGameEvent sanityEventChannel;
+    [SerializeField] private BoolGameEvent deadEventChannel;
 
     private void Start()
     {
@@ -55,6 +56,21 @@ public class PlayerStats : MonoBehaviour
 
     public float MoveSpeed => _moveSpeed;
     public float JumpPower => _jumpPower;
+
+    public void TakeDamage(float damage)
+    {
+        Hp = Mathf.Max(Hp - damage, 0);
+
+        if (Hp <= 0) Dead();
+    }
+
+    [ContextMenu("Dead")]
+    public void Dead()
+    {
+        Debug.Log("죽음");
+        //이벤트 채널 이용
+        deadEventChannel?.Raise(false);
+    }
 
     // 🎯 시간에 따라 정신력 감소
     private IEnumerator DecreaseSanityOverTime()
