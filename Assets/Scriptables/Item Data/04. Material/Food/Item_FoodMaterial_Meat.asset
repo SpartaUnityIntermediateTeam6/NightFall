@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_FoodMaterial_Meat
   m_EditorClassIdentifier: 
   _id: 25002
-  _name: "\uD669\uAE08"
+  _name: "\uD669\uAE08 \uC0AC\uACFC"
   _tooltip: "\uAE08\uC0C9 \uC0AC\uACFC. \uBB54\uAC00 \uC870\uD569\uD560 \uC218 \uC788\uC744\uC9C0\uB3C4?"
   _iconSprite: {fileID: 21300000, guid: 3006b506b4275d84692b0aa0f1616cb1, type: 3}
   _dropItemPrefab: {fileID: 0}
