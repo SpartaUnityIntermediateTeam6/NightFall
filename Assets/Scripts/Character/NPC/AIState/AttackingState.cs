@@ -22,10 +22,10 @@ public class AttackingState : AIState
         Transform curTarget = npc.beaconTarget;
 
         float beaconDistance = Vector3.Distance(npc.transform.position, npc.beaconTarget.position);
-        float playerDistance = Vector3.Distance(npc.transform.position, TestManager.Instance.player.position);
+        float playerDistance = Vector3.Distance(npc.transform.position, GameManager.Instance.player.position);
         if (playerDistance < beaconDistance && playerDistance <= npc.detectDistance)
         {
-            curTarget = TestManager.Instance.player;
+            curTarget = GameManager.Instance.player;
         }
 
         npc.agent.SetDestination(curTarget.position);

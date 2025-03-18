@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class CraftingBuilding : Building
 {
+    [SerializeField] private BoolGameEvent uiEventChannel;
     [Header("Crafing")]
     [SerializeField] private List<ItemRecipeData> itemRecipeDates = new();
 
-    private bool _uiFlag = false;
-
-    protected override void OnTriggerExit(Collider other)
+    public override void Leave<T>(T visitable)
     {
-        base.OnTriggerExit(other);
-        //EventBus.Call(new CraftingInteractionEvent(itemRecipeDates, _playerCache.Inventory, TryCrafting, false));
-        _uiFlag = false;
+        if (visitable is PlayerController player)
+        {
+            player.OnInteractionEvent -= Interaction;
+            _playerCache = null;
+            uiEventChannel?.Raise(false);
+        }
     }
 
     private void TryCrafting(int index)
@@ -41,8 +43,8 @@ public class CraftingBuilding : Building
         if (_playerCache == null)
             return;
 
-        EventBus.Call(new CraftingInteractionEvent(itemRecipeDates, _playerCache.Inventory, TryCrafting, !_uiFlag));
-        _uiFlag = !_uiFlag;
+        EventBus.Call(new CraftingInteractionEvent(itemRecipeDates, _playerCache.Inventory, TryCrafting));
+        uiEventChannel?.Raise(true);
     }
 }
 
@@ -51,13 +53,11 @@ public class CraftingInteractionEvent : IGameEvent
     public readonly List<ItemRecipeData> recipes;
     public readonly Inventory inventory;
     public readonly Action<int> onButtonEvent = delegate { };
-    public bool UIActive { get; set; }
 
-    public CraftingInteractionEvent(List<ItemRecipeData> recipes, Inventory inventory, Action<int> onButtonEvent, bool uIActive = true)
+    public CraftingInteractionEvent(List<ItemRecipeData> recipes, Inventory inventory, Action<int> onButtonEvent)
     {
         this.recipes = recipes;
         this.inventory = inventory;
         this.onButtonEvent = onButtonEvent;
-        UIActive = uIActive;
     }
 }

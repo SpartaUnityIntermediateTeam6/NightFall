@@ -27,7 +27,7 @@ public class Beacon : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        TestManager.Instance.beacon = this;
+        GameManager.Instance.beacon = this;
 
         _maxHP = HP;
         beaconHpEventChannel?.Raise(new BoundedValue(_hp, 0, _maxHP));

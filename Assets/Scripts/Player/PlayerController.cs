@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour, IVisitable
         //Sample Code
         _camera = Camera.main;
 
-        TestManager.Instance.player = this.transform;
+        GameManager.Instance.player = this.transform;
 
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;

@@ -12,9 +12,7 @@ public class SunMoonCycle : MonoBehaviour
     public RectTransform bigTimeArrow;
     public Material skyBoxMaterial;
 
-    public float cycleDelay;
-
-    public event Action dayNight;
+    public float cycleDelay;    
 
     public int dDay;
 
@@ -93,7 +91,6 @@ public class SunMoonCycle : MonoBehaviour
         isNight = !isNight;
         time = isNight ? 0.5f : 0;
 
-        dayNight?.Invoke();
 
         bigSunMoonTimer.gameObject.SetActive(true);
         bigTimeArrow.localEulerAngles += new Vector3(0, 0, -180f);

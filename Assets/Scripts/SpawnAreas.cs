@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -37,7 +38,9 @@ public class SpawnAreas : Poolable
 
     [SerializeField] private int maxResourceCount;
 
-    private List<GameObject> activeMorningObjects = new List<GameObject>();
+    private List<GameObject> _activeMorningObjects = new List<GameObject>();
+
+    private List<Poolable> _enemyList = new List<Poolable>();
 
     private float _alwaysSpawnTime = 0f;  // always프리팹 스폰 시간
 
@@ -69,6 +72,12 @@ public class SpawnAreas : Poolable
             else if (!_sunMoonCycle.isNight && _coroutine == null)
             {
                 _coroutine = StartCoroutine(DelaySpawn(SpawnPrefabType.Morning));
+
+                foreach (Poolable obj in _enemyList)
+                {
+                    GameManager.Instance.poolManager.Release(obj);
+                }
+                _enemyList.Clear();
             }
         }
         else
@@ -84,7 +93,7 @@ public class SpawnAreas : Poolable
 
     void SpawnRandom(SpawnPrefabType type)
     {
-        if (type == SpawnPrefabType.Morning && activeMorningObjects.Count >= maxResourceCount)
+        if (type == SpawnPrefabType.Morning && _activeMorningObjects.Count >= maxResourceCount)
         {
             //Debug.Log("이미 최대 개수입니다.");
             return;
@@ -146,18 +155,20 @@ public class SpawnAreas : Poolable
         }
         while (IsPositionOccupiedByOverlapSphere(randomPosition));  // 타입에 맞는 랜덤 스폰 위치 저장
 
-        Poolable poolable = TestManager.Instance.poolManager.Get(randomPrefab);
+        Poolable poolable;
+
+        
+        poolable = GameManager.Instance.poolManager.Get(randomPrefab);
 
         poolable.transform.position = randomPosition;
         poolable.transform.rotation = Quaternion.identity;
 
-        //GameObject spawnPrefab = Instantiate(randomPrefab, randomPosition, Quaternion.identity);
-
+        if(type == SpawnPrefabType.Night) _enemyList.Add(poolable);
 
         if (type == SpawnPrefabType.Morning)
         {
-            activeMorningObjects.Add(poolable.gameObject);
-            poolable.gameObject.AddComponent<DestroyCallback>().OnDestroyed += () => activeMorningObjects.Remove(poolable.gameObject);
+            _activeMorningObjects.Add(poolable.gameObject);
+            poolable.gameObject.AddComponent<DestroyCallback>().OnDestroyed += () => _activeMorningObjects.Remove(poolable.gameObject);
         }
     }
 
@@ -189,7 +200,7 @@ public class SpawnAreas : Poolable
         if (type == SpawnPrefabType.Morning) spawnCount = resourceSpawnCount;
         else if (type == SpawnPrefabType.Night) spawnCount = enemySpawnCount;
 
-        if (spawnDelay * spawnCount >= 1) spawnDelay = 1 / spawnCount;
+        if (spawnDelay * spawnCount >= 1) spawnDelay = 0.5f / (float)spawnCount;
 
         for (int i = 0; i < spawnCount; i++)
         {

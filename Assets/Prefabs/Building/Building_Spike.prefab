@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeData: {fileID: 11400000, guid: 68955092a68563c459840deefe756cd9, type: 2}
-  buildingName: Spike Building
+  buildingName: "\uC2A4\uD30C\uC774\uD06C"
   buildingDescription: Spike
   damage: 0
 --- !u!65 &5249405627409592702

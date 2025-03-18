@@ -26,12 +26,6 @@ public class BuildUI : MonoBehaviour
         if (eventInfo == null)
             return;
 
-        if (!eventInfo.UIActive)
-        {
-            view.SetActive(false);
-            return;
-        }
-
         _elementCache.ForEach(s => Destroy(s));
         _elementCache.Clear();
         view.gameObject.SetActive(true);
@@ -51,5 +45,10 @@ public class BuildUI : MonoBehaviour
 
             _elementCache.Add(go.gameObject);
         }
+    }
+
+    public void Show(bool on)
+    {
+        view.gameObject.SetActive(on);
     }
 }

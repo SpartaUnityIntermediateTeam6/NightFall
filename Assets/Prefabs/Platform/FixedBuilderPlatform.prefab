@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7063583181619924979}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.36848888, z: -0, w: 0.9296322}
+  m_LocalRotation: {x: 0, y: 0.36848965, z: 0, w: 0.9296319}
   m_LocalPosition: {x: -3.95, y: 0.62, z: -9.91}
   m_LocalScale: {x: 5, y: 0.1, z: 5}
   m_ConstrainProportionsScale: 0
@@ -155,13 +155,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e72b8b83524fc40b6b652bdde893e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiEventChannel: {fileID: 11400000, guid: 792469ab0187f4c4b93608527bbed1b6, type: 2}
   buildingPrefabs:
   - {fileID: 2764385134098482464, guid: 4d055775d8a4513459b0c682d1e84db9, type: 3}
   - {fileID: 3727119305905726280, guid: aacc4742581581a4f93e9a01f614f957, type: 3}
   - {fileID: 3425357999534755865, guid: 7927d7ec5a8f60f49b53eb1fc245769b, type: 3}
   targetLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
 --- !u!114 &2787265899023897443
 MonoBehaviour:
   m_ObjectHideFlags: 0

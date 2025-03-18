@@ -4,11 +4,11 @@ public class DroppedItem : Poolable, IVisitor
 {
     public ItemData ItemData;
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<IVisitable>()?.Accept(this);
+            other.GetComponent<IVisitable>()?.Accept(this);
         }
     }
 
@@ -16,9 +16,9 @@ public class DroppedItem : Poolable, IVisitor
     {
         if (visitable is PlayerController player)
         {
-            if (player.Inventory.Add(ItemData, 1) == 0)
+            if (player.Inventory.Add(ItemData) == 0)
             {
-                TestManager.Instance.poolManager.Release(this);
+                GameManager.Instance.poolManager.Release(this);
             }
         }
     }
