@@ -1,5 +1,6 @@
 using System.Diagnostics.Tracing;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [SelectionBase]
 public class Beacon : MonoBehaviour, IDamageable
@@ -59,5 +60,13 @@ public class Beacon : MonoBehaviour, IDamageable
     public void Dead()
     {
         Destroy(gameObject);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.CompareTag("Player"))
+        {
+            if (GameManager.Instance.sunMoonCycle.dDay > 3) SceneManager.LoadScene("Credit");
+        }
     }
 }
