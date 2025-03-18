@@ -34,38 +34,44 @@ public class InventoryTester : MonoBehaviour
 
     private void Start()
     {
-        // 시작 시 아이템 배열이 존재하면 각 아이템을 3개 추가
-        if (_itemDataArray?.Length > 0)
-        {
-            for (int i = 0; i < _itemDataArray.Length; i++)
-            {
-                _inventory.Add(_itemDataArray[i], 1);
 
-                // 수량형 아이템인 경우, 255개 추가 (최대 테스트용)
-                if (_itemDataArray[i] is CountableItemData)
-                    _inventory.Add(_itemDataArray[i], 5);
-            }
+        foreach (var iter in _itemDataArray)
+        {
+            _inventory.Add(iter, 500);
         }
 
-        // 모든 아이템 제거 버튼에 리스너 등록
-        _removeAllButton.onClick.AddListener(() =>
-        {
-            int capacity = _inventory.Capacity;
-            for (int i = 0; i < capacity; i++)
-                _inventory.Remove(i);
-        });
+        //// 시작 시 아이템 배열이 존재하면 각 아이템을 3개 추가
+        //if (_itemDataArray?.Length > 0)
+        //{
+        //    for (int i = 0; i < _itemDataArray.Length; i++)
+        //    {
+        //        _inventory.Add(_itemDataArray[i], 1);
 
-        // 각 버튼 클릭 시 해당 인덱스의 아이템을 인벤토리에 추가
-        _AddArmorA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[0]));
-        _AddArmorB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[1]));
+        //        // 수량형 아이템인 경우, 255개 추가 (최대 테스트용)
+        //        if (_itemDataArray[i] is CountableItemData)
+        //            _inventory.Add(_itemDataArray[i], 5);
+        //    }
+        //}
 
-        _AddSwordA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[2]));
-        _AddSwordB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[3]));
+        //// 모든 아이템 제거 버튼에 리스너 등록
+        //_removeAllButton.onClick.AddListener(() =>
+        //{
+        //    int capacity = _inventory.Capacity;
+        //    for (int i = 0; i < capacity; i++)
+        //        _inventory.Remove(i);
+        //});
 
-        _AddPortionA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[4]));
-        _AddPortionA50.onClick.AddListener(() => _inventory.Add(_itemDataArray[4], 50));
+        //// 각 버튼 클릭 시 해당 인덱스의 아이템을 인벤토리에 추가
+        //_AddArmorA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[0]));
+        //_AddArmorB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[1]));
 
-        _AddPortionB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[5]));
-        _AddPortionB50.onClick.AddListener(() => _inventory.Add(_itemDataArray[5], 50));
+        //_AddSwordA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[2]));
+        //_AddSwordB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[3]));
+
+        //_AddPortionA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[4]));
+        //_AddPortionA50.onClick.AddListener(() => _inventory.Add(_itemDataArray[4], 50));
+
+        //_AddPortionB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[5]));
+        //_AddPortionB50.onClick.AddListener(() => _inventory.Add(_itemDataArray[5], 50));
     }
 }

@@ -12,7 +12,6 @@ public class GameEventListener<T> : MonoBehaviour, IGameEventListener<T>
     void OnDisable() => gameEvent.DeregisterListener(this);
 
     public void OnEventRaised(T data) => unityEvent?.Invoke(data);
-    
 }
 
 public interface IGameEventListener<T>
