@@ -9,7 +9,7 @@ public class UI_Start : MonoBehaviour
     public Button optionButton;
     public Button exitButton;
 
-    public string mainSceneName = "KSM";
+    public string mainSceneName = "Main";
 
     public GameObject mainPanel;
     public GameObject optionPanel;

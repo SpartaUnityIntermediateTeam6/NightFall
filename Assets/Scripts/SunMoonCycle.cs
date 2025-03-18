@@ -109,8 +109,6 @@ public class SunMoonCycle : MonoBehaviour
     }
 
 
-
-
     void UpdateLighting(Light lightSource, Gradient gradient, AnimationCurve intensityCurve)
     {
         float intensity = intensityCurve.Evaluate(time);

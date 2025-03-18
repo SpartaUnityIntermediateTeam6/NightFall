@@ -28,8 +28,7 @@ public class PlayerController : MonoBehaviour, IVisitable
 
         GameManager.Instance.player = this.transform;
 
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
