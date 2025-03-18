@@ -96,12 +96,14 @@ public class SunMoonCycle : MonoBehaviour
         dayNight?.Invoke();
 
         bigSunMoonTimer.gameObject.SetActive(true);
-        bigTimeArrow.gameObject.SetActive(true);
+        bigTimeArrow.localEulerAngles += new Vector3(0, 0, -180f);
+        //bigTimeArrow.gameObject.SetActive(true);
 
-        bigSunMoonTimer.DOLocalRotate(bigSunMoonTimer.transform.eulerAngles + new Vector3(0, 0, 180f), cycleDelay).SetEase(Ease.InOutQuad).OnComplete(() =>
+        SoundManager.Instance.PlaySFX("Swing");
+        bigSunMoonTimer.DOLocalRotate(bigSunMoonTimer.transform.eulerAngles + new Vector3(0, 0, 180f), cycleDelay).SetEase(Ease.InOutElastic).OnComplete(() =>
         {
             bigSunMoonTimer.gameObject.SetActive(false);
-            bigTimeArrow.gameObject.SetActive(false);
+            //bigTimeArrow.gameObject.SetActive(false);
             sunMoonTimer.Rotate(0, 0, 180f);
             isRote = false;
         });
