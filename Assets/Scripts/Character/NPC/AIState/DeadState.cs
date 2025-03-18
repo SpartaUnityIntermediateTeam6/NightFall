@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class IdleState : AIState
+public class DeadState : AIState
 {
-    public IdleState(NPC npc) : base(npc) { }
+    public DeadState(NPC npc) : base(npc) { }
     public override void EnterState()
     {
         npc.agent.isStopped = true;
+        npc.agent.velocity = Vector3.zero;
     }
 
     public override void ExitState()

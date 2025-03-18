@@ -6,14 +6,17 @@ public class AttackingBuilding : Building
 {
     [Header("Attacking Setting")]
     [SerializeField] private float attackDelay;
-    [SerializeField] private Transform attackTarget;
+    [SerializeField] private float attackPower = 5f;
     [SerializeField] private float rangeRadius = 0.5f;
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] private RotateToTarget cannonRotate;
+    [SerializeField] private GameObject projectilePrefab;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
 
+    [SerializeField]
+    private Transform _attackTarget;
     private WaitForSeconds _yieldCache;
 
     void Awake() => _yieldCache = new WaitForSeconds(attackDelay);
@@ -36,18 +39,24 @@ public class AttackingBuilding : Building
     {
         while (true)
         {
-            if (attackTarget == null || !attackTarget.gameObject.activeInHierarchy || 
-                Vector3.Distance(transform.position, attackTarget.transform.position) > rangeRadius)
+            if (_attackTarget == null || !_attackTarget.gameObject.activeInHierarchy || 
+                Vector3.Distance(transform.position, _attackTarget.transform.position) > rangeRadius)
             {
-                attackTarget = SearchTarget();
+                _attackTarget = SearchTarget();
             }
 
-            if (attackTarget != null)
+            if (_attackTarget != null)
             {
                 //Attacking
-                cannonRotate?.SetTarget(attackTarget);
-                Debug.Log("111111");
+                cannonRotate?.SetTarget(_attackTarget);
+
+                var projectile = GameManager.Instance.poolManager.Get(projectilePrefab).GetComponent<Projectile>();
+                projectile.transform.position = cannonRotate.transform.position;
+                projectile?.SetTarget(_attackTarget);
+                projectile?.SetDamage(attackPower);
             }
+
+            Debug.Log(_attackTarget);
 
             yield return _yieldCache;
         }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7451583854176441182}
   - component: {fileID: 6307454450205675915}
   - component: {fileID: 9049894141974804697}
+  - component: {fileID: 2639573555646502771}
   - component: {fileID: 4426467779033374223}
   m_Layer: 0
   m_Name: Branch_1
@@ -69,6 +70,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03710425, y: 0.018454079, z: 0.66211724}
   m_Center: {x: 0.016788423, y: 0.01577296, z: -0.09230927}
+--- !u!65 &2639573555646502771
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6373988422950378310}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4426467779033374223
 Rigidbody:
   m_ObjectHideFlags: 0

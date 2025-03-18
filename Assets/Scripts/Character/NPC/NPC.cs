@@ -75,12 +75,12 @@ public abstract class NPC : Poolable, IDamageable
     [ContextMenu("Dead")]
     public void Dead()
     {
-        SetState(new IdleState(this));
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        animator.SetTrigger("dead");
-
-        Invoke(nameof(DropPrefab), 1);
+        if (curState is not DeadState)
+        {
+            SetState(new DeadState(this));
+            animator.SetTrigger("dead");
+            Invoke(nameof(DropPrefab), 1);
+        }
     }
 
     public void DropPrefab()

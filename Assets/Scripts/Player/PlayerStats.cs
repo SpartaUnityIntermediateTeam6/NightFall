@@ -5,6 +5,8 @@ using System;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
+    public SunMoonCycle sunMoonCycle;
+
     [Header("기본 스탯")]
     [SerializeField] private float _maxHp = 100f;
     private float _hp;
@@ -21,12 +23,16 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     // 정신력 감소 관련 변수
     [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
-    private bool isSanityDecreasing = true; // 정신력 감소 활성화 여부
+    [SerializeField] private float sanityAddRate = 1f; // 초당 정신력 회복량
 
     // Event Channel
     [SerializeField] private BoundedValueGameEvent hpEventChannel;
     [SerializeField] private BoundedValueGameEvent sanityEventChannel;
     [SerializeField] private BoolGameEvent deadEventChannel;
+
+    private bool isSanityDecreasing = true;
+
+    Coroutine _coroutine = null;
 
     public float MoveSpeed => _moveSpeed;
     public float JumpPower => _jumpPower;
@@ -65,10 +71,22 @@ public class PlayerStats : MonoBehaviour, IDamageable
         sanityEventChannel?.Raise(new BoundedValue(_sanity, 0, _maxSanity));
     }
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(DecreaseSanityOverTime()); // 정신력 감소 루틴 시작
+        if (_coroutine == null)
+        {
+            if (sunMoonCycle.isNight)
+            {
+                _coroutine = StartCoroutine(DecreaseSanityOverTime());
+            }
+            else
+            {
+                _coroutine = StartCoroutine(AddSanityOverTime());
+            }
+        }
     }
+
+    
 
     public void TakeDamage(float damage)
     {
@@ -102,13 +120,26 @@ public class PlayerStats : MonoBehaviour, IDamageable
         Debug.Log($"🔪 근접 공격력이 {amount} 만큼 증가! 현재 근접 공격력: {_meleeAttackPower}");
     }
 
-    private IEnumerator DecreaseSanityOverTime()
+    public IEnumerator DecreaseSanityOverTime()
     {
-        while (isSanityDecreasing)
+        while (sunMoonCycle.isNight)
         {
             yield return new WaitForSeconds(1f);
             Sanity -= sanityDecayRate;
         }
+
+        _coroutine = null;
+    }
+
+    public IEnumerator AddSanityOverTime()
+    {
+        while (!sunMoonCycle.isNight)
+        {
+            yield return new WaitForSeconds(1f);
+            Sanity += sanityAddRate;
+        }
+
+        _coroutine = null;
     }
 
     private void OnSanityDepleted()
