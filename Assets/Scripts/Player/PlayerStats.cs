@@ -9,9 +9,11 @@ public class PlayerStats : MonoBehaviour
     private float _hp;
     private float _maxSanity = 100f; // 최대 정신력 기본값 추가
     private float _sanity;
-    //Modifier Stats
+
+    // Modifier Stats
     private float _moveSpeed = 5f;
     private float _jumpPower = 7f;
+    private float _attackPower = 10f; // 기본 공격력 추가 ✅
 
     // 정신력 감소 관련 변수
     [SerializeField] private float sanityDecayRate = 1f; // 초당 정신력 감소량
@@ -55,6 +57,14 @@ public class PlayerStats : MonoBehaviour
 
     public float MoveSpeed => _moveSpeed;
     public float JumpPower => _jumpPower;
+    public float AttackPower => _attackPower; // 현재 공격력 반환 ✅
+
+    // 🎯 공격력 영구 강화 기능 ✅
+    public void UpgradeAttackPower(float amount)
+    {
+        _attackPower += amount;
+        Debug.Log($"⚔️ 공격력이 {amount} 만큼 증가! 현재 공격력: {_attackPower}");
+    }
 
     // 🎯 시간에 따라 정신력 감소
     private IEnumerator DecreaseSanityOverTime()
