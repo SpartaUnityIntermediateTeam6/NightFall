@@ -3864,7 +3864,7 @@ MonoBehaviour:
   startButton: {fileID: 187279779}
   optionButton: {fileID: 990355002}
   exitButton: {fileID: 386179334}
-  mainSceneName: Main
+  mainSceneName: HowToPlay
   mainPanel: {fileID: 651570252}
   optionPanel: {fileID: 44356595}
   optionCloseButton: {fileID: 1135439210}
