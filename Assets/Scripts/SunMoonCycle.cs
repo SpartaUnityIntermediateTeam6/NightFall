@@ -22,7 +22,7 @@ public class SunMoonCycle : MonoBehaviour
     private float timeRate;
 
     public bool isNextDay;
-    public bool isNight;
+    
     public bool isRote;
     public float sunTime;
     public float moonTime;
@@ -40,7 +40,21 @@ public class SunMoonCycle : MonoBehaviour
     public AnimationCurve reflectionIntensityMultiplier;
     public AnimationCurve skyBoxCurve;
 
-    public event Action OnDayNightChange;
+    public static event Action<bool> OnDayNightChange;
+
+    private bool _isNight;
+    public bool isNight
+    {
+        get => _isNight;
+        set
+        {
+            if (_isNight != value)
+            {
+                _isNight = value;
+                OnDayNightChange?.Invoke(_isNight);
+            }
+        }
+    }
 
     void Start()
     {
@@ -137,10 +151,4 @@ public class SunMoonCycle : MonoBehaviour
         RenderSettings.skybox.SetFloat("_AtmosphereThickness", originalSkyColor);
         skyBoxMaterial.SetColor("_GroundColor", originalGroundColor);
     }
-
-    protected virtual void  HandleDayNightChange()
-    {
-
-    }
-
 }

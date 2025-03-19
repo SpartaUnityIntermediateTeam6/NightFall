@@ -317,9 +317,8 @@ MonoBehaviour:
   time: 0
   startTime: 0.2
   isNextDay: 0
-  isNight: 0
   isRote: 0
-  sunTime: 100
+  sunTime: 2
   moonTime: 60
   sun: {fileID: 1286963572}
   sunColor:

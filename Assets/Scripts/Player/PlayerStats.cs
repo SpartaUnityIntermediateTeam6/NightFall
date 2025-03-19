@@ -5,8 +5,6 @@ using System;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
-    public SunMoonCycle sunMoonCycle;
-
     [Header("기본 스탯")]
     [SerializeField] private float _maxHp = 100f;
     private float _hp;
@@ -67,6 +65,16 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
     }
 
+    private void OnEnable()
+    {
+        SunMoonCycle.OnDayNightChange += HandleDayNightChange;
+    }
+
+    private void OnDisable()
+    {
+        SunMoonCycle.OnDayNightChange -= HandleDayNightChange;
+    }
+
     private void Start()
     {
         Hp = _maxHp;
@@ -78,6 +86,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     private void Update()
     {
+        /*
         if (_coroutine == null)
         {
             if (sunMoonCycle.isNight)
@@ -89,9 +98,18 @@ public class PlayerStats : MonoBehaviour, IDamageable
                 _coroutine = StartCoroutine(AddSanityOverTime());
             }
         }
+        */
     }
 
-    
+    private void HandleDayNightChange(bool isNight)
+    {
+        if (_coroutine == null)
+        {
+            if (isNight == true) _coroutine = StartCoroutine(DecreaseSanityOverTime(isNight));
+            else _coroutine = StartCoroutine(AddSanityOverTime(isNight));
+        }
+    }
+
 
     public void TakeDamage(float damage)
     {
@@ -125,9 +143,9 @@ public class PlayerStats : MonoBehaviour, IDamageable
         Debug.Log($"🔪 근접 공격력이 {amount} 만큼 증가! 현재 근접 공격력: {_meleeAttackPower}");
     }
 
-    public IEnumerator DecreaseSanityOverTime()
+    public IEnumerator DecreaseSanityOverTime(bool isNight)
     {
-        while (sunMoonCycle.isNight)
+        while (isNight == true)
         {
             yield return new WaitForSeconds(1f);
             Sanity -= sanityDecayRate;
@@ -136,9 +154,9 @@ public class PlayerStats : MonoBehaviour, IDamageable
         _coroutine = null;
     }
 
-    public IEnumerator AddSanityOverTime()
+    public IEnumerator AddSanityOverTime(bool isNight)
     {
-        while (!sunMoonCycle.isNight)
+        while (isNight == false)
         {
             yield return new WaitForSeconds(1f);
             Sanity += sanityAddRate;
@@ -173,7 +191,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public void ResumeSanityDecay()
     {
         isSanityDecreasing = true;
-        StartCoroutine(DecreaseSanityOverTime());
+        //StartCoroutine(DecreaseSanityOverTime());
     }
 }
 
