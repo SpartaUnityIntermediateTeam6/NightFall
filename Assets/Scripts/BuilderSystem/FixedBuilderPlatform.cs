@@ -40,6 +40,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 
             _builderStrategy.Build(buildingPrefabs[index]);
             _canBuild = false;
+            uiEventChannel?.Raise(false);
         }
     }
 

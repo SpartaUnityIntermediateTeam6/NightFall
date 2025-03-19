@@ -46,14 +46,12 @@ namespace BuildingSystem
         {
             if (condition == null || condition.Evaluate())
             {
-                var go = GameObject.Instantiate(buildable);
+                var go = GameObject.Instantiate(buildable).GetComponents<Collider>().FirstOrDefault(c => !c.isTrigger);
 
-                //go.transform.position =
-                //    _builderGameObject.transform.position + Vector3.up * go.GetComponent<Collider>().bounds.extents.y * 0.5f;
                 go.transform.position =
                     _builderGameObject.transform.position + Vector3.down *
                     (_builderColliderCache.size.y * _builderColliderCache.transform.localScale.y) * 0.5f +
-                    Vector3.up * go.GetComponent<Collider>().bounds.extents.y * 0.5f;
+                    Vector3.up * go.bounds.extents.y * 0.5f;
                 go.transform.rotation = _builderColliderCache.transform.rotation;
             }
         }
