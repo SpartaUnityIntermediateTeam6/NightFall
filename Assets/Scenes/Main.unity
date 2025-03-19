@@ -320,7 +320,7 @@ MonoBehaviour:
   isNight: 0
   isRote: 0
   sunTime: 100
-  moonTime: 100
+  moonTime: 60
   sun: {fileID: 1286963572}
   sunColor:
     serializedVersion: 2
