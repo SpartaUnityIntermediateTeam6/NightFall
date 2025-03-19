@@ -147,7 +147,7 @@
 
 ---
 
-## 게임 시연
+## 게임 시연 (사진 클릭시 영상으로 넘어갑니다.)
 
 [![Watch the video](https://img.youtube.com/vi/IMTktyr5oWw/hqdefault.jpg)](https://youtu.be/IMTktyr5oWw)
 
@@ -165,10 +165,4 @@
 
 - Unity 2022 이상 권장
 - Windows 10 환경에서 개발 및 테스트
-
----
-
-## 라이선스
-
-본 프로젝트는 교육용으로 제작되었으며, 상업적 사용은 제한됩니다.
 
