@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845f9a1e18feea34d9ad78db62bc10a9, type: 3}
+  m_Name: Item_FoodMaterial_Meat
+  m_EditorClassIdentifier: 
+  _id: 25002
+  _name: "\uD669\uAE08 \uC0AC\uACFC"
+  _tooltip: "\uAE08\uC0C9 \uC0AC\uACFC. \uBB54\uAC00 \uC870\uD569\uD560 \uC218 \uC788\uC744\uC9C0\uB3C4?"
+  _iconSprite: {fileID: 21300000, guid: 3006b506b4275d84692b0aa0f1616cb1, type: 3}
+  _dropItemPrefab: {fileID: 0}
+  _maxAmount: 99

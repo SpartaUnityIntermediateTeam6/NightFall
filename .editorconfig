@@ -1,0 +1,13 @@
+root = true
+
+[*.cs]
+charset = utf-8
+
+[*.cpp]
+charset = utf-8
+
+[*.h]
+charset = utf-8
+
+[*.txt]
+charset = utf-8
