@@ -24,6 +24,7 @@ public class UI_GameOver : MonoBehaviour
 
     public void SetGameOverUI(bool flag)
     {
+        Cursor.lockState = CursorLockMode.None;
         Debug.Log("게임오버 UI 켜짐");
         gameoverPanel.SetActive(true);
         Time.timeScale = 0f;
