@@ -319,7 +319,7 @@ MonoBehaviour:
   isNextDay: 0
   isNight: 0
   isRote: 0
-  sunTime: 100
+  sunTime: 1
   moonTime: 60
   sun: {fileID: 1286963572}
   sunColor:
@@ -553,26 +553,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1216704036454618255, guid: c9160f73798b5fa47ac8f06b8aefb636, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557369782376033332, guid: c9160f73798b5fa47ac8f06b8aefb636, type: 3}
-      propertyPath: targetLayers.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557369782376033332, guid: c9160f73798b5fa47ac8f06b8aefb636, type: 3}
-      propertyPath: buildingPrefabs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557369782376033332, guid: c9160f73798b5fa47ac8f06b8aefb636, type: 3}
-      propertyPath: buildingPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 3425357999534755865, guid: 7927d7ec5a8f60f49b53eb1fc245769b, type: 3}
-    - target: {fileID: 5557369782376033332, guid: c9160f73798b5fa47ac8f06b8aefb636, type: 3}
-      propertyPath: buildingPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 1729912661006900103, guid: 39145bfe633cb224e9a66c799f94d18c, type: 3}
     - target: {fileID: 6477303489925892252, guid: c9160f73798b5fa47ac8f06b8aefb636, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.2
@@ -758,7 +738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110753520609424570, guid: a497825f77552184888e9693491a1901, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.05
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 2110753520609424570, guid: a497825f77552184888e9693491a1901, type: 3}
       propertyPath: m_LocalPosition.z
@@ -792,6 +772,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4950509486552769454, guid: a497825f77552184888e9693491a1901, type: 3}
+      propertyPath: deadGameEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: 7c14a19f2c77b514aac459e7adea36c6, type: 2}
     - target: {fileID: 5593045977484362157, guid: a497825f77552184888e9693491a1901, type: 3}
       propertyPath: m_Name
       value: Beacon
@@ -1007,7 +991,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
@@ -2627,6 +2611,10 @@ PrefabInstance:
     - target: {fileID: 134048694226873951, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 205652830891987695, guid: 5e436a80471179344bf3182af0778b52, type: 3}
+      propertyPath: m_Intensity
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 312127738825660703, guid: 5e436a80471179344bf3182af0778b52, type: 3}
       propertyPath: m_Layer

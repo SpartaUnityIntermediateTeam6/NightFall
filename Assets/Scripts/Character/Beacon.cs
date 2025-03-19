@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 [SelectionBase]
 public class Beacon : MonoBehaviour, IDamageable
 {
+    [SerializeField] private BoolGameEvent deadGameEvent;
     [SerializeField] private float _hp = 10;
     [HideInInspector] public float HP
     {
@@ -54,13 +55,12 @@ public class Beacon : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         HP = Mathf.Max(HP - damage, 0);
-        Debug.Log($"비콘 공격. 남은 체력: {HP}");
         if (HP <= 0) Dead();
     }
 
     public void Dead()
     {
-        Destroy(gameObject);
+        deadGameEvent?.Raise(true);
     }
 
 }

@@ -7,6 +7,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
 {
     [SerializeField] private BoolGameEvent uiEventChannel;
     [SerializeField] private List<Building> buildingPrefabs = new();
+    [SerializeField] private GameObject buildDistanceGameObject;
 
     [Header("Layers")]
     [SerializeField] private LayerMask targetLayers;
@@ -41,6 +42,7 @@ public class FixedBuilderPlatform : MonoBehaviour, IVisitor
             _builderStrategy.Build(buildingPrefabs[index]);
             _canBuild = false;
             uiEventChannel?.Raise(false);
+            Destroy(buildDistanceGameObject);
         }
     }
 

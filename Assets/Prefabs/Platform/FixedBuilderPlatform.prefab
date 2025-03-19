@@ -70,9 +70,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiEventChannel: {fileID: 11400000, guid: 792469ab0187f4c4b93608527bbed1b6, type: 2}
   buildingPrefabs:
-  - {fileID: 2764385134098482464, guid: 4d055775d8a4513459b0c682d1e84db9, type: 3}
-  - {fileID: 3727119305905726280, guid: aacc4742581581a4f93e9a01f614f957, type: 3}
   - {fileID: 3425357999534755865, guid: 7927d7ec5a8f60f49b53eb1fc245769b, type: 3}
+  - {fileID: 1729912661006900103, guid: 39145bfe633cb224e9a66c799f94d18c, type: 3}
+  buildDistanceGameObject: {fileID: 7511734349836370211}
   targetLayers:
     serializedVersion: 2
     m_Bits: 128
