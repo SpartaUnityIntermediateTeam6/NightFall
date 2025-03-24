@@ -37,7 +37,7 @@
 | Enemy | 건물(제작소) 건축 | 방어 건물 건축 | 타이머 |
 |:-------:|:----:|:----:|:----:|
 |<img src= https://github.com/user-attachments/assets/6407dfff-6899-4cad-b991-7057196d62ad width = "75" height = "150"> <img src= https://github.com/user-attachments/assets/28cc5772-55d4-4ffc-a883-4dc7f408ef6c width = "75" height = "150"> | <img src= https://github.com/user-attachments/assets/48930784-3d76-4726-a785-0aa5fe98b615 width = "100" height = "150"> <img src= https://github.com/user-attachments/assets/e3d03a5d-28cd-4f04-9f2b-6fe4f6e86e99 width = "100" height = "150"> | <img src= https://github.com/user-attachments/assets/5d8f6260-3c63-4036-804c-be25923a7e50 width = "75" height = "150"> <img src= https://github.com/user-attachments/assets/f3eca8aa-35bd-4280-8f4a-4865e47551d7 width = "75" height = "150">| ![image](https://github.com/user-attachments/assets/6b394899-d1d1-4800-81b6-e42af7448a24)|
-|공격하여 자원 획득 가능제|작소에서 회복 아이템과 강화 아이템 제작 가능|Enemy 이동 방해 및 공격|낮 밤 구분을 위한 타이머 기능|
+|공격하여 자원 획득 가능|제작소에서 회복 아이템과 강화 아이템 제작 가능|Enemy 이동 방해 및 공격|낮 밤 구분을 위한 타이머 기능|
 
 
 
